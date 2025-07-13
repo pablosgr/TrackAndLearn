@@ -1,37 +1,19 @@
 "use client"
 
-import { supabase } from "@/lib/supabaseClient";
+import { addTopic, fetchTopics, deleteTopic } from "./actions/topic";
 import { FormEvent, useRef, useState } from "react";
-
-const getData = async () => {
-  let data = await supabase.from('topic').select();
-  console.log("Data fetched:", data);
-  return data;
-}
-
-const removeTopic = async (id: number) => {
-  const { error } = await supabase.from('topic').delete().eq('id', id);
-  if (error) throw error;
-}
-
-const addTopic = async (name: string) => {
-  const { error } = await supabase.from('topic').insert({name: name});
-  if (error) throw error;
-}
 
 export default function Home() {
   const [topics, setTopics] = useState<{ id: number; name: string }[] | []>([]);
   const formRef = useRef<HTMLInputElement>(null);
 
   const onFetchClick = async () => {
-    const topic_list = await getData();
-    if (topic_list && topic_list.data) {
-      setTopics(topic_list.data);
-    }
+    const data = await fetchTopics();
+    setTopics(data);
   }
 
   const onDeleteClick = async (id: number) => {
-    await removeTopic(id);
+    await deleteTopic(id);
     await onFetchClick();
   }
 
@@ -40,8 +22,8 @@ export default function Home() {
     if (formRef.current) {
       const newTopic = formRef.current.value;
       await addTopic(newTopic);
-      await onFetchClick();
       formRef.current.value = "";
+      await onFetchClick();
     }
   }
   
