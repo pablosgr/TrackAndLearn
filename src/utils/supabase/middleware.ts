@@ -36,10 +36,13 @@ export async function updateSession(request: NextRequest) {
     console.error('Error in Supabase middleware', error);
   }
 
-  if (
-    !user &&
-    request.nextUrl.pathname !== '/'
-  ) {
+  if (user && request.nextUrl.pathname === '/') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  if (!user && request.nextUrl.pathname !== '/') {
     const url = request.nextUrl.clone()
     url.pathname = '/'
     return NextResponse.redirect(url)
