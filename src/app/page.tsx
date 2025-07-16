@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useState } from "react";
-import { login, signUp } from "./actions";
+import { logIn, signUp } from "./actions";
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null);
@@ -9,7 +9,7 @@ export default function Login() {
   const handleLogIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const result = await login(formData);
+    const result = await logIn(formData);
     if (result.error) {
       setError(result.error);
     }

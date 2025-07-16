@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { signOut } from "../actions";
+import { signOut } from "../../actions";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 
