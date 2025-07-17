@@ -1,14 +1,10 @@
 import { redirect } from "next/navigation";
-import { createClient } from "../supabase/server";
+import requireUser from "./requireUser";
 
 export default async function requireRole(allowedRoles: string[]) {
-    const supabase = await createClient();
-    
-    const { data: userData } = await supabase.auth.getUser();
+    const user = await requireUser();
 
-    const { data } = await supabase.from('users').select('role').eq('auth_id', userData.user?.id);
-
-    if (!data || !data[0] || !allowedRoles.includes(data[0].role)) {
+    if (!user || !allowedRoles.includes(user.role)) {
         redirect('/unauthorized');
     }
 }
