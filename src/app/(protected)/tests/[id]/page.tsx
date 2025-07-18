@@ -9,7 +9,7 @@ export default async function TestDetail({ params }: { params: { id: string } })
 
     const { data: test, error } = await supabase
         .from('test')
-        .select('id, name, level, template_id, test_template(teacher_id)')
+        .select('id, name, level, template_id, test_template: test_template_id (teacher_id)')
         .eq('id', data.id)
         .single();
 
@@ -27,8 +27,8 @@ export default async function TestDetail({ params }: { params: { id: string } })
 
     return (
         <div>
-        <h2>{test.name}</h2>
-        <p>{test.level}</p>
+            <h2>{test.name}</h2>
+            <p>{test.level}</p>
         </div>
     );
 }
