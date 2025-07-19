@@ -1,6 +1,5 @@
 'use client'
 
-import { useUser } from "@/components/userWrapper";
 import { useState } from "react";
 import Link from "next/link";
 import TestTemplateType from "@/types/test/TestTemplateType";
@@ -8,12 +7,9 @@ import TestTemplateType from "@/types/test/TestTemplateType";
 export default function TestsPageClient({ data }: { data: TestTemplateType[] | null }) {
     const [tests] = useState<TestTemplateType[] | null>(data);
 
-    const userData = useUser();
-
     return (
         <div className="flex flex-col justify-items-center">
-            <p>Welcome, {userData.name}. You are in tests page now</p>
-            <ul className="flex flex-col gap-3 p-4 mt-2 rounded-md bg-cyan-100">
+            <ul className="flex flex-row gap-6 p-4 mt-2 rounded-md bg-cyan-100">
                 {
                     tests && tests.map((t) => (
                         <Link href={`/tests/${t.id}`} key={t.id}>
