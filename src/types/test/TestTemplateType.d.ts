@@ -1,5 +1,5 @@
 type TestTemplateType = {
-    id?: string,
+    id: string,
     name: string,
     teacher_id: string,
     topic_id: string,
