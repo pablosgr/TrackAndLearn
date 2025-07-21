@@ -3,5 +3,7 @@ export type ClassroomType = {
     teacher_id: number;
     name: string;
     created_at: string;
-    teacher_name?: string;
+    teacher?: {
+        name: string;
+    }
 }

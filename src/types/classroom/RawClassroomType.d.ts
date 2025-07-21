@@ -1,4 +1,4 @@
-export type RawStudentClassroomType = {
+export type RawSupabaseClassroomType = {
     id: number;
     teacher_id: number;
     name: string;
@@ -9,5 +9,5 @@ export type RawStudentClassroomType = {
 }
 
 export type RawClassroomType = {
-    classroom: RawStudentClassroomType[];
+    classroom: RawSupabaseClassroomType[];
 }
