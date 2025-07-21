@@ -2,7 +2,11 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
+import { RawSupabaseClassroomType } from "@/types/classroom/RawClassroomType";
 import { RawClassroomType } from "@/types/classroom/RawClassroomType";
+import { RawStudentType } from "@/types/user/RawStudentFile";
+import { StudentType } from "@/types/user/StudentType";
+import { AssignedTestType } from "@/types/test/AssignedTestType";
 
 export async function getClassroomsByRole(userId: string, userRole: string): Promise<ClassroomType[] | null> {
     const supabase = await createClient();
@@ -26,11 +30,11 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
             .from("student_classroom")
             .select(`
                 classroom(
-                id,
-                teacher_id,
-                name,
-                created_at,
-                teacher:users!classroom_teacher_id_fkey(name)
+                    id,
+                    teacher_id,
+                    name,
+                    created_at,
+                    teacher:users!classroom_teacher_id_fkey(name)
                 )
             `)
             .eq("student_id", userId);
@@ -45,7 +49,7 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
         const classrooms: ClassroomType[] = classroomsFilter.map((c) => (
             {
                 ...c,
-                teacher_name: c.teacher?.name,
+                teacher: { name: c.teacher?.name }
             }
         ))
 
@@ -53,4 +57,84 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
     }
 
     return null;
+}
+
+export async function getClassroomById(classroomId: string): Promise<ClassroomType | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('classroom')
+        .select(`
+            id, 
+            teacher_id,
+            name,
+            created_at,
+            teacher:users!classroom_teacher_id_fkey(name)
+        `)
+        .eq('id', classroomId)
+        .single<RawSupabaseClassroomType>();
+
+    if (!data || error) {
+        console.error("Error fetching classroom data: ", error);
+        return null;
+    }
+
+    return data as ClassroomType;
+}
+
+export async function getClassroomStudents(classroomId: string): Promise<StudentType[] | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('student_classroom')
+        .select(`
+            student:users(
+                id,
+                name,
+                username,
+                email,
+                adaptation_id
+            )
+        `)
+        .eq('classroom_id', classroomId);
+
+    if (!data || error) {
+        console.error('Error fetching classroom students: ', error);
+        return null;
+    }
+
+    const students = (data as RawStudentType[]).flatMap(item => item.student);
+
+    return students as StudentType[];
+}
+
+export async function getAssignedTests(classroomId: string): Promise<AssignedTestType[] | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test_assignment')
+        .select(`
+            classroom_id,
+            test_template_id,
+            assigned_at,
+            due_date,
+            test_template(
+                id,
+                name,
+                teacher_id,
+                topic_id,
+                created_at
+            )
+        `)
+        .eq('classroom_id', classroomId);
+
+        if (!data || error) {
+            console.error('Error fetching assigned tests: ', error);
+            return null;
+        }
+
+        return data?.map(item => ({
+            ...item,
+            test_template: Array.isArray(item.test_template) ? item.test_template[0] : item.test_template
+        })) as AssignedTestType[];
 }
