@@ -5,10 +5,13 @@ import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
 import { RawTestResponse } from "@/types/test/RawTestType";
 
-export async function getTestsTemplateByUserId(userId: string): Promise<TestTemplateType[] | null> {
+export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[] | null> {
     const supabase = await createClient();
 
-    const { data, error } = await supabase.from('test_template').select('*').eq('teacher_id', userId);
+    const { data, error } = await supabase
+        .from('test_template')
+        .select('*')
+        .eq('teacher_id', userId);
 
     if (error) {
         console.error('Failed to fetch tests', error);
@@ -46,7 +49,7 @@ export async function getTestById(testId: string): Promise <TestType | null> {
             )
         `)
         .eq("template_id", testId)
-        .single<RawTestResponse>();
+        .single<RawTestResponse>(); // change to []
 
         if (error) {
             console.error('Error fetching test: ', error);

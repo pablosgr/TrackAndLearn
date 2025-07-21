@@ -28,7 +28,7 @@ export default async function TestDetailClient({ test }: { test: TestType | null
                                 <p className="font-semibold">{q.question_text}</p>
                                 {
                                     q.option.map((o) => (
-                                        <p className={`ml-4 ${o.is_correct && 'text-green-500'}`}>
+                                        <p key={o.id} className={`ml-4 ${o.is_correct && 'text-green-500'}`}>
                                             {o.option_text}
                                         </p>
                                     ))

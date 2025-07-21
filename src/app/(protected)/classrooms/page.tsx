@@ -1,7 +1,12 @@
-export default function Classrooms() {
+import { getClassroomsByRole } from "./actions";
+import requireUser from "@/utils/auth/requireUser";
+import ClassroomsPageClient from "./ClassroomsPageClient";
+
+export default async function TestsPage() {
+    const user = await requireUser();
+    const classrooms = await getClassroomsByRole(user?.id, user?.role);
+
     return (
-        <div className="flex flex-row justify-items-center">
-            <p>You are in classrooms page now</p>
-        </div>
+        <ClassroomsPageClient data={classrooms}/>
     )
 }
