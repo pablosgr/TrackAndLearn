@@ -5,7 +5,7 @@ export default async function TestDetailClient({ test }: { test: TestType | null
     const userData = await requireUser();
 
     if (!test) {
-        return <p>Test not found</p>;
+        return <p>Test not found</p>
     }
 
     const isAuthor = userData?.id === test.test_template?.teacher_id;

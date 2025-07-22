@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import TestTemplateType from "@/types/test/TestTemplateType";
 
-export default function TestsPageClient({ data }: { data: TestTemplateType[] | null }) {
-    const [tests] = useState<TestTemplateType[] | null>(data);
+export default function TestsPageClient({ data }: { data: TestTemplateType[] }) {
+    const [tests] = useState<TestTemplateType[]>(data);
 
     return (
         <div className="flex flex-col justify-items-center">

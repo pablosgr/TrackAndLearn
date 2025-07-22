@@ -8,7 +8,7 @@ import { RawStudentType } from "@/types/user/RawStudentFile";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 
-export async function getClassroomsByRole(userId: string, userRole: string): Promise<ClassroomType[] | null> {
+export async function getClassroomsByRole(userId: string, userRole: string): Promise<ClassroomType[]> {
     const supabase = await createClient();
 
     if (userRole === 'teacher') {
@@ -19,7 +19,7 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
 
         if (!data || error) {
             console.error("Error fetching teacher classrooms: ", error);
-            return null;
+            return [];
         }
 
         return data;
@@ -41,7 +41,7 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
 
         if (!data || error) {
             console.error("Error fetching student classrooms: ", error);
-            return null;
+            return [];
         }
 
         const classroomsFilter = (data as RawClassroomType[]).flatMap(item => item.classroom);
@@ -56,7 +56,7 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
         return classrooms;
     }
 
-    return null;
+    return [];
 }
 
 export async function getClassroomById(classroomId: string): Promise<ClassroomType | null> {
@@ -82,7 +82,7 @@ export async function getClassroomById(classroomId: string): Promise<ClassroomTy
     return data as ClassroomType;
 }
 
-export async function getClassroomStudents(classroomId: string): Promise<StudentType[] | null> {
+export async function getClassroomStudents(classroomId: string): Promise<StudentType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -100,7 +100,7 @@ export async function getClassroomStudents(classroomId: string): Promise<Student
 
     if (!data || error) {
         console.error('Error fetching classroom students: ', error);
-        return null;
+        return [];
     }
 
     const students = (data as RawStudentType[]).flatMap(item => item.student);
@@ -108,12 +108,13 @@ export async function getClassroomStudents(classroomId: string): Promise<Student
     return students as StudentType[];
 }
 
-export async function getAssignedTests(classroomId: string): Promise<AssignedTestType[] | null> {
+export async function getAssignedTests(classroomId: string): Promise<AssignedTestType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
         .from('test_assignment')
         .select(`
+            id,
             classroom_id,
             test_template_id,
             assigned_at,
@@ -130,7 +131,7 @@ export async function getAssignedTests(classroomId: string): Promise<AssignedTes
 
         if (!data || error) {
             console.error('Error fetching assigned tests: ', error);
-            return null;
+            return [];
         }
 
         return data?.map(item => ({

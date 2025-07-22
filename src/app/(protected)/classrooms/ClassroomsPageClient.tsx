@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useUser } from "@/components/userWrapper";
 
-export default function ClassroomsPageClient({ data }: { data: ClassroomType[] | null }) {
-    const [classrooms] = useState<ClassroomType[] | null>(data);
+export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
+    const [classrooms] = useState<ClassroomType[]>(data);
     const user = useUser();
     
     return (

@@ -5,7 +5,7 @@ import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
 import { RawTestResponse } from "@/types/test/RawTestType";
 
-export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[] | null> {
+export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -15,7 +15,7 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
 
     if (error) {
         console.error('Failed to fetch tests', error);
-        return null;
+        return [];
     }
 
     return data as TestTemplateType[];
