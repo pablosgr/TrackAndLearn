@@ -7,9 +7,11 @@ export default async function TestsDetail({ params }: { params: { id: string } }
     const students = await getClassroomStudents(data.id);
     const tests = await getAssignedTests(data.id);
 
-    // pass as props
-
     return (
-        <ClassroomDetailClient />
+        <ClassroomDetailClient 
+            studentList={students}
+            testList={tests}
+            classroomDetails={classroom}
+        />
     )
 }

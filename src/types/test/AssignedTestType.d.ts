@@ -1,6 +1,7 @@
 import TestTemplateType from "./TestTemplateType";
 
 export type AssignedTestType = {
+    id: number;
     classroom_id: number;
     test_template_id: number;
     assigned_at: string;
