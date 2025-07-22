@@ -21,7 +21,7 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
     return data as TestTemplateType[];
 }
 
-export async function getTestById(testId: string): Promise <TestType | null> {
+export async function getTestByTemplateId(testId: string): Promise <TestType | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase

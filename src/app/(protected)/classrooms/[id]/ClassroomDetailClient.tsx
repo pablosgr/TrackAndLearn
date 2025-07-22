@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react";
+import Link from "next/link";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
@@ -39,10 +40,17 @@ export default function ClassroomDetailClient(
             </section>
             <section className="bg-cyan-100 p-5 rounded-lg">
                 <h2 className="font-semibold">Assigned Tests</h2>
-                <ul>
+                <ul className="flex flex-col gap-3">
                     {
                         tests && tests.map((item) => (
-                            <li key={item.id}>{item.test_template.name}</li>
+                            <li key={item.id} className="flex flex-row gap-3 items-center">
+                                <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
+                                    <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
+                                        Take test
+                                    </button>
+                                </Link>
+                                {item.test_template.name}
+                            </li>
                         ))
                     }
                 </ul>
