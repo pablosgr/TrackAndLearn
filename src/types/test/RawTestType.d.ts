@@ -8,7 +8,7 @@ export type RawTestResponse = {
     created_at: string;
     test_template: {
         teacher_id: number;
-    };
+    }[];
     question: {
         id: number;
         question_text: string;

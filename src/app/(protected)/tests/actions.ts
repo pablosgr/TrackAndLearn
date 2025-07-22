@@ -21,7 +21,7 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
     return data as TestTemplateType[];
 }
 
-export async function getTestByTemplateId(testId: string): Promise <TestType | null> {
+export async function getTestByTemplateId(testId: string): Promise <TestType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -48,13 +48,17 @@ export async function getTestByTemplateId(testId: string): Promise <TestType | n
                 )
             )
         `)
-        .eq("template_id", testId)
-        .single<RawTestResponse>(); // change to []
+        .eq("template_id", testId);
 
-        if (error) {
+        if (!data || error) {
             console.error('Error fetching test: ', error);
-            return null;
+            return [];
         }
 
-        return data;
+        const tests: TestType[] = data.map((test): TestType => ({
+            ...test,
+            test_template: Array.isArray(test.test_template) ? test.test_template[0] ?? null : test.test_template,
+        }));
+
+        return tests;
 }
