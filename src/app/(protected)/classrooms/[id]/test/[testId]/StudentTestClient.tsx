@@ -1,40 +1,47 @@
 'use client'
 
-import { useState } from "react";
+import { useUser } from "@/components/userWrapper";
 import { TestType } from "@/types/test/TestType";
 
-export default function StudentTestClient({ testDetail }: { testDetail: TestType | null }) {
-    const [test] = useState<TestType| null>(testDetail);
+export default function StudentTestClient({ data }: { data: TestType[] }) {
+    const user = useUser();
 
-    if (!test) {
+    const visibleTest = data.find(t => t.adaptation_id === user.adaptation_id) ?? data[0];
+
+    if (!visibleTest) {
         return <div>Test not found</div>
     }
+
     
     return (
-        <div className="flex flex-col gap-5 p-10 m-10 shadow-xl rounded-lg bg-amber-200/50">
-            <h2>{test.name}</h2>
-            <p>{test.level}</p>
+        <div className="flex flex-col gap-3 p-10">
             {
-                test.adaptation_id && <p>Adaptation {test.adaptation_id}</p>
-            }
-            <section>
-                <ul className="flex flex-col gap-8">
+                <section className="p-10 m-10 shadow-xl rounded-lg bg-amber-200/50">
+                    <h2>{visibleTest.name}</h2>
+                    <p>{visibleTest.level}</p>
                     {
-                        test.question.map((q) => (
-                            <li key={q.id} className="p-5 bg-white rounded-xl">
-                                <p className="font-semibold">{q.question_text}</p>
-                                {
-                                    q.option.map((o) => (
-                                        <p key={o.id} className={`ml-4 ${o.is_correct && 'text-green-500'}`}>
-                                            {o.option_text}
-                                        </p>
-                                    ))
-                                }
-                            </li>
-                        ))
+                        visibleTest.adaptation_id && <p>Adaptation {visibleTest.adaptation_id}</p>
                     }
-                </ul>
-            </section>
+                    <section>
+                        <ul className="flex flex-col gap-8">
+                            {
+                                visibleTest.question.map((q) => (
+                                    <li key={q.id} className="p-5 bg-white rounded-xl">
+                                        <p className="font-semibold">{q.question_text}</p>
+                                        {
+                                            q.option.map((o) => (
+                                                <p key={o.id} className={`ml-4 ${o.is_correct && 'text-green-500'}`}>
+                                                    {o.option_text}
+                                                </p>
+                                            ))
+                                        }
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </section>
+                </section>
+            }
         </div>
     )
 }

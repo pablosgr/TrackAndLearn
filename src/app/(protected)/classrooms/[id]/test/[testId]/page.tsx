@@ -3,9 +3,9 @@ import StudentTestClient from "./StudentTestClient";
 
 export default async function StudentTest({ params }: { params: { testId: string } }) {
     const data = await params;
-    const test = await getTestByTemplateId(data.testId);
+    const tests = await getTestByTemplateId(data.testId);
 
     return (
-        <StudentTestClient testDetail={test}/>
+        <StudentTestClient data={tests}/>
     )
 }
