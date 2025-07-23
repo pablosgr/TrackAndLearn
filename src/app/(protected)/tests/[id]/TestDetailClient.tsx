@@ -1,20 +1,6 @@
-import requireUser from "@/utils/auth/requireUser";
 import { TestType } from "@/types/test/TestType";
 
-export default async function TestDetailClient({ test }: { test: TestType | null }) {
-    const userData = await requireUser();
-
-    if (!test) {
-        return <p>Test not found</p>
-    }
-
-    const isAuthor = userData?.id === test.test_template?.teacher_id;
-
-    if (!isAuthor) {
-        return (
-            <p>You are not the author of this test</p>
-        )
-    }
+export default async function TestDetailClient({ test }: { test: TestType }) {
 
     return (
         <div className="flex flex-col gap-5 p-10 m-10 shadow-xl rounded-lg bg-amber-200/50">

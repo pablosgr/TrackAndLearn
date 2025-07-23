@@ -3,7 +3,6 @@
 import { createClient } from "@/utils/supabase/server";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
-import { RawTestResponse } from "@/types/test/RawTestType";
 
 export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[]> {
     const supabase = await createClient();
