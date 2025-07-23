@@ -12,17 +12,13 @@ export default function ClassroomDetailClient(
     studentList,
     testList 
 }: {
-    classroomDetails: ClassroomType | null,
+    classroomDetails: ClassroomType,
     studentList: StudentType[],
     testList: AssignedTestType[]
 }) {
-    const [classroom, setClassroom] = useState<ClassroomType | null>(classroomDetails);
+    const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
     const [students, setStudents] = useState<StudentType[]>(studentList);
     const [tests, setTests] = useState<AssignedTestType[]>(testList);
-
-    if (!classroom) {
-        return <div>Classroom not found</div>
-    }
 
     return (
         <div className="flex flex-col gap-8 p-10 m-5 rounded-lg bg-cyan-300 shadow-md">

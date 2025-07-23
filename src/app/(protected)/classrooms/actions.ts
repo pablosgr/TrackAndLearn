@@ -139,3 +139,24 @@ export async function getAssignedTests(classroomId: string): Promise<AssignedTes
             test_template: Array.isArray(item.test_template) ? item.test_template[0] : item.test_template
         })) as AssignedTestType[];
 }
+
+export async function verifyEnrollment(userId: string, classroomId: number): Promise<boolean> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('student_classroom')
+        .select('*')
+        .eq('classroom_id', classroomId)
+        .eq('student_id', userId);
+
+    if (!data || error) {
+        console.error('Error validating enrollment: ', error);
+        return false;
+    }
+
+    if (data.length === 0) {
+        return false;
+    }
+
+    return true;
+}
