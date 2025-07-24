@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { verifyEnrollment } from "../actions";
+import { verifyClassroomEnrollment, verifyClassroomOwnership } from "../actions";
 import requireUser from "@/utils/auth/requireUser";
 
 export default async function ClassroomLayout(
@@ -14,11 +14,19 @@ export default async function ClassroomLayout(
     const user = await requireUser();
     const classroomId = Number(data.id);
     
-    const isEnrolled = await verifyEnrollment(user?.id, classroomId);
+    const isEnrolled = await verifyClassroomEnrollment(user?.id, classroomId);
     
-    if (!isEnrolled) {
+    if (user?.role === 'student' && !isEnrolled) {
         return (
-            <div>You are not enrolled in this classroom</div>
+            <p>You are not enrolled in this classroom</p>
+        )
+    }
+
+    const isOwner = await verifyClassroomOwnership(user?.id, classroomId);
+
+    if (user?.role === 'teacher' && !isOwner) {
+        return (
+            <p>You are not the owner of the classroom</p>
         )
     }
 

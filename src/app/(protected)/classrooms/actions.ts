@@ -140,7 +140,7 @@ export async function getAssignedTests(classroomId: string): Promise<AssignedTes
         })) as AssignedTestType[];
 }
 
-export async function verifyEnrollment(userId: string, classroomId: number): Promise<boolean> {
+export async function verifyClassroomEnrollment(userId: string, classroomId: number): Promise<boolean> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -151,6 +151,27 @@ export async function verifyEnrollment(userId: string, classroomId: number): Pro
 
     if (!data || error) {
         console.error('Error validating enrollment: ', error);
+        return false;
+    }
+
+    if (data.length === 0) {
+        return false;
+    }
+
+    return true;
+}
+
+export async function verifyClassroomOwnership(userId: string, classroomId: number): Promise<boolean> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('classroom')
+        .select('id')
+        .eq('id', classroomId)
+        .eq('teacher_id', userId);
+
+    if (!data || error) {
+        console.error('Error validating ownership: ', error);
         return false;
     }
 
