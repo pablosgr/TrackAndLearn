@@ -20,6 +20,8 @@ export default function ClassroomDetailClient(
     const [students, setStudents] = useState<StudentType[]>(studentList);
     const [tests, setTests] = useState<AssignedTestType[]>(testList);
 
+    console.log(tests);
+
     return (
         <div className="flex flex-col gap-8 p-10 m-5 rounded-lg bg-cyan-300 shadow-md">
             <h2 className="font-bold">{classroom.name}</h2>
@@ -40,12 +42,21 @@ export default function ClassroomDetailClient(
                     {
                         tests && tests.map((item) => (
                             <li key={item.id} className="flex flex-row gap-3 items-center">
-                                <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
-                                    <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
-                                        Take test
-                                    </button>
-                                </Link>
-                                {item.test_template.name}
+                                {
+                                    item.has_result
+                                    ? item.is_result_visible && 
+                                        <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
+                                            <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
+                                                View result
+                                            </button>
+                                        </Link>
+                                    : <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
+                                            <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
+                                                Take test
+                                            </button>
+                                        </Link>
+                                }
+                                <p className={`${item.has_result && 'text-gray-400'}`}>{item.test_template.name}</p>
                             </li>
                         ))
                     }

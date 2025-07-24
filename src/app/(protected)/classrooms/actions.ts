@@ -108,7 +108,56 @@ export async function getClassroomStudents(classroomId: string): Promise<Student
     return students as StudentType[];
 }
 
-export async function getAssignedTests(classroomId: string): Promise<AssignedTestType[]> {
+async function getCompletedTestTemplates(
+    testTemplateIds: string[],
+    userId: string,
+    classroomId: string
+): Promise<
+    Set<string>
+> {
+    const supabase = await createClient();
+
+    const { data: testData, error: errorData } = await supabase
+        .from('test')
+        .select('id, template_id')
+        .in('template_id', testTemplateIds);
+
+    if (!testData || errorData) {
+        console.error('Error retrieving test ids: ', errorData);
+        return new Set<string>();
+    }
+
+    const testIdToTemplateId = new Map<string, string>();
+
+    testData.forEach((t) => {
+        testIdToTemplateId.set(t.id, t.template_id);
+    })
+
+    const testIds = testData.map((t) => t.id);
+
+    const { data: resultData, error: resultError } = await supabase
+        .from('test_result')
+        .select('test_id')
+        .eq('student_id', userId)
+        .eq('classroom_id', classroomId)
+        .in('test_id', testIds);
+
+    if (!resultData || resultError) {
+        console.error('Error checking results: ', resultError);
+        return new Set<string>();
+    }
+
+    const completedTemplateIds = new Set<string>();
+
+    resultData.forEach(({ test_id }) => {
+        const templateId = testIdToTemplateId.get(test_id);
+        if (templateId) completedTemplateIds.add(templateId);
+    });
+
+    return completedTemplateIds;
+}
+
+export async function getAssignedTests(classroomId: string, userId: string): Promise<AssignedTestType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -119,6 +168,7 @@ export async function getAssignedTests(classroomId: string): Promise<AssignedTes
             test_template_id,
             assigned_at,
             due_date,
+            is_result_visible,
             test_template(
                 id,
                 name,
@@ -134,9 +184,14 @@ export async function getAssignedTests(classroomId: string): Promise<AssignedTes
             return [];
         }
 
+        const testTemplateIds = data.map((item) => item.test_template_id);
+
+        const completedTemplateIds = await getCompletedTestTemplates(testTemplateIds, userId, classroomId);
+
         return data?.map(item => ({
             ...item,
-            test_template: Array.isArray(item.test_template) ? item.test_template[0] : item.test_template
+            test_template: Array.isArray(item.test_template) ? item.test_template[0] : item.test_template,
+            has_result: completedTemplateIds.has(item.test_template_id)
         })) as AssignedTestType[];
 }
 

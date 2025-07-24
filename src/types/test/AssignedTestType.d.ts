@@ -7,4 +7,6 @@ export type AssignedTestType = {
     assigned_at: string;
     due_date: string;
     test_template: TestTemplateType;
+    has_result: boolean;
+    is_result_visible: boolean;
 }
