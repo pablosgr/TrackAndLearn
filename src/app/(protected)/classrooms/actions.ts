@@ -201,7 +201,7 @@ export async function getAssignedTests(classroomId: string, userId: string): Pro
         })) as AssignedTestType[];
 }
 
-export async function getStudentTestResult(testId: number, userId: string): Promise<TestResultType | null> {
+export async function getStudentTestResult(testId: number, userId: string, classroomId: string): Promise<TestResultType | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -213,6 +213,7 @@ export async function getStudentTestResult(testId: number, userId: string): Prom
             )
         `)
         .eq('test_id', testId)
+        .eq('classroom_id', classroomId)
         .eq('student_id', userId);
 
     if (!data || error) {
