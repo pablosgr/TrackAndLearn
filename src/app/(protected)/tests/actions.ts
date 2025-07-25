@@ -20,7 +20,7 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
     return data as TestTemplateType[];
 }
 
-export async function getTestByTemplateId(testId: string): Promise <TestType[]> {
+export async function getTestsByTemplateId(testId: string): Promise <TestType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -32,6 +32,10 @@ export async function getTestByTemplateId(testId: string): Promise <TestType[]> 
             level,
             time_limit,
             adaptation_id,
+            adaptation_data:adaptation(
+                name,
+                code
+            ),
             created_at,
             test_template(teacher_id),
             question(
@@ -56,6 +60,7 @@ export async function getTestByTemplateId(testId: string): Promise <TestType[]> 
 
         const tests: TestType[] = data.map((test): TestType => ({
             ...test,
+            adaptation_data: Array.isArray(test.adaptation_data) ? test.adaptation_data[0] ?? null : test.adaptation_data,
             test_template: Array.isArray(test.test_template) ? test.test_template[0] ?? null : test.test_template,
         }));
 

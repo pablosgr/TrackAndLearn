@@ -11,6 +11,10 @@ export type TestType = {
     level: string | null;
     time_limit: number | null;
     adaptation_id: number | null;
+    adaptation_data: {
+        name: string;
+        code: string;
+    } | null;
     created_at: string;
     test_template: TestTemplateRef | null;
     question: QuestionType[];
