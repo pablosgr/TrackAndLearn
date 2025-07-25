@@ -1,8 +1,13 @@
 import { ReactNode } from "react";
-import requireRole from "@/utils/auth/requireRole";
+import { redirect } from "next/navigation";
+import hasRole from "@/utils/auth/hasRole";
 
 export default async function TestLayout({ children }: { children: ReactNode }) {
-    await requireRole(['teacher']);
+    const isAuthorized = await hasRole(['teacher']);
+
+    if (!isAuthorized) {
+        redirect('/unauthorized');
+    }
 
     return (
         <>
