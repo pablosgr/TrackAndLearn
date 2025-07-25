@@ -201,9 +201,25 @@ export async function getAssignedTests(classroomId: string, userId: string): Pro
         })) as AssignedTestType[];
 }
 
-export async function getStudentTestResult(testId: number, userId: string, classroomId: string): Promise<TestResultType | null> {
+export async function getStudentTestResult(
+    testId: number,
+    templateId: string,
+    userId: string,
+    classroomId: string
+): Promise<TestResultType | null> {
     const supabase = await createClient();
 
+    const { data: assignData } = await supabase
+        .from('test_assignment')
+        .select('is_result_visible')
+        .eq('classroom_id', classroomId)
+        .eq('test_template_id', templateId)
+        .single();
+
+    if (!assignData || !assignData.is_result_visible) {
+        return null;
+    }
+    
     const { data, error } = await supabase
         .from('test_result')
         .select(`
