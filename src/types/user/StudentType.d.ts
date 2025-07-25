@@ -3,5 +3,9 @@ export type StudentType = {
     name: string;
     username: string;
     email: string;
-    adaptation_id: number;
+    adaptation_id: number | null;
+    adaptation_data: {
+        name: string;
+        code: string;
+    } | null;
 }
