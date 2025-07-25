@@ -8,6 +8,7 @@ import { RawStudentType } from "@/types/user/RawStudentFile";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { TestResultType } from "@/types/test/TestResultType";
+import { ClassroomResultType } from "@/types/test/ClassroomResultType";
 
 export async function getClassroomsByRole(userId: string, userRole: string): Promise<ClassroomType[]> {
     const supabase = await createClient();
@@ -218,16 +219,16 @@ export async function getStudentTestResult(testId: number, userId: string): Prom
     return data[0] as TestResultType;
 }
 
-export async function getClassroomTestResults(classroomId: string, testId: string) {
+export async function getClassroomTestResults(classroomId: string, testId: string): Promise<ClassroomResultType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
         .from('test_result')
         .select(`
             *,
-            student_name:users(
+            student_data:users(
                 name
-            )
+            ),
             response:test_response(
                 *
             )
@@ -237,11 +238,10 @@ export async function getClassroomTestResults(classroomId: string, testId: strin
 
     if (!data || error) {
         console.error('Error retrieving test result: ', error);
-        
+        return [];
     }
 
-    console.log(data);
-
+    return data as ClassroomResultType[];
 }
 
 export async function verifyClassroomEnrollment(userId: string, classroomId: number): Promise<boolean> {

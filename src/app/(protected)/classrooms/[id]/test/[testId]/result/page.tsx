@@ -11,8 +11,9 @@ export default async function StudentResult({ params }: { params: { id: string, 
     const tests = await getTestByTemplateId(data.testId);
 
     if (user?.role === 'teacher') {
-        await getClassroomTestResults(data.id, data.testId);
-        return <ClassroomResultClient />
+        const classroomResults = await getClassroomTestResults(data.id, data.testId);
+        
+        return <ClassroomResultClient classroomResults={classroomResults} />
     }
     
     const completedTest = tests.find(t => t.adaptation_id === user?.adaptation_id) ?? tests[0];
