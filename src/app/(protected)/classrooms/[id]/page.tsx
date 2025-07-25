@@ -10,8 +10,6 @@ export default async function ClassroomDetail({ params }: { params: { id: string
     const students = await getClassroomStudents(data.id);
     const tests = await getAssignedTests(data.id, user?.id);
 
-    console.log(tests);
-
     if (!classroom) {
         notFound();
     }

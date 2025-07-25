@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useUser } from "@/components/userWrapper";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
@@ -19,8 +20,7 @@ export default function ClassroomDetailClient(
     const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
     const [students, setStudents] = useState<StudentType[]>(studentList);
     const [tests, setTests] = useState<AssignedTestType[]>(testList);
-
-    console.log(tests);
+    const user = useUser();
 
     return (
         <div className="flex flex-col gap-8 p-10 m-5 rounded-lg bg-cyan-300 shadow-md">
@@ -43,18 +43,29 @@ export default function ClassroomDetailClient(
                         tests && tests.map((item) => (
                             <li key={item.id} className="flex flex-row gap-3 items-center">
                                 {
-                                    item.has_result
-                                    ? item.is_result_visible && 
-                                        <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
+                                    user.role === 'teacher' && (
+                                        <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}/result`}>
                                             <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
-                                                View result
+                                                View results
                                             </button>
                                         </Link>
-                                    : <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
-                                            <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
-                                                Take test
-                                            </button>
-                                        </Link>
+                                    )
+                                }
+                                {
+                                    user.role === 'student' && (
+                                        item.has_result
+                                        ? item.is_result_visible && 
+                                            <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}/result`}>
+                                                <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
+                                                    View result
+                                                </button>
+                                            </Link>
+                                        : <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
+                                                <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
+                                                    Take test
+                                                </button>
+                                            </Link>
+                                    )
                                 }
                                 <p className={`${item.has_result && 'text-gray-400'}`}>{item.test_template.name}</p>
                             </li>

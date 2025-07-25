@@ -1,31 +1,22 @@
 'use client'
 
-import { useUser } from "@/components/userWrapper";
 import { TestType } from "@/types/test/TestType";
 
-export default function StudentTestClient({ data }: { data: TestType[] }) {
-    const user = useUser();
+export default function StudentTestClient({ test }: { test: TestType }) {
 
-    const visibleTest = data.find(t => t.adaptation_id === user.adaptation_id) ?? data[0];
-
-    if (!visibleTest) {
-        return <div>Test not found</div>
-    }
-
-    
     return (
         <div className="flex flex-col gap-3 p-10">
             {
                 <section className="p-10 m-10 shadow-xl rounded-lg bg-amber-200/50">
-                    <h2>{visibleTest.name}</h2>
-                    <p>{visibleTest.level}</p>
+                    <h2>{test.name}</h2>
+                    <p>{test.level}</p>
                     {
-                        visibleTest.adaptation_id && <p>Adaptation {visibleTest.adaptation_id}</p>
+                        test.adaptation_id && <p>Adaptation {test.adaptation_id}</p>
                     }
                     <section>
                         <ul className="flex flex-col gap-8">
                             {
-                                visibleTest.question.map((q) => (
+                                test.question.map((q) => (
                                     <li key={q.id} className="p-5 bg-white rounded-xl">
                                         <p className="font-semibold">{q.question_text}</p>
                                         {

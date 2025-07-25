@@ -7,6 +7,7 @@ import { RawClassroomType } from "@/types/classroom/RawClassroomType";
 import { RawStudentType } from "@/types/user/RawStudentFile";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
+import { TestResultType } from "@/types/test/TestResultType";
 
 export async function getClassroomsByRole(userId: string, userRole: string): Promise<ClassroomType[]> {
     const supabase = await createClient();
@@ -193,6 +194,54 @@ export async function getAssignedTests(classroomId: string, userId: string): Pro
             test_template: Array.isArray(item.test_template) ? item.test_template[0] : item.test_template,
             has_result: completedTemplateIds.has(item.test_template_id)
         })) as AssignedTestType[];
+}
+
+export async function getStudentTestResult(testId: number, userId: string): Promise<TestResultType | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test_result')
+        .select(`
+            *,
+            response:test_response(
+                *
+            )
+        `)
+        .eq('test_id', testId)
+        .eq('student_id', userId);
+
+    if (!data || error) {
+        console.error('Error retrieving test result: ', error);
+        return null;
+    }
+
+    return data[0] as TestResultType;
+}
+
+export async function getClassroomTestResults(classroomId: string, testId: string) {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test_result')
+        .select(`
+            *,
+            student_name:users(
+                name
+            )
+            response:test_response(
+                *
+            )
+        `)
+        .eq('test_id', testId)
+        .eq('classroom_id', classroomId);
+
+    if (!data || error) {
+        console.error('Error retrieving test result: ', error);
+        
+    }
+
+    console.log(data);
+
 }
 
 export async function verifyClassroomEnrollment(userId: string, classroomId: number): Promise<boolean> {
