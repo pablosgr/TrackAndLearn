@@ -95,7 +95,11 @@ export async function getClassroomStudents(classroomId: string): Promise<Student
                 name,
                 username,
                 email,
-                adaptation_id
+                adaptation_id,
+                adaptation_data:adaptation(
+                    name,
+                    code
+                )
             )
         `)
         .eq('classroom_id', classroomId);
@@ -227,7 +231,15 @@ export async function getClassroomTestResults(classroomId: string, testId: strin
         .select(`
             *,
             student_data:users(
-                name
+                id,
+                name,
+                username,
+                email,
+                adaptation_id,
+                adaptation_data:adaptation(
+                    name,
+                    code
+                )
             ),
             response:test_response(
                 *
@@ -240,7 +252,7 @@ export async function getClassroomTestResults(classroomId: string, testId: strin
         console.error('Error retrieving test result: ', error);
         return [];
     }
-
+    console.log(data);
     return data as ClassroomResultType[];
 }
 
