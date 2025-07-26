@@ -269,7 +269,7 @@ export async function getClassroomTestResults(classroomId: string, testId: strin
         console.error('Error retrieving test result: ', error);
         return [];
     }
-    console.log(data);
+
     return data as ClassroomResultType[];
 }
 

@@ -11,7 +11,7 @@ export default function Dashboard() {
     }
 
   return (
-    <div className="fles flex-row p-10 gap-12">
+    <div className="flex flex-row p-10 gap-6">
         <p>Hello, {userData.username}</p>
         <button onClick={handleSignOut} className="p-4 rounded-lg bg-amber-700/50 hover:cursor-pointer hover:bg-amber-600/50 text-white transition-colors">Sign Out</button>
     </div>
