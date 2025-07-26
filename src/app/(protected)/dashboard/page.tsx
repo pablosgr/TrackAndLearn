@@ -2,6 +2,8 @@
 
 import { signOut } from "../../actions";
 import { useUser } from "@/components/userWrapper";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 export default function Dashboard() {
     const userData = useUser();
@@ -13,7 +15,10 @@ export default function Dashboard() {
   return (
     <div className="flex flex-row p-10 gap-6">
         <p>Hello, {userData.username}</p>
-        <button onClick={handleSignOut} className="p-4 rounded-lg bg-amber-700/50 hover:cursor-pointer hover:bg-amber-600/50 text-white transition-colors">Sign Out</button>
+        <Button onClick={handleSignOut} variant={'outline'} className="w-40 h-15">
+          <LogOut />
+          Log out
+        </Button>
     </div>
   )
 }
