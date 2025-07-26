@@ -314,3 +314,20 @@ export async function verifyClassroomOwnership(userId: string, classroomId: numb
 
     return true;
 }
+
+export default async function isTestCompleted(userId: string, classroomId: string, testId: number): Promise<boolean> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test_result')
+        .select('id')
+        .eq('classroom_id', classroomId)
+        .eq('student_id', userId)
+        .eq('test_id', testId)
+
+    if (!data || error || data.length === 0) {
+        return false;
+    }
+
+    return true;
+}
