@@ -3,7 +3,7 @@
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import Link from "next/link";
 import { useState } from "react";
-import { useUser } from "@/components/userWrapper";
+import { useUser } from "@/components/context/userWrapper";
 
 export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
     const [classrooms] = useState<ClassroomType[]>(data);

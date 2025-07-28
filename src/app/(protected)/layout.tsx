@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
-import { UserWrapper } from "@/components/userWrapper";
-import Link from "next/link";
+import { UserWrapper } from "@/components/context/userWrapper";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/sidebar/AppSidebar";
 import requireUser from "@/utils/auth/requireUser";
 
 export default async function MainLayout({ children }: { children: ReactNode }) {
@@ -8,15 +9,13 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
 
     return (
         <UserWrapper user={user}>
-            <ul className="flex flex-row gap-8 bg-cyan-400 p-8">
-                <Link href={'/dashboard'}>Dashboard</Link>
-                {
-                    user?.role === 'teacher' && <Link href={'/tests'}>Tests</Link>
-                }
-                <Link href={'/classrooms'}>Classrooms</Link>
-                <Link href={'/profile'}>Profile</Link>
-            </ul>
-            { children }
+            <SidebarProvider>
+                <AppSidebar />
+                <main>
+                    <SidebarTrigger className="ml-3 mt-3"/>
+                    { children }
+                </main>
+            </SidebarProvider>
         </UserWrapper>
     )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from "@/components/userWrapper";
+import { useUser } from "@/components/context/userWrapper";
 
 export default function Profile() {
     const user = useUser();
