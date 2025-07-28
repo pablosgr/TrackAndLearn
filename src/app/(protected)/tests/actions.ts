@@ -9,8 +9,14 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
 
     const { data, error } = await supabase
         .from('test_template')
-        .select('*')
-        .eq('teacher_id', userId);
+        .select(`
+            *,
+            topic_data:topic(
+                name
+            )
+        `)
+        .eq('teacher_id', userId)
+        .order('created_at', { ascending: false });
 
     if (error) {
         console.error('Failed to fetch tests', error);
