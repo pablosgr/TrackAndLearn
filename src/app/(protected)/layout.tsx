@@ -11,8 +11,8 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
         <UserWrapper user={user}>
             <SidebarProvider>
                 <AppSidebar />
-                <main>
-                    <SidebarTrigger className="ml-3 mt-3"/>
+                <main className="p-10 w-screen">
+                    <SidebarTrigger />
                     { children }
                 </main>
             </SidebarProvider>
