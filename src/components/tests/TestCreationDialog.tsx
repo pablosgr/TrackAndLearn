@@ -1,5 +1,8 @@
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { TopicType } from "@/types/test/TopicType";
 import { Button } from "@/components/ui/button";
-import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import {
     Dialog,
@@ -11,39 +14,110 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
-export default function TestCreationDialog() {
+
+const formSchema = z.object({
+    name: z.string().min(3, { message: 'Name must have between 3 and 150 characters' }).max(150),
+    topic: z.string().min(1, { message: 'You must select a topic' }),
+});
+
+export default function TestCreationDialog({ topics }: { topics: TopicType[] }) {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+            topic: ""
+        },
+    });
+
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        console.log(values);
+    }
+
     return (
         <Dialog>
-            <form>
-                <DialogTrigger asChild>
-                    <Button variant="default">Add test</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Add new test</DialogTitle>
-                        <DialogDescription className="pt-2">
-                            This action will create a test template with a base test attached.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <section className="grid gap-4">
-                        <div className="grid gap-3">
-                            <Label htmlFor="name-1">Name</Label>
-                            <Input id="name-1" name="name" placeholder="Test template name" />
-                        </div>
-                        <div className="grid gap-3">
-                            <Label htmlFor="username-1">Topic</Label>
-                            <Input id="username-1" name="username" placeholder="Select a topic" />
-                        </div>
-                    </section>
-                    <DialogFooter className="pt-4">
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
-                        <Button type="submit">Create test</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </form>
+            <DialogTrigger asChild>
+                <Button variant="default">Add test</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Add new test</DialogTitle>
+                    <DialogDescription className="pt-2">
+                        This action will create a test template with an attached base test.
+                    </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>
+                                        Name
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Name your template" {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="topic"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>
+                                        Topic
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Select value={field.value} onValueChange={field.onChange}>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select a topic" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    {
+                                                        topics && topics.map((t) => (
+                                                            <SelectItem key={t.id} value={t.id.toString()}>
+                                                                {t.name}
+                                                            </SelectItem>
+                                                        ))
+                                                    }
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <DialogFooter className="pt-4">
+                            <DialogClose asChild>
+                                <Button variant="outline" onClick={() => form.clearErrors()}>Cancel</Button>
+                            </DialogClose>
+                            <Button type="submit">Create test</Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
         </Dialog>
     )
 }
