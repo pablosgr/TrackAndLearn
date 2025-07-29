@@ -1,12 +1,24 @@
 import { deleteTestTemplateById } from "@/app/(protected)/tests/actions/delete";
-import { Trash } from "lucide-react";
 import TestTemplateType from "@/types/test/TestTemplateType";
+import Link from "next/link";
+import { Trash } from "lucide-react";
+import { Button } from "../ui/button";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
     Card,
     CardAction,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -14,8 +26,7 @@ import {
 export default function TestCard({ test, onDelete }: { test: TestTemplateType, onDelete: (id: string) => void }) {
 
     const handleDelete = async (e: React.MouseEvent) => {
-        // e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation();
         onDelete(test.id);
         await deleteTestTemplateById(test.id);
     }
@@ -24,15 +35,36 @@ export default function TestCard({ test, onDelete }: { test: TestTemplateType, o
         <Card className="w-90">
             <CardHeader className="bg-(--color-accent) truncate">
                 <CardTitle className="text-lg truncate">{test.name}</CardTitle>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
+                            <Trash size={22}/>
+                        </CardAction>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action will remove the test template and all related tests permanently. This action cannot be undone.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
                 <CardDescription>Topic: {test.topic_data.name}</CardDescription>
-                <CardAction onClick={handleDelete} className="p-2 hover:bg-(--color-destructive) rounded-lg transition-colors">
-                    <Trash size={22}/>
-                </CardAction>
             </CardHeader>
-            <CardContent>
-                <span className="block truncate text-sm">
+            <CardContent className="flex flex-row justify-between gap-8 items-center">
+                <span className="truncate text-sm">
                     Created on {new Date(test.created_at).toLocaleDateString()}
                 </span>
+                <Link href={`/tests/${test.id}`}>
+                    <Button variant={'outline'} className="ml-6 hover:cursor-pointer">
+                        Go to test
+                    </Button>
+                </Link>
             </CardContent>
         </Card>
     )
