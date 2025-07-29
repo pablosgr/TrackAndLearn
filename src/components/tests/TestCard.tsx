@@ -45,7 +45,7 @@ export default function TestCard({ test, onDelete }: { test: TestTemplateType, o
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                             <AlertDialogDescription>
-                                This action will remove the test template and all related tests permanently. This action cannot be undone.
+                                Test template and all related tests will be permanently removed. This action cannot be undone.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -61,7 +61,7 @@ export default function TestCard({ test, onDelete }: { test: TestTemplateType, o
                     Created on {new Date(test.created_at).toLocaleDateString()}
                 </span>
                 <Link href={`/tests/${test.id}`}>
-                    <Button variant={'outline'} className="ml-6 hover:cursor-pointer">
+                    <Button variant={'outline'} className="ml-6">
                         Go to test
                     </Button>
                 </Link>
