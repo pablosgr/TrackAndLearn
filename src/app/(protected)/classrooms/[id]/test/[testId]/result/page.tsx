@@ -1,7 +1,7 @@
 import StudentResultClient from "./StudentResultClient";
 import ClassroomResultClient from "./ClassroomResultClient";
 import requireUser from "@/utils/auth/requireUser";
-import { getTestsByTemplateId } from "@/app/(protected)/tests/actions";
+import { getTestsByTemplateId } from "@/app/(protected)/tests/actions/get";
 import { getStudentTestResult, getClassroomTestResults } from "@/app/(protected)/classrooms/actions";
 import { notFound } from "next/navigation";
 

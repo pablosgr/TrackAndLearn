@@ -6,7 +6,11 @@ import Link from "next/link";
 import TestTemplateType from "@/types/test/TestTemplateType";
 
 export default function TestsPageClient({ data }: { data: TestTemplateType[] }) {
-    const [tests] = useState<TestTemplateType[]>(data);
+    const [tests, setTests] = useState<TestTemplateType[]>(data);
+
+    const handleDelete = (id: string) => {
+        setTests(tests.filter((t) => t.id !== id));
+    }
 
     return (
         <>
@@ -18,7 +22,7 @@ export default function TestsPageClient({ data }: { data: TestTemplateType[] }) 
                 {
                     tests && tests.map((t) => (
                         <Link href={`/tests/${t.id}`} key={t.id}>
-                            <TestCard test={t} />
+                            <TestCard test={t} onDelete={handleDelete}/>
                         </Link>
                     ))
                 }

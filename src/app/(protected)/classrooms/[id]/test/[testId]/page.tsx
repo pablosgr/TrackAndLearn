@@ -1,4 +1,4 @@
-import { getTestsByTemplateId } from "@/app/(protected)/tests/actions";
+import { getTestsByTemplateId } from "@/app/(protected)/tests/actions/get";
 import isTestCompleted from "../../../actions";
 import StudentTestClient from "./StudentTestClient";
 import { notFound } from "next/navigation";

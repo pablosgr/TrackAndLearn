@@ -1,4 +1,4 @@
-import { getTestsByTemplateId } from "../actions";
+import { getTestsByTemplateId } from "../actions/get";
 import requireUser from "@/utils/auth/requireUser";
 import TestDetailClient from "./TestDetailClient";
 import { notFound } from "next/navigation";

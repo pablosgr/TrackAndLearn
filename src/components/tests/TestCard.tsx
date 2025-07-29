@@ -1,3 +1,4 @@
+import { deleteTestTemplateById } from "@/app/(protected)/tests/actions/delete";
 import { Trash } from "lucide-react";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import {
@@ -10,18 +11,19 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-export default function TestCard({ test }: { test: TestTemplateType }) {
+export default function TestCard({ test, onDelete }: { test: TestTemplateType, onDelete: (id: string) => void }) {
 
     const handleDelete = async (e: React.MouseEvent) => {
         // e.stopPropagation();
         e.preventDefault();
-        console.log('Wanna delete me? :(');
+        onDelete(test.id);
+        await deleteTestTemplateById(test.id);
     }
 
     return (
         <Card className="w-90">
             <CardHeader className="bg-(--color-accent) truncate">
-                <CardTitle className="text-lg truncate text-ellipsis">{test.name}</CardTitle>
+                <CardTitle className="text-lg truncate">{test.name}</CardTitle>
                 <CardDescription>Topic: {test.topic_data.name}</CardDescription>
                 <CardAction onClick={handleDelete} className="p-2 hover:bg-(--color-destructive) rounded-lg transition-colors">
                     <Trash size={22}/>
