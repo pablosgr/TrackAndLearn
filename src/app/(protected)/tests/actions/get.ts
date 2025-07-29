@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
+import { TopicType } from "@/types/test/TopicType";
 
 export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[]> {
     const supabase = await createClient();
@@ -71,4 +72,19 @@ export async function getTestsByTemplateId(testId: string): Promise <TestType[]>
         }));
 
         return tests;
+}
+
+export async function getTopics(): Promise<TopicType[]> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('topic')
+        .select('*');
+    
+    if (!data || error) {
+        console.error('Error retrieving topics');
+        return [];
+    }
+
+    return data as TopicType[];
 }
