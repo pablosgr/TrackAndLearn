@@ -1,6 +1,13 @@
 import { TestType } from "@/types/test/TestType";
+import TestTemplateType from "@/types/test/TestTemplateType";
 
-export default async function TestDetailClient({ testList }: { testList: TestType[] }) {
+export default async function TestDetailClient({ 
+    testList,
+    testTemplate
+}: { 
+    testList: TestType[],
+    testTemplate: TestTemplateType
+}) {
 
     return (
         <div className="flex flex-col gap-5 p-10 m-10 shadow-xl rounded-lg bg-amber-200/50">

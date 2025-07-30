@@ -5,6 +5,27 @@ import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
 import { TopicType } from "@/types/test/TopicType";
 
+export async function getTestTemplate(templateId: string): Promise<TestTemplateType | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test_template')
+        .select(`
+            *,
+            topic_data:topic(
+                name
+            )
+        `)
+        .eq('id', templateId);
+
+    if (!data || error) {
+        console.error('Failed to get test template', error);
+        return null;
+    }
+
+    return data[0] as TestTemplateType;
+}
+
 export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[]> {
     const supabase = await createClient();
 

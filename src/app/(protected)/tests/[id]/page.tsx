@@ -1,4 +1,4 @@
-import { getTestsByTemplateId } from "../actions/get";
+import { getTestsByTemplateId, getTestTemplate } from "../actions/get";
 import requireUser from "@/utils/auth/requireUser";
 import TestDetailClient from "./TestDetailClient";
 import { notFound } from "next/navigation";
@@ -7,6 +7,11 @@ export default async function TestsDetail({ params }: { params: { id: string } }
     const data = await params;
     const userData = await requireUser();
     const tests = await getTestsByTemplateId(data.id);
+    const testTemplate = await getTestTemplate(data.id);
+
+    if (!testTemplate) {
+        notFound();
+    }
 
     if (tests.length === 0) {
         notFound();
@@ -21,6 +26,6 @@ export default async function TestsDetail({ params }: { params: { id: string } }
     }
 
     return (
-        <TestDetailClient testList={tests}/>
+        <TestDetailClient testList={tests} testTemplate={testTemplate}/>
     )
 }
