@@ -9,21 +9,25 @@ import TestCreationDialog from "@/components/tests/TestCreationDialog";
 export default function TestsPageClient({ testList, topicList }: { testList: TestTemplateType[], topicList: TopicType[] }) {
     const [tests, setTests] = useState<TestTemplateType[]>(testList);
 
-    const handleDelete = (id: string) => {
+    const handleDeleteTest = (id: string) => {
         setTests(tests.filter((t) => t.id !== id));
+    }
+
+    const handleCreateTest = (test: TestTemplateType) => {
+        setTests(prevTests => [test, ...prevTests]);
     }
 
     return (
         <>
             <header className="flex flex-row items-center justify-between pb-10">
                 <h1 className="text-3xl">My tests</h1>
-                <TestCreationDialog topics={topicList}/>
+                <TestCreationDialog topics={topicList} onCreate={handleCreateTest}/>
             </header>
             <section className="flex flex-col justify-items-center">
                 <ul className="flex flex-row flex-wrap gap-9">
                     {
                         tests && tests.map((t) => (
-                            <TestCard key={t.id} test={t} onDelete={handleDelete}/>
+                            <TestCard key={t.id} test={t} onDelete={handleDeleteTest}/>
                         ))
                     }
                 </ul>

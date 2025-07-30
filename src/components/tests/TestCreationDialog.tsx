@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUser } from "../context/userWrapper";
+import { createTest } from "@/app/(protected)/tests/actions/post";
 import { TopicType } from "@/types/test/TopicType";
+import TestTemplateType from "@/types/test/TestTemplateType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,7 +41,16 @@ const formSchema = z.object({
     topic: z.string().min(1, { message: 'You must select a topic' }),
 });
 
-export default function TestCreationDialog({ topics }: { topics: TopicType[] }) {
+export default function TestCreationDialog({ 
+    topics,
+    onCreate 
+}: { 
+    topics: TopicType[],
+    onCreate: (newTest: TestTemplateType) => void 
+}) {
+    const user = useUser();
+    const [open, setOpen] = useState<boolean>(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -46,12 +59,18 @@ export default function TestCreationDialog({ topics }: { topics: TopicType[] }) 
         },
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const newTest = await createTest(values.name, values.topic, user.id);
+
+        if (newTest) {
+            onCreate(newTest);
+            form.reset();
+            setOpen(false);
+        }
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="default">Add test</Button>
             </DialogTrigger>
