@@ -1,6 +1,9 @@
+'use client';
+
+import { useState } from "react";
 import QuestionDetailCard from "./QuestionDetailCard";
 import { TestType } from "@/types/test/TestType";
-import Link from "next/link";
+import { QuestionType } from "@/types/test/QuestionType";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -24,6 +27,11 @@ import {
 } from "@/components/ui/card";
 
 export default function TestDetailCard({ test }: { test: TestType }) {
+    const [questions, setQuestions] = useState<QuestionType[]>(test.question);
+
+    const handleQuestionDelete = (id: string) => {
+        setQuestions(questions.filter((q) => q.id.toString() !== id));
+    }
 
     return (
         <Card className="w-full shadow-none border-0">
@@ -44,8 +52,8 @@ export default function TestDetailCard({ test }: { test: TestType }) {
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
                 {
-                    test.question.map((q) => (
-                        <QuestionDetailCard key={q.id} question={q} />
+                    questions.map((q) => (
+                        <QuestionDetailCard key={q.id} question={q} onDelete={handleQuestionDelete} />
                     ))
                 }
             </CardContent>
