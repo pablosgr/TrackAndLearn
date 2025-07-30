@@ -32,7 +32,7 @@ export default function TestCard({ test, onDelete }: { test: TestTemplateType, o
     }
 
     return (
-        <Card className="w-90">
+        <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-md) transition-shadow">
             <CardHeader className="bg-(--color-accent) truncate">
                 <CardTitle className="text-lg truncate">{test.name}</CardTitle>
                 <AlertDialog>

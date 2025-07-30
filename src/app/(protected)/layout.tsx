@@ -14,7 +14,7 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
                 <div className="w-fit p-2.5">
                     <SidebarTrigger />
                 </div>
-                <main className="py-14 pr-10 w-screen">
+                <main className="py-14 pr-10 w-screen flex flex-col items-center">
                     { children }
                 </main>
             </SidebarProvider>

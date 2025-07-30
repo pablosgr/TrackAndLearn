@@ -1,5 +1,5 @@
-import { deleteTestTemplateById } from "@/app/(protected)/tests/actions/delete";
-import TestTemplateType from "@/types/test/TestTemplateType";
+import QuestionDetailCard from "./QuestionDetailCard";
+import { TestType } from "@/types/test/TestType";
 import Link from "next/link";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
@@ -23,48 +23,31 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-export default function TestDetailCard({ test, onDelete }: { test: TestTemplateType, onDelete: (id: string) => void }) {
-
-    const handleDelete = async (e: React.MouseEvent) => {
-        e.stopPropagation();
-        onDelete(test.id);
-        await deleteTestTemplateById(test.id);
-    }
+export default function TestDetailCard({ test }: { test: TestType }) {
 
     return (
-        <Card className="w-90">
-            <CardHeader className="bg-(--color-accent) truncate">
+        <Card className="w-full shadow-none border-0">
+            <CardHeader>
                 <CardTitle className="text-lg truncate">{test.name}</CardTitle>
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                            <Trash size={22}/>
-                        </CardAction>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                Test template and all related tests will be permanently removed. This action cannot be undone.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-                <CardDescription>Topic: {test.topic_data.name}</CardDescription>
+                <CardDescription>
+                    {
+                        test.time_limit
+                        ? `This test has a time limit of ${test.time_limit} minutes`
+                        : 'This test has no time limit.'
+                    }
+                    { 
+                        test.adaptation_data 
+                        ? ` This test is adapted for ${test.adaptation_data.name}.` 
+                        : ' This test is not adapted.' 
+                    }
+                </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-row justify-between gap-8 items-center">
-                <span className="truncate text-sm">
-                    Created on {new Date(test.created_at).toLocaleDateString()}
-                </span>
-                <Link href={`/tests/${test.id}`}>
-                    <Button variant={'outline'} className="ml-6">
-                        Go to test
-                    </Button>
-                </Link>
+            <CardContent className="flex flex-col gap-5">
+                {
+                    test.question.map((q) => (
+                        <QuestionDetailCard key={q.id} question={q} />
+                    ))
+                }
             </CardContent>
         </Card>
     )

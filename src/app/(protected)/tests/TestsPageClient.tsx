@@ -19,11 +19,11 @@ export default function TestsPageClient({ testList, topicList }: { testList: Tes
 
     return (
         <>
-            <header className="flex flex-row items-center justify-between pb-10">
+            <header className="w-full flex flex-row items-center justify-between pb-10">
                 <h1 className="text-3xl">My tests</h1>
                 <TestCreationDialog topics={topicList} onCreate={handleCreateTest}/>
             </header>
-            <section className="flex flex-col justify-items-center">
+            <section className="w-full flex flex-col justify-items-start">
                 <ul className="flex flex-row flex-wrap gap-9">
                     {
                         tests && tests.map((t) => (
