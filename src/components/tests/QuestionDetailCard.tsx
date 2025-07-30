@@ -1,4 +1,6 @@
 import { Check, PencilLine, Trash } from "lucide-react";
+import { useState } from "react";
+import QuestionEditDialog from "./QuestionEditDialog";
 import { QuestionType } from "@/types/test/QuestionType";
 import {
     Card,
@@ -20,6 +22,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+
 export default function QuestionDetailCard({ question, onDelete }: { question: QuestionType, onDelete: (id: string) => void }) {
 
     const handleDelete = async (e: React.MouseEvent) => {
@@ -33,9 +36,7 @@ export default function QuestionDetailCard({ question, onDelete }: { question: Q
             <CardHeader className="flex flex-row justify-between">
                 <CardTitle>{question.question_text}</CardTitle>
                 <div className="flex flex-row gap-1">
-                    <CardAction className="p-2 hover:bg-(--accent) hover:cursor-pointer rounded-lg transition-colors">
-                        <PencilLine size={22}/>
-                    </CardAction>
+                    <QuestionEditDialog question={question}/>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">

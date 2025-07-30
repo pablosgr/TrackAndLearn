@@ -4,19 +4,6 @@ import { useState } from "react";
 import QuestionDetailCard from "./QuestionDetailCard";
 import { TestType } from "@/types/test/TestType";
 import { QuestionType } from "@/types/test/QuestionType";
-import { Trash } from "lucide-react";
-import { Button } from "../ui/button";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {
     Card,
     CardAction,
