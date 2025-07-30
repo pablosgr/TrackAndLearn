@@ -6,7 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { QuestionType } from "@/types/test/QuestionType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { CardAction } from "../ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
     Form,
     FormControl,
@@ -42,6 +44,7 @@ const formSchema = z.object({
         option_text: z.string().min(1, 'Option text is required'),
         is_correct: z.boolean(),
     })),
+    correct_option_index: z.number().min(0),
 });
 
 export default function QuestionEditDialog({ question }: { question: QuestionType }) {
@@ -67,12 +70,13 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
             defaultValues: {
                 question_text: question.question_text,
                 options_number: optionsNumber,
-                options: question.option.map((o) => (
+                options: question.option.map((opt) => (
                     {
-                        option_text: o.option_text,
-                        is_correct: o.is_correct,
+                        option_text: opt.option_text,
+                        is_correct: opt.is_correct,
                     }
                 )),
+                correct_option_index: question.option.findIndex((opt) => opt.is_correct === true),
             },
     });
 
@@ -127,7 +131,7 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
                                             }}
                                         >
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select an options number" />
+                                                <SelectValue placeholder="Select number of options" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
@@ -160,6 +164,35 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
                                 </div>
                             ))
                         }
+                        <FormField
+                            control={form.control}
+                            name="correct_option_index"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>
+                                        Select the correct option
+                                    </FormLabel>
+                                    <FormControl>
+                                        <RadioGroup 
+                                            defaultValue={field.value?.toString()}
+                                            value={field.value?.toString()}
+                                            onValueChange={(val) => field.onChange(parseInt(val))}
+                                            className="flex flex-row items-center gap-6"
+                                        >
+                                            {fields.map((f, index) => (
+                                                <div key={f.id} className="flex items-center gap-2">
+                                                    <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+                                                    <Label htmlFor={`option-${index}`}>
+                                                        Option { index + 1 }
+                                                    </Label>
+                                                </div>
+                                                ))}
+                                            </RadioGroup>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <DialogFooter className="pt-4">
                             <DialogClose asChild>
                                 <Button variant="outline" onClick={() => form.reset()}>Cancel</Button>
