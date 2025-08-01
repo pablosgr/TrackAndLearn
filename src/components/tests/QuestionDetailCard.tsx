@@ -1,5 +1,6 @@
 import { Check, PencilLine, Trash } from "lucide-react";
 import { useState } from "react";
+import { deleteQuestionById } from "@/app/(protected)/tests/actions/delete";
 import QuestionEditDialog from "./QuestionEditDialog";
 import { QuestionType } from "@/types/test/QuestionType";
 import {
@@ -28,7 +29,7 @@ export default function QuestionDetailCard({ question, onDelete }: { question: Q
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(question.id.toString());
-        // await deleteQuestionById(question.id);
+        await deleteQuestionById(question.id);
     }
 
     return (

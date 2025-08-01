@@ -14,3 +14,16 @@ export async function deleteTestTemplateById(templateId: string) {
         console.error('Error deleting test template: ', response.statusText);
     }
 }
+
+export async function deleteQuestionById(questionId: number) {
+    const supabase = await createClient();
+
+    const response = await supabase
+        .from('question')
+        .delete()
+        .eq('id', questionId);
+    
+    if (response.status !== 204) {
+        console.error('Error deleting question: ', response.statusText);
+    }
+}

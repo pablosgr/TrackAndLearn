@@ -35,7 +35,7 @@ export default async function TestDetailClient({
                     <TabsList>
                         {
                             testList.map((test) => (
-                                <TabsTrigger key={test.id} value={test.id.toString()}>
+                                <TabsTrigger key={test.id} value={test.id.toString()} className="hover:cursor-pointer">
                                     {test.name}
                                 </TabsTrigger>
                             ))
