@@ -75,11 +75,12 @@ export async function updateQuestionById(questionId: number, data: EditQuestionT
     ))
 
     if (formattedOptionsToInsert.length > 0) {
-        const { error: insertError } = await supabase
+        const { data: insertData, error: insertError } = await supabase
             .from('option')
-            .insert(formattedOptionsToInsert);
+            .insert(formattedOptionsToInsert)
+            .select();
 
-        if (insertError) {
+        if (!insertData || insertError) {
             console.error('Error inserting new options: ', insertError);
         }
     }

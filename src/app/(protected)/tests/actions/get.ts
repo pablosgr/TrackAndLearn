@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
 import { TopicType } from "@/types/test/TopicType";
+import { OptionType } from "@/types/test/OptionType";
 
 export async function getTestTemplate(templateId: string): Promise<TestTemplateType | null> {
     const supabase = await createClient();
@@ -108,4 +109,20 @@ export async function getTopics(): Promise<TopicType[]> {
     }
 
     return data as TopicType[];
+}
+
+export async function getOptionsByQuestionId(questionId: number): Promise<OptionType[]> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('option')
+        .select('*')
+        .eq('question_id', questionId);
+
+    if (!data || error) {
+        console.error('Error retrieving options: ', error);
+        return [];
+    }
+    
+    return data as OptionType[];
 }

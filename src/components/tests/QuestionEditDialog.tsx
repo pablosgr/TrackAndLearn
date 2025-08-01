@@ -3,7 +3,11 @@ import { PencilLine } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateQuestionById } from "@/app/(protected)/tests/actions/update";
+import { getOptionsByQuestionId } from "@/app/(protected)/tests/actions/get";
 import { QuestionType } from "@/types/test/QuestionType";
+import { OptionType } from "@/types/test/OptionType";
+import { EditQuestionType } from "@/types/test/EditQuestionType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,29 +45,17 @@ const formSchema = z.object({
     question_text: z.string().min(3, { message: 'Question must have between 3 and 255 characters' }).max(255),
     options_number: z.number().min(2, { message: 'You must select a number of options' }),
     options: z.array(z.object({
+        id: z.number().nullable(),
         option_text: z.string().min(1, 'Option text is required'),
         is_correct: z.boolean(),
+        index_order: z.number().nullable(),
     })),
     correct_option_index: z.number().min(0),
 });
 
-export default function QuestionEditDialog({ question }: { question: QuestionType }) {
+export default function QuestionEditDialog({ question, onUpdate }: { question: QuestionType, onUpdate: (data: EditQuestionType, newOptions: OptionType[]) => void }) {
     const [open, setOpen] = useState<boolean>(false);
     const [optionsNumber, setOptionsNumber] = useState<number>(question.options_number);
-
-    useEffect(() => {
-        const current = form.getValues("options");
-
-        if (optionsNumber > current.length) {
-            for (let i = current.length; i < optionsNumber; i++) {
-                append({ option_text: "", is_correct: false });
-            }
-        } else if (optionsNumber < current.length) {
-            for (let i = current.length; i > optionsNumber; i--) {
-                remove(i - 1);
-            }
-        }
-    }, [optionsNumber]);
 
     const form = useForm<z.infer<typeof formSchema>>({
             resolver: zodResolver(formSchema),
@@ -72,8 +64,10 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
                 options_number: optionsNumber,
                 options: question.option.map((opt) => (
                     {
+                        id: opt.id,
                         option_text: opt.option_text,
                         is_correct: opt.is_correct,
+                        index_order: opt.index_order,
                     }
                 )),
                 correct_option_index: question.option.findIndex((opt) => opt.is_correct === true),
@@ -84,6 +78,45 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
         control: form.control,
         name: "options",
     });
+
+    useEffect(() => {
+        const current = form.getValues("options");
+
+        if (optionsNumber > current.length) {
+            for (let i = current.length; i < optionsNumber; i++) {
+                append({ id: null, option_text: "", is_correct: false, index_order: null });
+            }
+        } else if (optionsNumber < current.length) {
+            for (let i = current.length; i > optionsNumber; i--) {
+                remove(i - 1);
+            }
+        }
+
+        const currentIndex = form.getValues('correct_option_index');
+        
+        if (currentIndex >= optionsNumber) {
+            form.setValue('correct_option_index', optionsNumber - 1);
+        }
+    }, [optionsNumber]);
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        values.options.forEach((opt, index) => {
+            values.correct_option_index === index
+            ? opt.is_correct = true
+            : opt.is_correct = false;
+        });
+
+        const data = {
+            question_text: values.question_text,
+            options_number: values.options_number,
+            options: values.options,
+        }
+
+        await updateQuestionById(question.id, data);
+        const newOptions = await getOptionsByQuestionId(question.id);
+        onUpdate(data, newOptions);
+        setOpen(false);
+    }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -98,7 +131,7 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
                     <DialogDescription>Remember to mark the correct answer (only one can be correct)</DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form  className="flex flex-col gap-6">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                         <FormField
                             control={form.control}
                             name="question_text"
@@ -119,15 +152,16 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
                             name="options_number"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>
-                                        Options number
+                                    <FormLabel asChild>
+                                        <span>Options number</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Select 
                                             value={field.value.toString()}
                                             onValueChange={(val) => {
-                                                field.onChange(val);
-                                                setOptionsNumber(Number(val));
+                                                const numericVal = Number(val);
+                                                field.onChange(numericVal);
+                                                setOptionsNumber(numericVal);
                                             }}
                                         >
                                             <SelectTrigger className="w-full">
@@ -169,8 +203,8 @@ export default function QuestionEditDialog({ question }: { question: QuestionTyp
                             name="correct_option_index"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>
-                                        Select the correct option
+                                    <FormLabel asChild>
+                                        <span>Select the correct option</span>
                                     </FormLabel>
                                     <FormControl>
                                         <RadioGroup 
