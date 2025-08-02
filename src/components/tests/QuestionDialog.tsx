@@ -53,11 +53,13 @@ const formSchema = z.object({
     correct_option_index: z.number().min(0),
 });
 
-export default function QuestionEditDialog({
+export default function QuestionDialog({
+    type,
     testId,
     question,
     onUpdate
 }: {
+    type: 'update' | 'create',
     testId: number,
     question: QuestionType,
     onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void 
@@ -133,7 +135,7 @@ export default function QuestionEditDialog({
                         <PencilLine size={22} color="gray"/>
                 </CardAction>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[490px]">
+            <DialogContent className="sm:max-w-[490px] max-h-[85%] overflow-scroll scrollbar-invisible">
                 <DialogHeader>
                     <DialogTitle>Edit question</DialogTitle>
                     <DialogDescription>Remember to mark the correct answer (only one can be correct)</DialogDescription>

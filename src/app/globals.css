@@ -171,3 +171,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.scrollbar-invisible {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-invisible::-webkit-scrollbar {
+  display: none;
+}

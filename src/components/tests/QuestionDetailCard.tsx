@@ -1,6 +1,6 @@
 import { Check, Trash } from "lucide-react";
 import { deleteQuestionById } from "@/app/(protected)/tests/actions/delete";
-import QuestionEditDialog from "./QuestionEditDialog";
+import QuestionDialog from "./QuestionDialog";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
@@ -47,7 +47,7 @@ export default function QuestionDetailCard({
             <CardHeader className="flex flex-row justify-between">
                 <CardTitle>{question.question_text}</CardTitle>
                 <div className="flex flex-row gap-1">
-                    <QuestionEditDialog testId={testId} question={question} onUpdate={onUpdate}/>
+                    <QuestionDialog type="update" testId={testId} question={question} onUpdate={onUpdate}/>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
