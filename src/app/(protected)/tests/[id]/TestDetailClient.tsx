@@ -1,5 +1,10 @@
+'use client'
+
+import { useState } from "react";
 import { TestType } from "@/types/test/TestType";
 import TestTemplateType from "@/types/test/TestTemplateType";
+import { OptionType } from "@/types/test/OptionType";
+import { EditQuestionType } from "@/types/test/EditQuestionType";
 import TestDetailCard from "@/components/tests/TestDetailCard";
 import {
     Card,
@@ -16,13 +21,49 @@ import {
     TabsTrigger 
 } from "@/components/ui/tabs";
 
-export default async function TestDetailClient({ 
+export default function TestDetailClient({
     testList,
     testTemplate
 }: { 
     testList: TestType[],
     testTemplate: TestTemplateType
 }) {
+    const [tests, setTests] = useState<TestType[]>(testList);
+
+    const deleteQuestion = (testId: number, id: number) => {
+        setTests(prev =>
+            prev.map(test =>
+                test.id === testId
+                    ? {
+                        ...test,
+                        question: test.question.filter(q => q.id !== id)
+                    }
+                    : test
+            )
+        );
+    }
+
+    const updateQuestion = (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => {
+        setTests(prev =>
+            prev.map(test =>
+                test.id === testId
+                    ? {
+                        ...test,
+                        question: test.question.map(q =>
+                            q.id === id
+                                ? { 
+                                    ...q,
+                                    question_text: data.question_text,
+                                    options_number: data.options_number,
+                                    option: newOptions
+                                }
+                                : q
+                        )
+                    }
+                    : test
+            )
+        );
+    }
 
     return (
         <Card className="w-full">
@@ -31,10 +72,10 @@ export default async function TestDetailClient({
                 <CardDescription>Created on {new Date(testTemplate.created_at).toLocaleDateString()}</CardDescription>
             </CardHeader>
             <CardContent>
-                <Tabs defaultValue={testList[0].id.toString()}>
+                <Tabs defaultValue={tests[0].id.toString()}>
                     <TabsList>
                         {
-                            testList.map((test) => (
+                            tests.map((test) => (
                                 <TabsTrigger key={test.id} value={test.id.toString()} className="hover:cursor-pointer">
                                     {test.name}
                                 </TabsTrigger>
@@ -42,9 +83,13 @@ export default async function TestDetailClient({
                         }
                     </TabsList>
                     {
-                        testList.map((test) => (
+                        tests.map((test) => (
                             <TabsContent key={test.id} value={test.id.toString()}>
-                                <TestDetailCard test={test} />
+                                <TestDetailCard 
+                                    test={test}
+                                    onDelete={deleteQuestion}
+                                    onUpdate={updateQuestion}
+                                />
                             </TabsContent>
                         ))
                     }

@@ -71,6 +71,7 @@ export async function updateQuestionById(questionId: number, data: EditQuestionT
             question_id: questionId,
             option_text: o.option_text,
             is_correct: o.is_correct,
+            index_order: o.index_order,
         }
     ))
 

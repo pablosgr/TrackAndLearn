@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from "react";
 import QuestionDetailCard from "./QuestionDetailCard";
 import { TestType } from "@/types/test/TestType";
-import { QuestionType } from "@/types/test/QuestionType";
+import { OptionType } from "@/types/test/OptionType";
+import { EditQuestionType } from "@/types/test/EditQuestionType";
 import {
     Card,
     CardAction,
@@ -13,12 +13,15 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-export default function TestDetailCard({ test }: { test: TestType }) {
-    const [questions, setQuestions] = useState<QuestionType[]>(test.question);
-
-    const handleQuestionDelete = (id: string) => {
-        setQuestions(questions.filter((q) => q.id.toString() !== id));
-    }
+export default function TestDetailCard({ 
+    test,
+    onDelete,
+    onUpdate,
+}: {
+    test: TestType,
+    onDelete: (testId: number, id: number) => void ,
+    onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void
+}) {
 
     return (
         <Card className="w-full shadow-none border-0">
@@ -38,9 +41,16 @@ export default function TestDetailCard({ test }: { test: TestType }) {
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
+                <h2 className="text-lg pl-5 font-semibold">Questions</h2>
                 {
-                    questions.map((q) => (
-                        <QuestionDetailCard key={q.id} question={q} onDelete={handleQuestionDelete} />
+                    test.question.map((q) => (
+                        <QuestionDetailCard 
+                            key={q.id} 
+                            question={q}
+                            testId={test.id}
+                            onDelete={onDelete} 
+                            onUpdate={onUpdate} 
+                        />
                     ))
                 }
             </CardContent>

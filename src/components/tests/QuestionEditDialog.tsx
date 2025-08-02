@@ -53,7 +53,15 @@ const formSchema = z.object({
     correct_option_index: z.number().min(0),
 });
 
-export default function QuestionEditDialog({ question, onUpdate }: { question: QuestionType, onUpdate: (data: EditQuestionType, newOptions: OptionType[]) => void }) {
+export default function QuestionEditDialog({
+    testId,
+    question,
+    onUpdate
+}: {
+    testId: number,
+    question: QuestionType,
+    onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void 
+}) {
     const [open, setOpen] = useState<boolean>(false);
     const [optionsNumber, setOptionsNumber] = useState<number>(question.options_number);
 
@@ -84,7 +92,7 @@ export default function QuestionEditDialog({ question, onUpdate }: { question: Q
 
         if (optionsNumber > current.length) {
             for (let i = current.length; i < optionsNumber; i++) {
-                append({ id: null, option_text: "", is_correct: false, index_order: null });
+                append({ id: null, option_text: "", is_correct: false, index_order: i });
             }
         } else if (optionsNumber < current.length) {
             for (let i = current.length; i > optionsNumber; i--) {
@@ -114,7 +122,7 @@ export default function QuestionEditDialog({ question, onUpdate }: { question: Q
 
         await updateQuestionById(question.id, data);
         const newOptions = await getOptionsByQuestionId(question.id);
-        onUpdate(data, newOptions);
+        onUpdate(testId, question.id, data, newOptions);
         setOpen(false);
     }
 
@@ -122,7 +130,7 @@ export default function QuestionEditDialog({ question, onUpdate }: { question: Q
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <CardAction className="p-2 hover:bg-(--accent) hover:cursor-pointer rounded-lg transition-colors">
-                        <PencilLine size={22}/>
+                        <PencilLine size={22} color="gray"/>
                 </CardAction>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[490px]">

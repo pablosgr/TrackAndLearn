@@ -1,5 +1,4 @@
 import { Check, Trash } from "lucide-react";
-import { useState } from "react";
 import { deleteQuestionById } from "@/app/(protected)/tests/actions/delete";
 import QuestionEditDialog from "./QuestionEditDialog";
 import { QuestionType } from "@/types/test/QuestionType";
@@ -25,36 +24,34 @@ import {
 } from "@/components/ui/alert-dialog";
 
 
-export default function QuestionDetailCard({ question, onDelete }: { question: QuestionType, onDelete: (id: string) => void }) {
-    const [questionData, setQuestionData] = useState<QuestionType>(question);
-    const [options, setOptions] = useState<OptionType[]>(question.option);
-
-    const handleQuestionUpdate = (data: EditQuestionType, newOptions: OptionType[]) => {
-        setQuestionData((prev) => ({
-            ...prev,
-            question_text: data.question_text,
-            options_number: data.options_number
-        }));
-
-        setOptions(newOptions);
-    }
+export default function QuestionDetailCard({ 
+    question,
+    testId,
+    onDelete,
+    onUpdate
+}: { 
+    question: QuestionType,
+    testId: number,
+    onDelete: (testId: number, id: number) => void,
+    onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void
+}) {
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        onDelete(question.id.toString());
+        onDelete(testId, question.id);
         await deleteQuestionById(question.id);
     }
 
     return (
         <Card className="flex flex-col gap-0 shadow-none hover:shadow-(--shadow-xs) transition-shadow border-gray-300">
             <CardHeader className="flex flex-row justify-between">
-                <CardTitle>{questionData.question_text}</CardTitle>
+                <CardTitle>{question.question_text}</CardTitle>
                 <div className="flex flex-row gap-1">
-                    <QuestionEditDialog question={question} onUpdate={handleQuestionUpdate}/>
+                    <QuestionEditDialog testId={testId} question={question} onUpdate={onUpdate}/>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                                <Trash size={22}/>
+                                <Trash size={22} color="gray"/>
                             </CardAction>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
@@ -75,7 +72,7 @@ export default function QuestionDetailCard({ question, onDelete }: { question: Q
             <CardContent>
                 <ul className="flex flex-col gap-2">
                     {
-                        options.map((opt) => (
+                        question.option.map((opt) => (
                             <li key={opt.id} className="flex flex-row gap-4 items-center">
                                 {opt.option_text}
                                 { opt.is_correct ? <Check size={20} className="text-green-600"/> : '' }

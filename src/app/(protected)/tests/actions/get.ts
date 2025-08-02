@@ -80,7 +80,9 @@ export async function getTestsByTemplateId(testId: string): Promise <TestType[]>
                 )
             )
         `)
-        .eq("template_id", testId);
+        .eq("template_id", testId)
+        .order('index_order', { referencedTable: 'question', ascending: true })
+        .order('index_order', { referencedTable: 'question.option', ascending: true });
 
         if (!data || error) {
             console.error('Error fetching test: ', error);
@@ -117,7 +119,8 @@ export async function getOptionsByQuestionId(questionId: number): Promise<Option
     const { data, error } = await supabase
         .from('option')
         .select('*')
-        .eq('question_id', questionId);
+        .eq('question_id', questionId)
+        .order('index_order', { ascending: true });
 
     if (!data || error) {
         console.error('Error retrieving options: ', error);
