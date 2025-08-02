@@ -68,15 +68,9 @@ export async function getTestsByTemplateId(testId: string): Promise <TestType[]>
             created_at,
             test_template(teacher_id),
             question(
-            id,
-            question_text,
-            options_number,
-            index_order,
-            option(
-                id,
-                option_text,
-                is_correct,
-                index_order
+                *,
+                option(
+                    *
                 )
             )
         `)
@@ -95,7 +89,7 @@ export async function getTestsByTemplateId(testId: string): Promise <TestType[]>
             test_template: Array.isArray(test.test_template) ? test.test_template[0] ?? null : test.test_template,
         }));
 
-        return tests;
+        return tests as TestType[];
 }
 
 export async function getTopics(): Promise<TopicType[]> {

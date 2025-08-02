@@ -66,12 +66,12 @@ export async function updateQuestionById(questionId: number, data: EditQuestionT
 
     const optionsToInsert = data.options.filter((opt) => !opt.id);
 
-    const formattedOptionsToInsert = optionsToInsert.map((o) => (
+    const formattedOptionsToInsert = optionsToInsert.map((opt) => (
         {
             question_id: questionId,
-            option_text: o.option_text,
-            is_correct: o.is_correct,
-            index_order: o.index_order,
+            option_text: opt.option_text,
+            is_correct: opt.is_correct,
+            index_order: opt.index_order,
         }
     ))
 
