@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import { PencilLine } from "lucide-react";
+import { PencilLine, Plus } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateQuestionById } from "@/app/(protected)/tests/actions/update";
 import { getOptionsByQuestionId } from "@/app/(protected)/tests/actions/get";
-import { QuestionType } from "@/types/test/QuestionType";
+import { createQuestion } from "@/app/(protected)/tests/actions/post";
+import { NewQuestionType, QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardAction } from "../ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
     Form,
     FormControl,
@@ -42,6 +43,7 @@ import {
 
 
 const formSchema = z.object({
+    test_id: z.number(),
     question_text: z.string().min(3, { message: 'Question must have between 3 and 255 characters' }).max(255),
     options_number: z.number().min(2, { message: 'You must select a number of options' }),
     options: z.array(z.object({
@@ -57,22 +59,37 @@ export default function QuestionDialog({
     type,
     testId,
     question,
-    onUpdate
+    onUpdate,
+    onCreate,
 }: {
     type: 'update' | 'create',
     testId: number,
-    question: QuestionType,
-    onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void 
+    question?: QuestionType,
+    onUpdate?: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void,
+    onCreate?: (testId: number, newQuestion: QuestionType) => void
 }) {
+    const defaultQuestion = question ?? {
+        id: 0,
+        test_id: testId,
+        question_text: '',
+        options_number: 2,
+        index_order: null,
+        option: [
+            { id: 0, option_text: '', is_correct: true, index_order: 0 },
+            { id: 1, option_text: '', is_correct: false, index_order: 1 },
+        ]
+    };
+
     const [open, setOpen] = useState<boolean>(false);
-    const [optionsNumber, setOptionsNumber] = useState<number>(question.options_number);
+    const [optionsNumber, setOptionsNumber] = useState<number>(defaultQuestion.options_number);
 
     const form = useForm<z.infer<typeof formSchema>>({
             resolver: zodResolver(formSchema),
             defaultValues: {
-                question_text: question.question_text,
+                test_id: testId,
+                question_text: defaultQuestion.question_text,
                 options_number: optionsNumber,
-                options: question.option.map((opt) => (
+                options: defaultQuestion.option.map((opt) => (
                     {
                         id: opt.id,
                         option_text: opt.option_text,
@@ -80,7 +97,7 @@ export default function QuestionDialog({
                         index_order: opt.index_order,
                     }
                 )),
-                correct_option_index: question.option.findIndex((opt) => opt.is_correct === true),
+                correct_option_index: defaultQuestion.option.findIndex((opt) => opt.is_correct === true),
             },
     });
 
@@ -110,35 +127,80 @@ export default function QuestionDialog({
     }, [optionsNumber]);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        values.options.forEach((opt, index) => {
-            values.correct_option_index === index
-            ? opt.is_correct = true
-            : opt.is_correct = false;
-        });
+        if (type === 'update' && onUpdate) {
+            values.options.forEach((opt, index) => {
+                values.correct_option_index === index
+                ? opt.is_correct = true
+                : opt.is_correct = false;
+            });
 
-        const data = {
-            question_text: values.question_text,
-            options_number: values.options_number,
-            options: values.options,
+            const data: EditQuestionType = {
+                test_id: testId,
+                question_text: values.question_text,
+                options_number: values.options_number,
+                options: values.options,
+            }
+
+            await updateQuestionById(defaultQuestion.id, data); //possibly return the updated question
+            const newOptions = await getOptionsByQuestionId(defaultQuestion.id);
+            onUpdate(testId, defaultQuestion.id, data, newOptions);
         }
 
-        await updateQuestionById(question.id, data);
-        const newOptions = await getOptionsByQuestionId(question.id);
-        onUpdate(testId, question.id, data, newOptions);
+        if (type === 'create' && onCreate) {
+            const questionData: NewQuestionType = {
+                test_id: testId,
+                question_text: values.question_text,
+                options_number: values.options_number,
+                index_order: null,
+            }
+
+            const optionsData = values.options.map((opt) => (
+                {
+                    option_text: opt.option_text,
+                    is_correct: opt.is_correct,
+                    index_order: opt.index_order,
+                }
+            ))
+
+            const newQuestion = await createQuestion(questionData, optionsData);
+            if (newQuestion) {
+                onCreate(testId, newQuestion);
+            }
+        }
+
         setOpen(false);
     }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <CardAction className="p-2 hover:bg-(--accent) hover:cursor-pointer rounded-lg transition-colors">
-                        <PencilLine size={22} color="gray"/>
+                <CardAction 
+                    className={`
+                        ${type === 'update' 
+                            ? 'p-2 hover:bg-(--accent) hover:cursor-pointer rounded-lg transition-colors' 
+                            : ''
+                        }
+                    `}
+                >
+                    {
+                        type === 'update'
+                        ? <PencilLine size={22} color="gray"/>
+                        : <Button>Add question</Button>
+                    }
                 </CardAction>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[490px] max-h-[85%] overflow-scroll scrollbar-invisible">
                 <DialogHeader>
-                    <DialogTitle>Edit question</DialogTitle>
-                    <DialogDescription>Remember to mark the correct answer (only one can be correct)</DialogDescription>
+                    <DialogTitle>
+                        {
+                            type === 'update'
+                            ? 'Edit question'
+                            : 'Create question'
+                        }
+                    </DialogTitle>
+                    <DialogDescription>
+                        *Remember to mark a single correct answer.
+                    </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -241,7 +303,13 @@ export default function QuestionDialog({
                             <DialogClose asChild>
                                 <Button variant="outline" onClick={() => form.reset()}>Cancel</Button>
                             </DialogClose>
-                            <Button type="submit">Save changes</Button>
+                            <Button type="submit">
+                                {
+                                    type === 'update'
+                                    ? 'Save changes'
+                                    : 'Add question'
+                                }
+                            </Button>
                         </DialogFooter>
                     </form>
                 </Form>

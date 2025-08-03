@@ -1,8 +1,9 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import { TestType } from "@/types/test/TestType";
 import TestTemplateType from "@/types/test/TestTemplateType";
+import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
 import TestDetailCard from "@/components/tests/TestDetailCard";
@@ -65,6 +66,19 @@ export default function TestDetailClient({
         );
     }
 
+    const createQuestion = (testId: number, newQuestion: QuestionType) => {
+        setTests(prev => 
+            prev.map((test) => 
+                test.id === testId 
+                ? {
+                    ...test,
+                    question: [...test.question, newQuestion]
+                }
+                : test
+            )
+        );
+    }
+
     return (
         <Card className="w-full">
             <CardHeader className="bg-(--color-accent) gap-2 py-6">
@@ -89,6 +103,7 @@ export default function TestDetailClient({
                                     test={test}
                                     onDelete={deleteQuestion}
                                     onUpdate={updateQuestion}
+                                    onCreate={createQuestion}
                                 />
                             </TabsContent>
                         ))
