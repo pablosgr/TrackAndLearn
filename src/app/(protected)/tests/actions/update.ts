@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
+import { NewTestType, TestType } from "@/types/test/TestType";
 
 export async function updateQuestionById(questionId: number, data: EditQuestionType) {
     const supabase = await createClient();
@@ -85,4 +86,22 @@ export async function updateQuestionById(questionId: number, data: EditQuestionT
             console.error('Error inserting new options: ', insertError);
         }
     }
+}
+
+export async function updateTestById(testId: number, formData: NewTestType): Promise<TestType | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test')
+        .update(formData)
+        .eq('id', testId)
+        .select()
+        .single();
+    
+    if (!data || error) {
+        console.error('Error updating test: ', error);
+        return null;
+    }
+
+    return data as TestType;
 }

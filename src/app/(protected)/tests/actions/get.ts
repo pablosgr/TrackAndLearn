@@ -5,6 +5,7 @@ import TestTemplateType from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
 import { TopicType } from "@/types/test/TopicType";
 import { OptionType } from "@/types/test/OptionType";
+import { AdaptationType } from "@/types/test/AdaptationType";
 
 export async function getTestTemplate(templateId: string): Promise<TestTemplateType | null> {
     const supabase = await createClient();
@@ -75,6 +76,7 @@ export async function getTestsByTemplateId(testId: string): Promise <TestType[]>
             )
         `)
         .eq("template_id", testId)
+        .order('id', { ascending: true} )
         .order('index_order', { referencedTable: 'question', ascending: true })
         .order('index_order', { referencedTable: 'question.option', ascending: true });
 
@@ -105,6 +107,21 @@ export async function getTopics(): Promise<TopicType[]> {
     }
 
     return data as TopicType[];
+}
+
+export async function getAdaptations(): Promise<AdaptationType[]> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('adaptation')
+        .select('*');
+    
+    if (!data || error) {
+        console.error('Error retrieving adaptations');
+        return [];
+    }
+
+    return data as AdaptationType[];
 }
 
 export async function getOptionsByQuestionId(questionId: number): Promise<OptionType[]> {
