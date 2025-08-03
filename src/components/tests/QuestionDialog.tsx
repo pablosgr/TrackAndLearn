@@ -199,7 +199,7 @@ export default function QuestionDialog({
                         }
                     </DialogTitle>
                     <DialogDescription>
-                        *Remember to mark a single correct answer.
+                        *Remember to mark a single correct answer
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>

@@ -4,8 +4,11 @@ import QuestionDetailCard from "./QuestionDetailCard";
 import { TestType } from "@/types/test/TestType";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
+import { AdaptationType } from "@/types/test/AdaptationType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
+import { NewTestType } from "@/types/test/TestType";
 import QuestionDialog from "./QuestionDialog";
+import TestDialog from "./TestDialog";
 import {
     Card,
     CardAction,
@@ -17,19 +20,23 @@ import {
 
 export default function TestDetailCard({ 
     test,
-    onDelete,
-    onUpdate,
-    onCreate,
+    adaptations,
+    onQuestionDelete,
+    onQuestionUpdate,
+    onQuestionCreate,
+    onTestUpdate,
 }: {
     test: TestType,
-    onDelete: (testId: number, id: number) => void,
-    onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void,
-    onCreate: (testId: number, newQuestion: QuestionType) => void
+    adaptations: AdaptationType[],
+    onQuestionDelete: (testId: number, id: number) => void,
+    onQuestionUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void,
+    onQuestionCreate: (testId: number, newQuestion: QuestionType) => void,
+    onTestUpdate: (testId: number, data: NewTestType) => void
 }) {
     
     return (
         <Card className="w-full shadow-none border-0">
-            <CardHeader className="flex flex-row justify-between items-center">
+            <CardHeader className="flex flex-row justify-between items-center flex-wrap gap-5">
                 <div className="flex flex-col gap-3">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
                     <CardDescription>
@@ -45,7 +52,16 @@ export default function TestDetailCard({
                         }
                     </CardDescription>
                 </div>
-                <QuestionDialog type="create" testId={test.id} onCreate={onCreate} />
+                <div className="flex flex-row gap-3">
+                    <TestDialog 
+                        type="update"
+                        templateId={test.template_id}
+                        test={test}
+                        adaptationList={adaptations}
+                        onUpdate={onTestUpdate}
+                    />
+                    <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
+                </div>
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
                 <h2 className="text-lg pl-5 font-semibold">Questions</h2>
@@ -55,8 +71,8 @@ export default function TestDetailCard({
                             key={q.id} 
                             question={q}
                             testId={test.id}
-                            onDelete={onDelete} 
-                            onUpdate={onUpdate} 
+                            onQuestionDelete={onQuestionDelete} 
+                            onQuestionUpdate={onQuestionUpdate} 
                         />
                     ))
                 }

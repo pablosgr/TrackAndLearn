@@ -5,7 +5,9 @@ import { TestType } from "@/types/test/TestType";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
+import { AdaptationType } from "@/types/test/AdaptationType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
+import { NewTestType } from "@/types/test/TestType";
 import TestDetailCard from "@/components/tests/TestDetailCard";
 import {
     Card,
@@ -23,13 +25,17 @@ import {
 } from "@/components/ui/tabs";
 
 export default function TestDetailClient({
+    adaptationList,
     testList,
     testTemplate
-}: { 
+}: {
+    adaptationList: AdaptationType[],
     testList: TestType[],
     testTemplate: TestTemplateType
 }) {
     const [tests, setTests] = useState<TestType[]>(testList);
+
+    console.log(tests);
 
     const deleteQuestion = (testId: number, id: number) => {
         setTests(prev =>
@@ -79,6 +85,30 @@ export default function TestDetailClient({
         );
     }
 
+    const updateTest = (testId: number, data: NewTestType) => {
+        const adaptation = adaptationList.find((item) => item.id === data.adaptation_id);
+
+        setTests(prev =>
+            prev.map((test) =>
+                test.id === testId
+                ? {
+                    ...test,
+                    name: data.name,
+                    level: data.level,
+                    time_limit: data.time_limit,
+                    adaptation_id: data.adaptation_id,
+                    adaptation_data: data.adaptation_id !== null && adaptation
+                    ? {
+                        name: adaptation.name,
+                        code: adaptation.code
+                    }
+                    : null
+                }
+                : test
+            )
+        )
+    }
+
     return (
         <Card className="w-full">
             <CardHeader className="bg-(--color-accent) gap-2 py-6">
@@ -101,9 +131,11 @@ export default function TestDetailClient({
                             <TabsContent key={test.id} value={test.id.toString()}>
                                 <TestDetailCard 
                                     test={test}
-                                    onDelete={deleteQuestion}
-                                    onUpdate={updateQuestion}
-                                    onCreate={createQuestion}
+                                    adaptations={adaptationList}
+                                    onQuestionDelete={deleteQuestion}
+                                    onQuestionUpdate={updateQuestion}
+                                    onQuestionCreate={createQuestion}
+                                    onTestUpdate={updateTest}
                                 />
                             </TabsContent>
                         ))

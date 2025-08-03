@@ -41,7 +41,7 @@ const formSchema = z.object({
     topic: z.string().min(1, { message: 'You must select a topic' }),
 });
 
-export default function TestCreationDialog({ 
+export default function TemplateDialog({ 
     topics,
     onCreate 
 }: { 
@@ -78,7 +78,7 @@ export default function TestCreationDialog({
                 <DialogHeader>
                     <DialogTitle>Add new test</DialogTitle>
                     <DialogDescription className="pt-2">
-                        This action will create a test template with an attached base test.
+                        This action will create a test template with an attached base test
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>

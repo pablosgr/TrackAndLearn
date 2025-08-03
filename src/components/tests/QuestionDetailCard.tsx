@@ -27,18 +27,18 @@ import {
 export default function QuestionDetailCard({ 
     question,
     testId,
-    onDelete,
-    onUpdate
+    onQuestionDelete,
+    onQuestionUpdate
 }: { 
     question: QuestionType,
     testId: number,
-    onDelete: (testId: number, id: number) => void,
-    onUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void
+    onQuestionDelete: (testId: number, id: number) => void,
+    onQuestionUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void
 }) {
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        onDelete(testId, question.id);
+        onQuestionDelete(testId, question.id);
         await deleteQuestionById(question.id);
     }
 
@@ -47,7 +47,7 @@ export default function QuestionDetailCard({
             <CardHeader className="flex flex-row justify-between">
                 <CardTitle>{question.question_text}</CardTitle>
                 <div className="flex flex-row gap-1">
-                    <QuestionDialog type="update" testId={testId} question={question} onUpdate={onUpdate}/>
+                    <QuestionDialog type="update" testId={testId} question={question} onUpdate={onQuestionUpdate}/>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
