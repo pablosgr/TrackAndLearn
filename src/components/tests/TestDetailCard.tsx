@@ -20,6 +20,7 @@ import {
 
 export default function TestDetailCard({ 
     test,
+    templateName,
     adaptations,
     onQuestionDelete,
     onQuestionUpdate,
@@ -27,6 +28,7 @@ export default function TestDetailCard({
     onTestUpdate,
 }: {
     test: TestType,
+    templateName: string,
     adaptations: AdaptationType[],
     onQuestionDelete: (testId: number, id: number) => void,
     onQuestionUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void,
@@ -55,6 +57,7 @@ export default function TestDetailCard({
                 <div className="flex flex-row gap-3">
                     <TestDialog 
                         type="update"
+                        templateName={templateName}
                         templateId={test.template_id}
                         test={test}
                         adaptationList={adaptations}
@@ -64,7 +67,13 @@ export default function TestDetailCard({
                 </div>
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
-                <h2 className="text-lg pl-5 font-semibold">Questions</h2>
+                <h2 className="text-lg pl-5 font-semibold">
+                    {
+                        test.question.length === 0
+                        ? 'Test is empty..'
+                        : 'Questions'
+                    }
+                </h2>
                 {
                     test.question.map((q) => (
                         <QuestionDetailCard 

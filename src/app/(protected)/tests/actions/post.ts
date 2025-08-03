@@ -47,11 +47,24 @@ export async function createTemplate(name: string, topic: string, userId: string
 export async function createTest(newTest: NewTestType): Promise<TestType | null> {
     const supabase = await createClient();
 
+    const { data: adaptationData, error: adaptationError } = await supabase
+        .from('adaptation')
+        .select('code')
+        .eq('id', newTest.adaptation_id)
+        .single();
+
+    if (!adaptationData || adaptationError) {
+        console.error('Error retrieving adaptation data in test insert: ', adaptationError);
+        return null;
+    }
+
+    const formattedName = newTest.name + ' - ' + adaptationData.code + ' Adapted';
+
     const { data, error } = await supabase
         .from('test')
         .insert({
             template_id: newTest.template_id,
-            name: newTest.name,
+            name: formattedName,
             level: newTest.level,
             time_limit: newTest.time_limit,
             adaptation_id: newTest.adaptation_id,

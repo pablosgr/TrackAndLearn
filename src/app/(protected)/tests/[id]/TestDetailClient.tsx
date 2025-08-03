@@ -91,17 +91,19 @@ export default function TestDetailClient({
 
         const formattedTest = {
             ...newTest,
-            adaptation_data: {
-                name: adaptation?.name,
-                code: adaptation?.code
-            },
+            adaptation_data: adaptation
+            ? {
+                name: adaptation.name,
+                code: adaptation.code
+            }
+            : null,
             test_template: {
-                teacher_id: user.id
+                teacher_id: Number(user.id)
             },
             question: []
         }
 
-        setTests(prev => [...prev, newTest]);
+        setTests(prev => [...prev, formattedTest]);
     }
 
     const updateTest = (testId: number, data: NewTestType) => {
@@ -148,6 +150,7 @@ export default function TestDetailClient({
                     </TabsList>
                     <TestDialog 
                         type="create"
+                        templateName={testTemplate.name}
                         templateId={Number(testTemplate.id)}
                         adaptationList={adaptationList}
                         onCreate={createTest}
@@ -158,6 +161,7 @@ export default function TestDetailClient({
                             <TabsContent key={test.id} value={test.id.toString()}>
                                 <TestDetailCard 
                                     test={test}
+                                    templateName={testTemplate.name}
                                     adaptations={adaptationList}
                                     onQuestionDelete={deleteQuestion}
                                     onQuestionUpdate={updateQuestion}

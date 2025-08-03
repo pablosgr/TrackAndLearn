@@ -48,6 +48,7 @@ const formSchema = z.object({
 
 export default function TestDialog({
     type,
+    templateName,
     templateId,
     test,
     adaptationList,
@@ -55,6 +56,7 @@ export default function TestDialog({
     onCreate,
 }: {
     type: 'update' | 'create',
+    templateName: string,
     templateId: number,
     test?: TestType,
     adaptationList: AdaptationType[],
@@ -67,7 +69,9 @@ export default function TestDialog({
         name: '',
         level: '',
         time_limit: null,
-        adaptation_id: null,
+        adaptation_id: type === 'create' && adaptationList.length > 0
+            ? adaptationList[0].id
+            : null,
     }
 
     const [open, setOpen] = useState<boolean>(false);
@@ -77,7 +81,7 @@ export default function TestDialog({
         defaultValues: {
             id: defaultTest.id,
             template_id: templateId,
-            name: defaultTest.name,
+            name: type === 'update' ? defaultTest.name : templateName,
             level: defaultTest.level,
             time_limit: defaultTest.time_limit,
             adaptation_id: defaultTest.adaptation_id,
@@ -125,7 +129,8 @@ export default function TestDialog({
                     <DialogDescription className="pt-2">
                         {
                             type === 'create'
-                            ? 'This action will create a new test version for the template'
+                            ? `Create a new test version for the template. 
+                                Chosen adaptation will be added automatically to the name.`
                             : 'Edit test information'
                         }
                     </DialogDescription>
@@ -145,8 +150,8 @@ export default function TestDialog({
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
-                            )}
-                        />
+                                )}
+                            />
                         <FormField
                             control={form.control}
                             name="level"
@@ -204,7 +209,10 @@ export default function TestDialog({
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
-                                                    <SelectItem value="null">None</SelectItem>
+                                                    {
+                                                        type === 'update' &&
+                                                        <SelectItem value="null">None</SelectItem>
+                                                    }
                                                     {
                                                         adaptationList.map((adpt) => (
                                                             <SelectItem key={adpt.id} value={adpt.id.toString()}>
