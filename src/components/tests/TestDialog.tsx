@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { updateTestById } from "@/app/(protected)/tests/actions/update";
+import { createTest } from "@/app/(protected)/tests/actions/post";
 import { TestType } from "@/types/test/TestType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import { NewTestType } from "@/types/test/TestType";
@@ -37,6 +38,7 @@ import {
 
 
 const formSchema = z.object({
+    id: z.number(),
     template_id: z.number(),
     name: z.string().min(3, { message: 'Name must have between 3 and 150 characters' }).max(150),
     level: z.string().min(3, { message: 'Level must have between 3 and 100 characters' }).max(100).nullable(),
@@ -50,16 +52,17 @@ export default function TestDialog({
     test,
     adaptationList,
     onUpdate,
-    // onCreate,
+    onCreate,
 }: {
     type: 'update' | 'create',
     templateId: number,
-    test: TestType,
+    test?: TestType,
     adaptationList: AdaptationType[],
-    onUpdate: (testId: number, data: NewTestType) => void,
-    // onCreate: () => void,
+    onUpdate?: (testId: number, data: NewTestType) => void,
+    onCreate?: (newTest: TestType) => void,
 }) {
     const defaultTest = test ?? {
+        id: 0,
         template_id: templateId,
         name: '',
         level: '',
@@ -72,20 +75,29 @@ export default function TestDialog({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            id: defaultTest.id,
             template_id: templateId,
-            name: test.name,
-            level: test.level,
-            time_limit: test.time_limit,
-            adaptation_id: test.adaptation_id,
+            name: defaultTest.name,
+            level: defaultTest.level,
+            time_limit: defaultTest.time_limit,
+            adaptation_id: defaultTest.adaptation_id,
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         if (type === 'update' && onUpdate) {
-            const updatedTest = await updateTestById(test.id, values);
+            const updatedTest = await updateTestById(defaultTest.id, values);
 
             if (updatedTest) {
-                onUpdate(test.id, values);
+                onUpdate(defaultTest.id, values);
+            }
+        }
+
+        if (type === 'create' && onCreate) {
+            const newTest = await createTest(values);
+
+            if (newTest) {
+                onCreate(newTest);
             }
         }
 
@@ -98,7 +110,7 @@ export default function TestDialog({
                 {
                     type === 'update'
                     ? <Button variant="outline">Edit test</Button>
-                    : <Button variant="default">Add test</Button>
+                    : <Button variant="default">Add version</Button>
                 }
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -107,13 +119,13 @@ export default function TestDialog({
                         {
                             type === 'update'
                             ? 'Edit test'
-                            : 'Create test'
+                            : 'Create new version'
                         }
                     </DialogTitle>
                     <DialogDescription className="pt-2">
                         {
                             type === 'create'
-                            ? 'This action will create a test template with an attached base test'
+                            ? 'This action will create a new test version for the template'
                             : 'Edit test information'
                         }
                     </DialogDescription>
@@ -216,7 +228,7 @@ export default function TestDialog({
                                 {
                                     type === 'update'
                                     ? 'Save changes'
-                                    : 'Create test'
+                                    : 'Add version'
                                 }
                             </Button>
                         </DialogFooter>

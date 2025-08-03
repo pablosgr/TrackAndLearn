@@ -8,7 +8,9 @@ import { OptionType } from "@/types/test/OptionType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
 import { NewTestType } from "@/types/test/TestType";
+import { useUser } from "@/components/context/userWrapper";
 import TestDetailCard from "@/components/tests/TestDetailCard";
+import TestDialog from "@/components/tests/TestDialog";
 import {
     Card,
     CardAction,
@@ -34,8 +36,20 @@ export default function TestDetailClient({
     testTemplate: TestTemplateType
 }) {
     const [tests, setTests] = useState<TestType[]>(testList);
+    const user = useUser();
 
-    console.log(tests);
+    const createQuestion = (testId: number, newQuestion: QuestionType) => {
+        setTests(prev => 
+            prev.map((test) => 
+                test.id === testId 
+                ? {
+                    ...test,
+                    question: [...test.question, newQuestion]
+                }
+                : test
+            )
+        );
+    }
 
     const deleteQuestion = (testId: number, id: number) => {
         setTests(prev =>
@@ -72,17 +86,22 @@ export default function TestDetailClient({
         );
     }
 
-    const createQuestion = (testId: number, newQuestion: QuestionType) => {
-        setTests(prev => 
-            prev.map((test) => 
-                test.id === testId 
-                ? {
-                    ...test,
-                    question: [...test.question, newQuestion]
-                }
-                : test
-            )
-        );
+    const createTest = (newTest: TestType) => {
+        const adaptation = adaptationList.find((item) => item.id === newTest.adaptation_id);
+
+        const formattedTest = {
+            ...newTest,
+            adaptation_data: {
+                name: adaptation?.name,
+                code: adaptation?.code
+            },
+            test_template: {
+                teacher_id: user.id
+            },
+            question: []
+        }
+
+        setTests(prev => [...prev, newTest]);
     }
 
     const updateTest = (testId: number, data: NewTestType) => {
@@ -117,6 +136,7 @@ export default function TestDetailClient({
             </CardHeader>
             <CardContent>
                 <Tabs defaultValue={tests[0].id.toString()}>
+                    <div className="flex flex-row gap-5 items-center">
                     <TabsList>
                         {
                             tests.map((test) => (
@@ -126,6 +146,13 @@ export default function TestDetailClient({
                             ))
                         }
                     </TabsList>
+                    <TestDialog 
+                        type="create"
+                        templateId={Number(testTemplate.id)}
+                        adaptationList={adaptationList}
+                        onCreate={createTest}
+                    />
+                    </div>
                     {
                         tests.map((test) => (
                             <TabsContent key={test.id} value={test.id.toString()}>

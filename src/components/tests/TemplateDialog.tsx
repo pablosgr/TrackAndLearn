@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "../context/userWrapper";
-import { createTest } from "@/app/(protected)/tests/actions/post";
+import { createTemplate} from "@/app/(protected)/tests/actions/post";
 import { TopicType } from "@/types/test/TopicType";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import { Button } from "@/components/ui/button";
@@ -60,7 +60,7 @@ export default function TemplateDialog({
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        const newTest = await createTest(values.name, values.topic, user.id);
+        const newTest = await createTemplate(values.name, values.topic, user.id);
 
         if (newTest) {
             onCreate(newTest);
