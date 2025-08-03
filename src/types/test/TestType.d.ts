@@ -1,6 +1,7 @@
 import { QuestionType } from "./QuestionType";
 
 export type NewTestType = {
+    id: number;
     template_id: number,
     name: string;
     level: string | null;
@@ -13,7 +14,6 @@ export type TestTemplateRef = {
 };
 
 export type TestType = NewTestType & {
-    id: number;
     created_at: string;
     test_template: TestTemplateRef | null;
     question: QuestionType[];

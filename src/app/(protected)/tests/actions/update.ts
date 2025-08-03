@@ -93,7 +93,12 @@ export async function updateTestById(testId: number, formData: NewTestType): Pro
 
     const { data, error } = await supabase
         .from('test')
-        .update(formData)
+        .update({
+            name: formData.name,
+            level: formData.level,
+            time_limit: formData.time_limit,
+            adaptation_id: formData.adaptation_id
+        })
         .eq('id', testId)
         .select()
         .single();

@@ -4,8 +4,9 @@ import { createClient } from "@/utils/supabase/server";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import { NewOptionType } from "@/types/test/OptionType";
 import { NewQuestionType, QuestionType } from "@/types/test/QuestionType";
+import { NewTestType, TestType } from "@/types/test/TestType";
 
-export async function createTest(name: string, topic: string, userId: string): Promise<TestTemplateType | null> {
+export async function createTemplate(name: string, topic: string, userId: string): Promise<TestTemplateType | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -41,6 +42,29 @@ export async function createTest(name: string, topic: string, userId: string): P
     }
 
     return data[0] as TestTemplateType;
+}
+
+export async function createTest(newTest: NewTestType): Promise<TestType | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test')
+        .insert({
+            template_id: newTest.template_id,
+            name: newTest.name,
+            level: newTest.level,
+            time_limit: newTest.time_limit,
+            adaptation_id: newTest.adaptation_id,
+        })
+        .select()
+        .single();
+
+    if (!data || error) {
+        console.error('Error inserting test: ', error);
+        return null;
+    }
+
+    return data as TestType;
 }
 
 export async function createQuestion(
