@@ -1,29 +1,37 @@
 'use client'
 
 import { ClassroomType } from "@/types/classroom/ClassroomType";
-import Link from "next/link";
 import { useState } from "react";
-import { useUser } from "@/components/context/userWrapper";
+import ClassroomCard from "@/components/classrooms/ClassroomCard";
 
 export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
-    const [classrooms] = useState<ClassroomType[]>(data);
-    const user = useUser();
+    const [classrooms, setClassrooms] = useState<ClassroomType[]>(data);
+
+    const handleDeleteClassroom = (classroomId: number) => {
+        setClassrooms(prev => prev.filter((item) => item.id !== classroomId));
+    }
     
     return (
-        <div className="flex flex-row gap-8">
-            {
-                classrooms && classrooms.map((c) => (
-                    <Link href={`/classrooms/${c.id}`} key={c.id}>
-                        <article key={c.id} className="p-6 border-1 border-gray-300 shadow-md rounded-lg flex flex-col gap-4">
-                            <h3>{c.name}</h3>
-                            {
-                                user.role === 'student' && <p className="text-gray-300">Teacher: {c.teacher?.name}</p>
-                            }
-                            <p className="text-gray-400">Go to classroom</p>
-                        </article>
-                    </Link>
-                ))
-            }
-        </div>
+        <>
+            <header className="w-full flex flex-row items-center justify-between pb-10">
+                <h1 className="text-3xl">My Classrooms</h1>
+                {/* <ClassroomDialog
+                    type="create"
+                    onCreate={handleCreateTemplate}
+                /> */}
+            </header>
+            <section className="w-full flex flex-col justify-items-start">
+                <div className="flex flex-row flex-wrap gap-9">
+                    {
+                        classrooms && classrooms.map((c) => (
+                            <ClassroomCard 
+                                key={c.id}
+                                classroom={c}
+                            />
+                        ))
+                    }
+                </div>
+            </section>
+        </>
     )
 }
