@@ -1,6 +1,8 @@
 'use client';
 
 import QuestionDetailCard from "./QuestionDetailCard";
+import { Trash } from "lucide-react";
+import { deleteTestById } from "@/app/(protected)/tests/actions/delete";
 import { TestType } from "@/types/test/TestType";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
@@ -17,6 +19,17 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function TestDetailCard({ 
     test,
@@ -26,6 +39,7 @@ export default function TestDetailCard({
     onQuestionUpdate,
     onQuestionCreate,
     onTestUpdate,
+    onTestDelete,
 }: {
     test: TestType,
     templateName: string,
@@ -33,28 +47,28 @@ export default function TestDetailCard({
     onQuestionDelete: (testId: number, id: number) => void,
     onQuestionUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void,
     onQuestionCreate: (testId: number, newQuestion: QuestionType) => void,
-    onTestUpdate: (testId: number, data: NewTestType) => void
+    onTestUpdate: (testId: number, data: NewTestType) => void,
+    onTestDelete: (testId: number) => void,
 }) {
+    const handleTestDelete = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onTestDelete(test.id);
+        await deleteTestById(test.id);
+    }
     
     return (
         <Card className="w-full shadow-none border-0">
             <CardHeader className="flex flex-row justify-between items-center flex-wrap gap-5">
                 <div className="flex flex-col gap-3">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
-                    <CardDescription>
-                        {
-                            test.time_limit
-                            ? `This test has a time limit of ${test.time_limit} minutes`
-                            : 'This test has no time limit.'
-                        }
-                        { 
-                            test.adaptation_data 
-                            ? ` This test is adapted for ${test.adaptation_data.name}.` 
-                            : ' This test is not adapted.' 
-                        }
+                    <CardDescription className="flex flex-col gap-2">
+                        <span>Level: { test.level ? test.level : 'Level not defined' }</span>
+                        <span>Time Limit: { test.time_limit ? test.time_limit + ' minutes' : 'None' }</span>
+                        <span>Adaptation: { test.adaptation_data ? test.adaptation_data.name : 'Not adapted' }</span>
                     </CardDescription>
                 </div>
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-3 items-center">
+                    <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
                     <TestDialog 
                         type="update"
                         templateName={templateName}
@@ -63,11 +77,32 @@ export default function TestDetailCard({
                         adaptationList={adaptations}
                         onUpdate={onTestUpdate}
                     />
-                    <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
+                    {
+                        test.adaptation_id &&
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
+                                    <Trash size={22}/>
+                                </CardAction>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        { test.adaptation_data?.code } version will be permanently removed. This action cannot be undone.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleTestDelete}>Delete</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    }
                 </div>
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
-                <h2 className="text-lg pl-5 font-semibold">
+                <h2 className="text-lg font-semibold">
                     {
                         test.question.length === 0
                         ? 'Test is empty..'

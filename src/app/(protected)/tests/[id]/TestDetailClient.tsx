@@ -36,6 +36,7 @@ export default function TestDetailClient({
     testTemplate: TestTemplateType
 }) {
     const [tests, setTests] = useState<TestType[]>(testList);
+    const [selectedTab, setSelectedTab] = useState(tests[0]?.id.toString());
     const user = useUser();
 
     const createQuestion = (testId: number, newQuestion: QuestionType) => {
@@ -106,6 +107,11 @@ export default function TestDetailClient({
         setTests(prev => [...prev, formattedTest]);
     }
 
+    const deleteTest = (testId: number) => {
+        setTests(tests.filter((t) => t.id !== testId));
+        setSelectedTab(tests[0]?.id.toString());
+    }
+
     const updateTest = (testId: number, data: NewTestType) => {
         const adaptation = adaptationList.find((item) => item.id === data.adaptation_id);
 
@@ -137,7 +143,7 @@ export default function TestDetailClient({
                 <CardDescription>Created on {new Date(testTemplate.created_at).toLocaleDateString()}</CardDescription>
             </CardHeader>
             <CardContent>
-                <Tabs defaultValue={tests[0].id.toString()}>
+                <Tabs value={selectedTab} onValueChange={setSelectedTab}>
                     <div className="flex flex-row gap-5 items-center">
                     <TabsList>
                         {
@@ -167,6 +173,7 @@ export default function TestDetailClient({
                                     onQuestionUpdate={updateQuestion}
                                     onQuestionCreate={createQuestion}
                                     onTestUpdate={updateTest}
+                                    onTestDelete={deleteTest}
                                 />
                             </TabsContent>
                         ))

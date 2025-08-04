@@ -185,7 +185,7 @@ export default function QuestionDialog({
                 >
                     {
                         type === 'update'
-                        ? <PencilLine size={22} color="gray"/>
+                        ? <PencilLine size={22} />
                         : <Button>Add question</Button>
                     }
                 </CardAction>

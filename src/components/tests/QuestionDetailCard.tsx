@@ -51,7 +51,7 @@ export default function QuestionDetailCard({
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                                <Trash size={22} color="gray"/>
+                                <Trash size={22}/>
                             </CardAction>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
