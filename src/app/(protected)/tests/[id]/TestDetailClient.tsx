@@ -39,6 +39,8 @@ export default function TestDetailClient({
     const [selectedTab, setSelectedTab] = useState(tests[0]?.id.toString());
     const user = useUser();
 
+    console.log(tests);
+
     const createQuestion = (testId: number, newQuestion: QuestionType) => {
         setTests(prev => 
             prev.map((test) => 

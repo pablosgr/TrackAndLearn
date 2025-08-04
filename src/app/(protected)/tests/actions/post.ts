@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server";
-import TestTemplateType from "@/types/test/TestTemplateType";
+import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { NewOptionType } from "@/types/test/OptionType";
 import { NewQuestionType, QuestionType } from "@/types/test/QuestionType";
 import { NewTestType, TestType } from "@/types/test/TestType";
@@ -85,8 +85,11 @@ export async function createQuestion(
     optionsData: NewOptionType[]
 ): Promise<QuestionType | null> {
     const supabase = await createClient();
+    let baseIndex = {
+        index_order: 0,
+    };
 
-    const { data: lastIndex, error: indexError } = await supabase
+    const { data: lastIndex } = await supabase
         .from('question')
         .select('index_order')
         .eq('test_id', questionData.test_id)
@@ -94,14 +97,15 @@ export async function createQuestion(
         .limit(1)
         .single();
 
-    if (!lastIndex || indexError) {
-        console.error('Error retrieving question index: ', indexError);
-        return null;
+    if (lastIndex) {
+        baseIndex = {
+            index_order: lastIndex.index_order
+        }
     }
 
     const { data: question, error: questionError } = await supabase
         .from('question')
-        .insert({...questionData, index_order: lastIndex.index_order})
+        .insert({...questionData, index_order: baseIndex.index_order + 1})
         .select();
 
     if (!question || questionError) {
