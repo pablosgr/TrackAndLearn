@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 
-export async function createClassroom(name: string, teacherId: string): Promise<ClassroomType | null> {
+export async function createClassroom(name: string, teacherId: number): Promise<ClassroomType | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase

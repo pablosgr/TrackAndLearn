@@ -17,7 +17,8 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
         const { data, error } = await supabase
             .from('classroom')
             .select('*')
-            .eq('teacher_id', userId);
+            .eq('teacher_id', userId)
+            .order('id', { ascending: false });
 
         if (!data || error) {
             console.error("Error fetching teacher classrooms: ", error);
@@ -39,7 +40,8 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
                     teacher:users!classroom_teacher_id_fkey(name)
                 )
             `)
-            .eq("student_id", userId);
+            .eq("student_id", userId)
+            .order("classroom.id", { ascending: false });
 
         if (!data || error) {
             console.error("Error fetching student classrooms: ", error);

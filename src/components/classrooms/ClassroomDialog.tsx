@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { PencilLine } from "lucide-react";
 import { useUser } from "../context/userWrapper";
+import { createClassroom } from "@/app/(protected)/classrooms/actions/post";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,12 +64,12 @@ export default function ClassroomDialog({
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         if (type === 'create' && onCreate) {
-            // const newClassroom = await createClassroom(values.name, defaultClassroom.teacher_id);
+            const newClassroom = await createClassroom(values.name, Number(defaultClassroom.teacher_id));
 
-            // if (newClassroom) {
-            //     onCreate(newClassroom);
-            //     form.reset();
-            // }
+            if (newClassroom) {
+                onCreate(newClassroom);
+                form.reset();
+            }
         }
 
         if (type === 'update' && onUpdate) {
@@ -118,7 +119,7 @@ export default function ClassroomDialog({
                                         Name
                                     </FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Name your template" {...field}/>
+                                        <Input placeholder="Name your classroom" {...field}/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
