@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TestType } from "@/types/test/TestType";
-import TestTemplateType from "@/types/test/TestTemplateType";
+import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
 import { AdaptationType } from "@/types/test/AdaptationType";
