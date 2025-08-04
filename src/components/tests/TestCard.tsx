@@ -1,6 +1,7 @@
 import { deleteTestTemplateById } from "@/app/(protected)/tests/actions/delete";
 import TestTemplateType from "@/types/test/TestTemplateType";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -24,11 +25,13 @@ import {
 } from "@/components/ui/card";
 
 export default function TestCard({ test, onDelete }: { test: TestTemplateType, onDelete: (id: string) => void }) {
+    const router = useRouter();
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(test.id);
         await deleteTestTemplateById(test.id);
+        router.refresh();
     }
 
     return (

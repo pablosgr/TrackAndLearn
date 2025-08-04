@@ -102,6 +102,7 @@ export default function TestDialog({
 
             if (newTest) {
                 onCreate(newTest);
+                form.reset();
             }
         }
 

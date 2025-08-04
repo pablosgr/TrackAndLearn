@@ -165,6 +165,7 @@ export default function QuestionDialog({
             const newQuestion = await createQuestion(questionData, optionsData);
             if (newQuestion) {
                 onCreate(testId, newQuestion);
+                form.reset();
             }
         }
 

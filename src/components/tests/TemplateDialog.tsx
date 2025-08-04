@@ -2,6 +2,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
 import { createTemplate} from "@/app/(protected)/tests/actions/post";
 import { TopicType } from "@/types/test/TopicType";
@@ -48,6 +49,7 @@ export default function TemplateDialog({
     topics: TopicType[],
     onCreate: (newTest: TestTemplateType) => void 
 }) {
+    const router = useRouter();
     const user = useUser();
     const [open, setOpen] = useState<boolean>(false);
 
@@ -66,6 +68,7 @@ export default function TemplateDialog({
             onCreate(newTest);
             form.reset();
             setOpen(false);
+            router.refresh();
         }
     }
 
