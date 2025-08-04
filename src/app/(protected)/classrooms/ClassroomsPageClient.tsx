@@ -27,6 +27,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                             <ClassroomCard 
                                 key={c.id}
                                 classroom={c}
+                                onDelete={handleDeleteClassroom}
                             />
                         ))
                     }

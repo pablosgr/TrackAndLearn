@@ -1,7 +1,8 @@
-import { ClassroomType } from "@/types/classroom/ClassroomType";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
+import { deleteClassroomById } from "@/app/(protected)/classrooms/actions/delete";
+import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -26,11 +27,11 @@ import {
 
 export default function ClassroomCard({ 
     classroom,
-    // onDelete,
+    onDelete,
     // onUpdate
 }: { 
     classroom: ClassroomType,
-    // onDelete: (id: string) => void,
+    onDelete: (classroomId: number) => void,
     // onUpdate: () => void
 }) {
     const user = useUser();
@@ -38,9 +39,9 @@ export default function ClassroomCard({
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        // onDelete(classroom.id);
-        // await deleteClassroomById(classroom.id);
-        // router.refresh();
+        onDelete(classroom.id);
+        await deleteClassroomById(classroom.id);
+        router.refresh();
     }
 
     return (
