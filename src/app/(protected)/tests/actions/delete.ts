@@ -15,6 +15,19 @@ export async function deleteTestTemplateById(templateId: string) {
     }
 }
 
+export async function deleteTestById(testId: number) {
+    const supabase = await createClient();
+
+    const response = await supabase
+        .from('test')
+        .delete()
+        .eq('id', testId);
+
+    if (response.status !== 204) {
+        console.error('Error deleting test: ', response.statusText);
+    }
+}
+
 export async function deleteQuestionById(questionId: number) {
     const supabase = await createClient();
 
