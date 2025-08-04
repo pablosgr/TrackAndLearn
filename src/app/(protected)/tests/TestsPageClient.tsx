@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import TestCard from "@/components/tests/TestCard";
+import TemplateCard from "@/components/tests/TemplateCard";
 import TemplateDialog from "@/components/tests/TemplateDialog";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { TopicType } from "@/types/test/TopicType";
@@ -39,7 +39,7 @@ export default function TestsPageClient({ testList, topicList }: { testList: Tes
     return (
         <>
             <header className="w-full flex flex-row items-center justify-between pb-10">
-                <h1 className="text-3xl">My tests</h1>
+                <h1 className="text-3xl">My Tests</h1>
                 <TemplateDialog 
                     type="create"
                     topics={topicList}
@@ -47,10 +47,10 @@ export default function TestsPageClient({ testList, topicList }: { testList: Tes
                 />
             </header>
             <section className="w-full flex flex-col justify-items-start">
-                <ul className="flex flex-row flex-wrap gap-9">
+                <div className="flex flex-row flex-wrap gap-9">
                     {
                         templates && templates.map((t) => (
-                            <TestCard
+                            <TemplateCard
                                 key={t.id}
                                 test={t}
                                 topics={topicList}
@@ -59,7 +59,7 @@ export default function TestsPageClient({ testList, topicList }: { testList: Tes
                             />
                         ))
                     }
-                </ul>
+                </div>
             </section>
         </>
     )

@@ -147,8 +147,8 @@ export default function TemplateDialog({
                             name="topic_id"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>
-                                        Topic
+                                    <FormLabel asChild>
+                                        <span>Topic</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Select value={field.value} onValueChange={field.onChange}>

@@ -26,7 +26,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-export default function TestCard({ 
+export default function TemplateCard({ 
     test,
     topics,
     onDelete,
@@ -47,8 +47,8 @@ export default function TestCard({
     }
 
     return (
-        <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-md) transition-shadow">
-            <CardHeader className="flex flex-row justify-between bg-(--color-accent) truncate">
+        <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-lg) transition-shadow">
+            <CardHeader className="h-30 flex flex-row justify-between bg-(--color-accent) truncate">
                 <div className="flex flex-col gap-2">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
                     <CardDescription>Topic: {test.topic_data.name}</CardDescription>

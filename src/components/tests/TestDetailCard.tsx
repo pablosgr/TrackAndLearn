@@ -68,7 +68,10 @@ export default function TestDetailCard({
                     </CardDescription>
                 </div>
                 <div className="flex flex-row gap-3 items-center">
-                    <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
+                    {
+                        test.question.length < 9 &&
+                        <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
+                    }
                     <TestDialog 
                         type="update"
                         templateName={templateName}
