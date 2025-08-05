@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server";
-import TestTemplateType from "@/types/test/TestTemplateType";
+import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { TestType } from "@/types/test/TestType";
 import { TopicType } from "@/types/test/TopicType";
 import { OptionType } from "@/types/test/OptionType";
