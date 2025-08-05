@@ -4,6 +4,7 @@ import QuestionDialog from "./QuestionDialog";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
+import CustomAlertDialog from "../CustomAlertDialog";
 import {
     Card,
     CardAction,
@@ -11,17 +12,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 
 export default function QuestionDetailCard({ 
@@ -48,25 +38,12 @@ export default function QuestionDetailCard({
                 <CardTitle>{question.question_text}</CardTitle>
                 <div className="flex flex-row gap-1">
                     <QuestionDialog type="update" testId={testId} question={question} onUpdate={onQuestionUpdate}/>
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                                <Trash size={22}/>
-                            </CardAction>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Question will be removed permanently. This action cannot be undone.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                    <CustomAlertDialog
+                        description={`
+                            Question will be permanently removed. This action cannot be undone.
+                        `}
+                        onDelete={handleDelete}
+                    />
                 </div>
             </CardHeader>
             <CardContent>

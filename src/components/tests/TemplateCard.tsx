@@ -4,19 +4,8 @@ import { TopicType } from "@/types/test/TopicType";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import TemplateDialog from "./TemplateDialog";
-import { Trash } from "lucide-react";
+import CustomAlertDialog from "../CustomAlertDialog";
 import { Button } from "../ui/button";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {
     Card,
     CardAction,
@@ -60,25 +49,12 @@ export default function TemplateCard({
                         topics={topics}
                         onUpdate={onUpdate}
                     />
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                                <Trash size={22}/>
-                            </CardAction>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Test template and all related tests will be permanently removed. This action cannot be undone.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                    <CustomAlertDialog
+                        description={`
+                            Test template and all related tests will be permanently removed. This action cannot be undone.
+                        `}
+                        onDelete={handleDelete}
+                    />
                 </div>
             </CardHeader>
             <CardContent className="flex flex-row justify-between gap-8 items-center">

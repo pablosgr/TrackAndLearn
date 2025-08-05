@@ -1,7 +1,6 @@
 'use client';
 
 import QuestionDetailCard from "./QuestionDetailCard";
-import { Trash } from "lucide-react";
 import { deleteTestById } from "@/app/(protected)/tests/actions/delete";
 import { TestType } from "@/types/test/TestType";
 import { QuestionType } from "@/types/test/QuestionType";
@@ -9,6 +8,7 @@ import { OptionType } from "@/types/test/OptionType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
 import { NewTestType } from "@/types/test/TestType";
+import CustomAlertDialog from "../CustomAlertDialog";
 import QuestionDialog from "./QuestionDialog";
 import TestDialog from "./TestDialog";
 import {
@@ -19,17 +19,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
 
 export default function TestDetailCard({ 
     test,
@@ -82,25 +72,12 @@ export default function TestDetailCard({
                     />
                     {
                         test.adaptation_id &&
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                                    <Trash size={22}/>
-                                </CardAction>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        { test.adaptation_data?.code } version will be permanently removed. This action cannot be undone.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={handleTestDelete}>Delete</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                        <CustomAlertDialog
+                            description={`
+                                ${ test.adaptation_data?.code } version will be permanently removed. This action cannot be undone.
+                            `}
+                            onDelete={handleTestDelete}
+                        />
                     }
                 </div>
             </CardHeader>

@@ -3,19 +3,8 @@ import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
 import { deleteClassroomById } from "@/app/(protected)/classrooms/actions/delete";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
-import { Trash } from "lucide-react";
 import { Button } from "../ui/button";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import CustomAlertDialog from "../CustomAlertDialog";
 import {
     Card,
     CardAction,
@@ -61,25 +50,13 @@ export default function ClassroomCard({
                     /> */}
                     {
                         user.role === 'teacher' &&
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <CardAction className="p-2 hover:bg-(--color-destructive) hover:cursor-pointer rounded-lg transition-colors">
-                                    <Trash size={22}/>
-                                </CardAction>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        Classroom and all related assignments/results will be permanently removed. This action cannot be undone.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                        <CustomAlertDialog
+                            description={`
+                                Classroom and all related assignments/results will be permanently removed. 
+                                This action cannot be undone.
+                            `}
+                            onDelete={handleDelete}
+                        />
                     }
                 </div>
             </CardHeader>
