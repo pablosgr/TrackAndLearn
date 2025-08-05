@@ -15,7 +15,7 @@ export async function deleteClassroomById(classroomId: number) {
     }
 }
 
-export async function removeStudentFromClassroom(studentId: string, classroomId: number) {
+export async function removeStudentFromClassroom(studentId: number, classroomId: number) {
     const supabase = await createClient();
 
     const response = await supabase

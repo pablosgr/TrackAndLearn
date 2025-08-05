@@ -1,4 +1,5 @@
 import CustomAlertDialog from "../CustomAlertDialog";
+import { removeStudentFromClassroom } from "@/app/(protected)/classrooms/actions/delete";
 import { StudentType } from "@/types/user/StudentType";
 import {
     Card,
@@ -11,13 +12,17 @@ import {
 
 export default function StudentCard({
     student,
+    classroomId,
     onDelete,
 }: {
     student: StudentType,
-    onDelete: (removedStudent: StudentType) => void
+    classroomId: number,
+    onDelete: (removedStudentId: number) => void
 }) {
-    const handleStudentRemoval = (e: React.MouseEvent) => {
-        
+    const handleStudentRemoval = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onDelete(student.id);
+        await removeStudentFromClassroom(student.id, classroomId);
     }
 
     return (

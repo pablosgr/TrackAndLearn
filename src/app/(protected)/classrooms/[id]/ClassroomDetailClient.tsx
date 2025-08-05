@@ -37,8 +37,8 @@ export default function ClassroomDetailClient(
     const [selectedTab, setSelectedTab] = useState('tests');
     const user = useUser();
 
-    const handleStudentDelete = (removedStudent: StudentType) => {
-        setStudents(prev => prev.filter(student => student.id !== removedStudent.id));
+    const handleStudentDelete = (removedStudentId: number) => {
+        setStudents(prev => prev.filter(student => student.id !== removedStudentId));
     }
 
     return (
@@ -79,6 +79,7 @@ export default function ClassroomDetailClient(
                         <TabsContent value="students" className="w-full h-full">
                             <ClassroomStudentsCard 
                                 studentList={students}
+                                classroomId={classroom.id}
                                 onDelete={handleStudentDelete}
                             />
                         </TabsContent>

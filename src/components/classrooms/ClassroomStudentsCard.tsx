@@ -3,16 +3,22 @@ import { StudentType } from "@/types/user/StudentType";
 
 export default function ClassroomStudentsCard({ 
     studentList,
+    classroomId,
     onDelete,
 }: { 
     studentList: StudentType[],
-    onDelete: (removedStudent: StudentType) => void,
+    classroomId: number,
+    onDelete: (removedStudentId: number) => void,
 }) {
     return (
         <>
             {
                 studentList.map((student) => (
-                    <StudentCard key={student.id} student={student} onDelete={onDelete} />
+                    <StudentCard 
+                        key={student.id}
+                        student={student}
+                        classroomId={classroomId}
+                        onDelete={onDelete} />
                 ))
             }
         </>
