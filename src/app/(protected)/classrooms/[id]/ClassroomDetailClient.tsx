@@ -64,7 +64,7 @@ export default function ClassroomDetailClient(
                             </CardContent>
                         </Card>
                     </section>
-                    <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+                    <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
                         <TabsList>
                             <TabsTrigger value="tests" className="hover:cursor-pointer">
                                 Assignments
@@ -76,7 +76,7 @@ export default function ClassroomDetailClient(
                         <TabsContent value="tests">
                             You're in tests now
                         </TabsContent>
-                        <TabsContent value="students">
+                        <TabsContent value="students" className="w-full h-full">
                             <ClassroomStudentsCard 
                                 studentList={students}
                                 onDelete={handleStudentDelete}
@@ -90,16 +90,6 @@ export default function ClassroomDetailClient(
         //     <h2 className="font-bold">{classroom.name}</h2>
         //     <p>Teacher: {classroom.teacher?.name}</p>
         //     <p>Classroom code: {classroom.code}</p>
-        //     <section className="bg-cyan-100 p-5 rounded-lg">
-        //         <h2 className="font-semibold">Student List</h2>
-        //         <ul>
-        //             {
-        //                 students && students.map((item) => (
-        //                     <li key={item.id}>{item.username}</li>
-        //                 ))
-        //             }
-        //         </ul>
-        //     </section>
         //     <section className="bg-cyan-100 p-5 rounded-lg">
         //         <h2 className="font-semibold">Assigned Tests</h2>
         //         <ul className="flex flex-col gap-3">
