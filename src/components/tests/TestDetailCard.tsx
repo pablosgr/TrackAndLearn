@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/card";
 
 
-export default function TestDetailCard({ 
+export default function TestDetailCard({
     test,
     templateName,
     adaptations,

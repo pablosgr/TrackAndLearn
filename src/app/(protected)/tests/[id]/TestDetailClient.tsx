@@ -39,8 +39,6 @@ export default function TestDetailClient({
     const [selectedTab, setSelectedTab] = useState(tests[0]?.id.toString());
     const user = useUser();
 
-    console.log(tests);
-
     const createQuestion = (testId: number, newQuestion: QuestionType) => {
         setTests(prev => 
             prev.map((test) => 
@@ -110,7 +108,7 @@ export default function TestDetailClient({
     }
 
     const deleteTest = (testId: number) => {
-        setTests(tests.filter((t) => t.id !== testId));
+        setTests(prev => prev.filter((t) => t.id !== testId));
         setSelectedTab(tests[0]?.id.toString());
     }
 
@@ -139,7 +137,7 @@ export default function TestDetailClient({
     }
 
     return (
-        <Card className="w-full">
+        <Card className="w-full h-full">
             <CardHeader className="bg-(--color-accent) gap-2 py-6">
                 <CardTitle className="text-2xl">{testTemplate.name} | {testTemplate.topic_data.name}</CardTitle>
                 <CardDescription>Created on {new Date(testTemplate.created_at).toLocaleDateString()}</CardDescription>
