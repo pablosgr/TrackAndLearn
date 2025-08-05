@@ -3,6 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useUser } from "../context/userWrapper";
+import { enrollStudent } from "@/app/(protected)/classrooms/actions/post";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,9 +40,10 @@ export default function JoinClassroomDialog({
 }: {
     version: 'outline' | 'default',
     size?: 'default' | 'lg',
-    onJoin?: (newClassroom: ClassroomType) => void,
+    onJoin: (newClassroom: ClassroomType) => void,
 }) {
     const router = useRouter();
+    const user = useUser();
     const [open, setOpen] = useState<boolean>(false);
     const chosenSize = size ?? 'default';
 
@@ -52,6 +55,17 @@ export default function JoinClassroomDialog({
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const result = await enrollStudent(user.id, values.code);
+
+        if (!result.success) {
+            form.setError('code', {
+                type: 'manual',
+                message: result.message,
+            });
+            return;
+        }
+        
+        onJoin(result.classroom!);
         setOpen(false);
         router.refresh();
     }
