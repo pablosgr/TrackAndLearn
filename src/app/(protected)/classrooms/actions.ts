@@ -36,12 +36,13 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
                     id,
                     teacher_id,
                     name,
+                    code,
                     created_at,
                     teacher:users!classroom_teacher_id_fkey(name)
                 )
             `)
             .eq("student_id", userId)
-            .order("classroom.id", { ascending: false });
+            .order("classroom_id", { ascending: false });
 
         if (!data || error) {
             console.error("Error fetching student classrooms: ", error);
@@ -72,6 +73,7 @@ export async function getClassroomById(classroomId: string): Promise<ClassroomTy
             id, 
             teacher_id,
             name,
+            code,
             created_at,
             teacher:users!classroom_teacher_id_fkey(name)
         `)
