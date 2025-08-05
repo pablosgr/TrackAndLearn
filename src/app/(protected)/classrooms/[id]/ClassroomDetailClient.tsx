@@ -26,6 +26,7 @@ export default function ClassroomDetailClient(
         <div className="flex flex-col gap-8 p-10 m-5 rounded-lg bg-cyan-300 shadow-md">
             <h2 className="font-bold">{classroom.name}</h2>
             <p>Teacher: {classroom.teacher?.name}</p>
+            <p>Classroom code: {classroom.code}</p>
             <section className="bg-cyan-100 p-5 rounded-lg">
                 <h2 className="font-semibold">Student List</h2>
                 <ul>

@@ -4,8 +4,8 @@ import requireUser from "@/utils/auth/requireUser";
 
 export default async function ClassroomLayout(
 { 
-        children,
-        params 
+    children,
+    params 
 }: {
     children: ReactNode,
     params: { id: string }
