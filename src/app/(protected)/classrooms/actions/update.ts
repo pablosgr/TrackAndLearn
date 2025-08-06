@@ -20,3 +20,19 @@ export async function resetClassCode(classroomId: number): Promise<string | null
 
     return newCode;
 }
+
+export async function updateClassroomName(classroomId: number, newName: string): Promise<string | null> {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+        .from('classroom')
+        .update({ name: newName })
+        .eq('id', classroomId);
+    
+    if (error) {
+        console.error('Error updating classroom name: ', error);
+        return null;
+    }
+
+    return newName;
+}
