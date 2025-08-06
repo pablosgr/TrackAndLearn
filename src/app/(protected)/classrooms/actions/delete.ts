@@ -28,3 +28,16 @@ export async function removeStudentFromClassroom(studentId: number, classroomId:
         console.error('Error removing student: ', response.statusText);
     }
 }
+
+export async function removeAssignment(assignmentId: number) {
+    const supabase = await createClient();
+
+    const response = await supabase
+        .from('test_assignment')
+        .delete()
+        .eq('id', assignmentId);
+
+    if (response.status !== 204) {
+        console.error('Error removing assigned test: ', response.statusText);
+    }
+}
