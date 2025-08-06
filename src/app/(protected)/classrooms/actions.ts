@@ -187,7 +187,8 @@ export async function getAssignedTests(classroomId: string, userId: string): Pro
                 created_at
             )
         `)
-        .eq('classroom_id', classroomId);
+        .eq('classroom_id', classroomId)
+        .order('id', { ascending: false });
 
         if (!data || error) {
             console.error('Error fetching assigned tests: ', error);
