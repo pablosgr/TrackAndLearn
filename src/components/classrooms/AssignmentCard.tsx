@@ -40,10 +40,13 @@ export default function AssignmentCard({
         >
             <CardHeader>
                 <CardTitle>{test.test_template.name}</CardTitle>
-                <CustomAlertDialog
-                    description="Assignment will be removed from classroom."
-                    onDelete={handleRemoveAssignment}
-                />
+                {
+                    user.role === 'teacher' &&
+                    <CustomAlertDialog
+                        description="Assignment will be removed from classroom."
+                        onDelete={handleRemoveAssignment}
+                    />
+                }
             </CardHeader>
             <CardContent className="flex flex-row gap-6 items-center justify-between">
                 <span>{test.test_template.name}</span>

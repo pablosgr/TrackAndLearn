@@ -9,6 +9,7 @@ import ClassroomAssignmentsCard from "@/components/classrooms/ClassroomAssignmen
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
 import { resetClassCode } from "../actions/update";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
+import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import {
@@ -30,11 +31,13 @@ export default function ClassroomDetailClient(
 { 
     classroomDetails,
     studentList,
-    testList 
+    testList,
+    availableTests
 }: {
     classroomDetails: ClassroomType,
     studentList: StudentType[],
-    testList: AssignedTestType[]
+    testList: AssignedTestType[],
+    availableTests: TestTemplateType[]
 }) {
     const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
     const [students, setStudents] = useState<StudentType[]>(studentList);
@@ -45,6 +48,10 @@ export default function ClassroomDetailClient(
 
     const handleStudentDelete = (removedStudentId: number) => {
         setStudents(prev => prev.filter(student => student.id !== removedStudentId));
+    }
+
+    const handleAssignTest = (newAssignment: AssignedTestType) => {
+        setTests(prev => [newAssignment, ...prev]);
     }
 
     const handleRemoveAssignment = (assignmentId: number) => {
@@ -134,6 +141,9 @@ export default function ClassroomDetailClient(
                         <TabsContent value="tests">
                             <ClassroomAssignmentsCard
                                 testList={tests}
+                                availableTests={availableTests}
+                                classroomId={classroomDetails.id}
+                                onAssign={handleAssignTest}
                                 onDelete={handleRemoveAssignment}
                             />
                         </TabsContent>
