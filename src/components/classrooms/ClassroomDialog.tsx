@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { PencilLine } from "lucide-react";
 import { useUser } from "../context/userWrapper";
 import { createClassroom } from "@/app/(protected)/classrooms/actions/post";
+import { updateClassroomName } from "@/app/(protected)/classrooms/actions/update";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,7 +44,7 @@ export default function ClassroomDialog({
     type: 'update' | 'create',
     classroom?: ClassroomType,
     onCreate?: (newClassroom: ClassroomType) => void,
-    onUpdate?: (updatedClassroom: ClassroomType) => void
+    onUpdate?: (updatedName: string) => void
 }) {
     const router = useRouter();
     const user = useUser();
@@ -73,7 +74,11 @@ export default function ClassroomDialog({
         }
 
         if (type === 'update' && onUpdate) {
+            const newName = await updateClassroomName(defaultClassroom.id, values.name);
 
+            if (newName) {
+                onUpdate(newName);
+            }
         }
 
         setOpen(false);

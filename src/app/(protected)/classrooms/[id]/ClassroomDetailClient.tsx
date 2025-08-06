@@ -5,6 +5,7 @@ import { useUser } from "@/components/context/userWrapper";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import ClassroomStudentsCard from "@/components/classrooms/ClassroomStudentsCard";
+import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
 import { resetClassCode } from "../actions/update";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { StudentType } from "@/types/user/StudentType";
@@ -60,6 +61,13 @@ export default function ClassroomDetailClient(
         setIsGenerating(false);
     }
 
+    const handleUpdateName = async (updatedName: string) => {
+        setClassroom(prev => ({
+            ...prev,
+            name: updatedName
+        }));
+    }
+
     return (
         <Card className="w-full h-full">
             <CardHeader className="bg-(--color-secondary) gap-2 py-6">
@@ -68,52 +76,69 @@ export default function ClassroomDetailClient(
                     <span>Teacher: {classroom.teacher?.name}</span>
                     <span>Created on {new Date(classroom.created_at).toLocaleDateString()}</span>
                 </CardDescription>
+                {
+                    user.role === 'teacher' &&
+                    <ClassroomDialog 
+                        type="update"
+                        classroom={classroom}
+                        onUpdate={handleUpdateName}
+                    />
+                }
             </CardHeader>
             <CardContent className="h-full w-full">
                 <div className="h-full flex flex-row gap-5">
-                    <section className="w-60 h-full">
-                        <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
-                            <CardHeader>
-                                <CardTitle>Classroom code</CardTitle>
-                            </CardHeader>
-                            <CardContent className="w-full flex flex-col gap-3">
-                                <span className="text-2xl text-accent text-shadow-2xs">
-                                    {classroom.code}
-                                </span>
-                                <Button variant="outline" disabled={isGenerating} onClick={handleResetCode}>
-                                    {
-                                        isGenerating ? (
-                                            <>
-                                                <LoaderCircle size={22} className="animate-spin mr-1" />
-                                                Generating
-                                            </>
-                                        ) : (
-                                            'Reset code'
-                                        )
-                                    }
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </section>
+                    {
+                        user.role === 'teacher' &&
+                        <section className="min-w-48 h-full">
+                            <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
+                                <CardHeader>
+                                    <CardTitle>Classroom code</CardTitle>
+                                </CardHeader>
+                                <CardContent className="w-full flex flex-col gap-3">
+                                    <span className="text-2xl text-accent text-shadow-2xs">
+                                        {classroom.code}
+                                    </span>
+                                    <Button variant="outline" disabled={isGenerating} onClick={handleResetCode}>
+                                        {
+                                            isGenerating ? (
+                                                <>
+                                                    <LoaderCircle size={22} className="animate-spin mr-1" />
+                                                    Generating
+                                                </>
+                                            ) : (
+                                                'Reset code'
+                                            )
+                                        }
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        </section>
+                    }
                     <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
                         <TabsList>
                             <TabsTrigger value="tests" className="hover:cursor-pointer">
                                 Assignments
                             </TabsTrigger>
-                            <TabsTrigger value="students" className="hover:cursor-pointer">
-                                Students
-                            </TabsTrigger>
+                            {
+                                user.role === 'teacher' &&
+                                <TabsTrigger value="students" className="hover:cursor-pointer">
+                                    Students
+                                </TabsTrigger>
+                            }
                         </TabsList>
                         <TabsContent value="tests">
                             You're in tests now
                         </TabsContent>
-                        <TabsContent value="students" className="w-full h-full">
-                            <ClassroomStudentsCard 
-                                studentList={students}
-                                classroomId={classroom.id}
-                                onDelete={handleStudentDelete}
-                            />
-                        </TabsContent>
+                        {
+                            user.role === 'teacher' &&
+                            <TabsContent value="students" className="w-full h-full">
+                                <ClassroomStudentsCard 
+                                    studentList={students}
+                                    classroomId={classroom.id}
+                                    onDelete={handleStudentDelete}
+                                />
+                            </TabsContent>
+                        }
                     </Tabs>
                 </div>
             </CardContent>
