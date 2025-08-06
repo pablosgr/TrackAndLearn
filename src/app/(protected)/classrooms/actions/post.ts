@@ -3,7 +3,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { generateClassCode } from "@/utils/general/generateClassCode";
-import { success } from "zod";
 
 export async function createClassroom(name: string, teacherId: number): Promise<ClassroomType | null> {
     const supabase = await createClient();
