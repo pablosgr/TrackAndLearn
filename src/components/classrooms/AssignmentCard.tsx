@@ -1,5 +1,7 @@
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { useUser } from "../context/userWrapper";
+import { removeAssignment } from "@/app/(protected)/classrooms/actions/delete";
+import CustomAlertDialog from "../CustomAlertDialog";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import {
@@ -16,9 +18,15 @@ export default function AssignmentCard({
     onDelete,
 }: {
     test: AssignedTestType,
-    onDelete?: (assignmentId: number) => void,
+    onDelete: (assignmentId: number) => void,
 }) {
     const user = useUser();
+
+    const handleRemoveAssignment = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onDelete(test.id);
+        await removeAssignment(test.id);
+    }
 
     return (
         <Card
@@ -29,6 +37,10 @@ export default function AssignmentCard({
         >
             <CardHeader>
                 <CardTitle>{test.test_template.name}</CardTitle>
+                <CustomAlertDialog
+                    description="Assignment will be removed from classroom."
+                    onDelete={handleRemoveAssignment}
+                />
             </CardHeader>
             <CardContent className="flex flex-row gap-6 items-center justify-between">
                 <span>{test.test_template.name}</span>

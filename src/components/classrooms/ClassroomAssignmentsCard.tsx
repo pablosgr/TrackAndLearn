@@ -8,7 +8,7 @@ export default function ClassroomAssignmentsCard({
     onDelete,
 }: {
     testList: AssignedTestType[],
-    onDelete?: (assignmentId: number) => void,
+    onDelete: (assignmentId: number) => void,
 }) {
     return (
         <Card className="flex flex-col gap-3 p-6 shadow-none border-none rounded-none">
