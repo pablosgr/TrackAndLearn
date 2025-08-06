@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { useUser } from "@/components/context/userWrapper";
+import { Button } from "@/components/ui/button";
+import { LoaderCircle } from "lucide-react";
 import ClassroomStudentsCard from "@/components/classrooms/ClassroomStudentsCard";
+import { resetClassCode } from "../actions/update";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
@@ -34,11 +37,27 @@ export default function ClassroomDetailClient(
     const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
     const [students, setStudents] = useState<StudentType[]>(studentList);
     const [tests, setTests] = useState<AssignedTestType[]>(testList);
-    const [selectedTab, setSelectedTab] = useState('tests');
+    const [selectedTab, setSelectedTab] = useState<string>('tests');
+    const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const user = useUser();
 
     const handleStudentDelete = (removedStudentId: number) => {
         setStudents(prev => prev.filter(student => student.id !== removedStudentId));
+    }
+
+    const handleResetCode = async () => {
+        setIsGenerating(true);
+
+        const newCode = await resetClassCode(classroom.id);
+
+        if (newCode) {
+            setClassroom(prev => ({
+                ...prev,
+                code: newCode
+            }));
+        }
+
+        setIsGenerating(false);
     }
 
     return (
@@ -57,10 +76,22 @@ export default function ClassroomDetailClient(
                             <CardHeader>
                                 <CardTitle>Classroom code</CardTitle>
                             </CardHeader>
-                            <CardContent className="w-full">
+                            <CardContent className="w-full flex flex-col gap-3">
                                 <span className="text-2xl text-accent text-shadow-2xs">
                                     {classroom.code}
                                 </span>
+                                <Button variant="outline" disabled={isGenerating} onClick={handleResetCode}>
+                                    {
+                                        isGenerating ? (
+                                            <>
+                                                <LoaderCircle size={22} className="animate-spin mr-1" />
+                                                Generating
+                                            </>
+                                        ) : (
+                                            'Reset code'
+                                        )
+                                    }
+                                </Button>
                             </CardContent>
                         </Card>
                     </section>

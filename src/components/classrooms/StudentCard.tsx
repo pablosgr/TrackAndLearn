@@ -31,13 +31,14 @@ export default function StudentCard({
                 w-full flex flex-row my-0
                 border-0 border-t-1 border-gray-300
                 py-5 rounded-none shadow-none
-                hover:cursor-pointer hover:bg-gray-100
+                hover:cursor-pointer hover:bg-cyan-100/50
             `}
         >
             <CardContent className="w-full flex flex-row justify-between gap-6 items-center">
                 <div className="flex flex-row gap-10 items-center">
                     <span>{student.username}</span>
                     <span>{student.name}</span>
+                    <span>{student.email}</span>
                 </div>
                 <CustomAlertDialog 
                     description="Student will be removed from the classroom. This action cannot be undone."
