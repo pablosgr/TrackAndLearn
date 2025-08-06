@@ -17,11 +17,9 @@ import {
 export default function ClassroomCard({ 
     classroom,
     onDelete,
-    // onUpdate
 }: { 
     classroom: ClassroomType,
     onDelete: (classroomId: number) => void,
-    // onUpdate: () => void
 }) {
     const user = useUser();
     const router = useRouter();

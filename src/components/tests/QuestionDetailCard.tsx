@@ -1,4 +1,5 @@
 import { Check, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { deleteQuestionById } from "@/app/(protected)/tests/actions/delete";
 import QuestionDialog from "./QuestionDialog";
 import { QuestionType } from "@/types/test/QuestionType";
@@ -25,11 +26,13 @@ export default function QuestionDetailCard({
     onQuestionDelete: (testId: number, id: number) => void,
     onQuestionUpdate: (testId: number, id: number, data: EditQuestionType, newOptions: OptionType[]) => void
 }) {
+    const router = useRouter();
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
         onQuestionDelete(testId, question.id);
         await deleteQuestionById(question.id);
+        router.refresh();
     }
 
     return (

@@ -1,4 +1,5 @@
 import CustomAlertDialog from "../CustomAlertDialog";
+import { useRouter } from "next/navigation";
 import { removeStudentFromClassroom } from "@/app/(protected)/classrooms/actions/delete";
 import { StudentType } from "@/types/user/StudentType";
 import {
@@ -19,10 +20,13 @@ export default function StudentCard({
     classroomId: number,
     onDelete: (removedStudentId: number) => void
 }) {
+    const router = useRouter();
+
     const handleStudentRemoval = async (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(student.id);
         await removeStudentFromClassroom(student.id, classroomId);
+        router.refresh();
     }
 
     return (

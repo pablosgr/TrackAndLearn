@@ -1,6 +1,7 @@
 'use client';
 
 import QuestionDetailCard from "./QuestionDetailCard";
+import { useRouter } from "next/navigation";
 import { deleteTestById } from "@/app/(protected)/tests/actions/delete";
 import { TestType } from "@/types/test/TestType";
 import { QuestionType } from "@/types/test/QuestionType";
@@ -40,10 +41,13 @@ export default function TestDetailCard({
     onTestUpdate: (testId: number, data: NewTestType) => void,
     onTestDelete: (testId: number) => void,
 }) {
+    const router = useRouter();
+
     const handleTestDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
         onTestDelete(test.id);
         await deleteTestById(test.id);
+        router.refresh();
     }
     
     return (

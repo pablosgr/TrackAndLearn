@@ -1,5 +1,6 @@
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { useUser } from "../context/userWrapper";
+import { useRouter } from "next/navigation";
 import { removeAssignment } from "@/app/(protected)/classrooms/actions/delete";
 import CustomAlertDialog from "../CustomAlertDialog";
 import Link from "next/link";
@@ -21,11 +22,13 @@ export default function AssignmentCard({
     onDelete: (assignmentId: number) => void,
 }) {
     const user = useUser();
+    const router = useRouter();
 
     const handleRemoveAssignment = async (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(test.id);
         await removeAssignment(test.id);
+        router.refresh();
     }
 
     return (
