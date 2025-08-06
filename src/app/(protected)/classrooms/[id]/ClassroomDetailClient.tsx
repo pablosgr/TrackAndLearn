@@ -5,6 +5,7 @@ import { useUser } from "@/components/context/userWrapper";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import ClassroomStudentsCard from "@/components/classrooms/ClassroomStudentsCard";
+import ClassroomAssignmentsCard from "@/components/classrooms/ClassroomAssignmentsCard";
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
 import { resetClassCode } from "../actions/update";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
@@ -46,7 +47,11 @@ export default function ClassroomDetailClient(
         setStudents(prev => prev.filter(student => student.id !== removedStudentId));
     }
 
-    const handleResetCode = async () => {
+    const handleRemoveAssignment = (assignmentId: number) => {
+        setTests(prev => prev.filter((test) => test.id !== assignmentId));
+    }
+
+    const handleCodeReset = async () => {
         setIsGenerating(true);
 
         const newCode = await resetClassCode(classroom.id);
@@ -98,7 +103,7 @@ export default function ClassroomDetailClient(
                                     <span className="text-2xl text-accent text-shadow-2xs">
                                         {classroom.code}
                                     </span>
-                                    <Button variant="outline" disabled={isGenerating} onClick={handleResetCode}>
+                                    <Button variant="outline" disabled={isGenerating} onClick={handleCodeReset}>
                                         {
                                             isGenerating ? (
                                                 <>
@@ -127,7 +132,10 @@ export default function ClassroomDetailClient(
                             }
                         </TabsList>
                         <TabsContent value="tests">
-                            You're in tests now
+                            <ClassroomAssignmentsCard
+                                testList={tests}
+                                onDelete={handleRemoveAssignment}
+                            />
                         </TabsContent>
                         {
                             user.role === 'teacher' &&
@@ -143,47 +151,5 @@ export default function ClassroomDetailClient(
                 </div>
             </CardContent>
         </Card>
-        // <div className="flex flex-col gap-8 p-10 m-5 rounded-lg bg-cyan-300 shadow-md">
-        //     <h2 className="font-bold">{classroom.name}</h2>
-        //     <p>Teacher: {classroom.teacher?.name}</p>
-        //     <p>Classroom code: {classroom.code}</p>
-        //     <section className="bg-cyan-100 p-5 rounded-lg">
-        //         <h2 className="font-semibold">Assigned Tests</h2>
-        //         <ul className="flex flex-col gap-3">
-        //             {
-        //                 tests && tests.map((item) => (
-        //                     <li key={item.id} className="flex flex-row gap-3 items-center">
-        //                         {
-        //                             user.role === 'teacher' && (
-        //                                 <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}/result`}>
-        //                                     <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
-        //                                         View results
-        //                                     </button>
-        //                                 </Link>
-        //                             )
-        //                         }
-        //                         {
-        //                             user.role === 'student' && (
-        //                                 item.has_result
-        //                                 ? item.is_result_visible && 
-        //                                     <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}/result`}>
-        //                                         <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
-        //                                             View result
-        //                                         </button>
-        //                                     </Link>
-        //                                 : <Link href={`/classrooms/${classroom.id}/test/${item.test_template_id}`}>
-        //                                         <button className="p-2 rounded-lg bg-orange-300 hover:cursor-pointer">
-        //                                             Take test
-        //                                         </button>
-        //                                     </Link>
-        //                             )
-        //                         }
-        //                         <p className={`${item.has_result && 'text-gray-400'}`}>{item.test_template.name}</p>
-        //                     </li>
-        //                 ))
-        //             }
-        //         </ul>
-        //     </section>
-        // </div>
     )
 }

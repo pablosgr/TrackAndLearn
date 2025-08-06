@@ -29,7 +29,7 @@ export default function StudentCard({
         <Card 
             className={`
                 w-full flex flex-row my-0
-                border-0 border-t-1 border-gray-300
+                border-0 border-b-1 border-gray-300
                 py-5 rounded-none shadow-none
                 hover:cursor-pointer hover:bg-cyan-100/50
             `}
