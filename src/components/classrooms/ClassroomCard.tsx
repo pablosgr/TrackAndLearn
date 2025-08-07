@@ -42,10 +42,6 @@ export default function ClassroomCard({
                     }
                 </div>
                 <div className="flex flex-row gap-2">
-                    {/* <ClassroomDialog
-                        type="update"
-                        onUpdate={onUpdate}
-                    /> */}
                     {
                         user.role === 'teacher' &&
                         <CustomAlertDialog

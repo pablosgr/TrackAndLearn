@@ -10,7 +10,7 @@ import ClassroomCard from "@/components/classrooms/ClassroomCard";
 export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
     const user = useUser();
     const [classrooms, setClassrooms] = useState<ClassroomType[]>(data);
-    const noClassrooms = classrooms.length === 0;
+    const hasClassrooms = classrooms.length > 0;
 
     const handleCreateClassroom = (newClassroom: ClassroomType) => {
         setClassrooms(prev => [newClassroom, ...prev]);
@@ -26,25 +26,25 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                 <h1 className="text-3xl">My Classrooms</h1>
                 {
                     user.role === 'teacher'
-                    ? !noClassrooms && <ClassroomDialog
+                    ? hasClassrooms && <ClassroomDialog
                             type="create"
                             onCreate={handleCreateClassroom}
                         />
-                    : !noClassrooms && <JoinClassroomDialog 
+                    : hasClassrooms && <JoinClassroomDialog 
                         version="default"
                             onJoin={handleCreateClassroom}
                         />
                 }
             </header>
-            <section className={`w-full flex flex-col ${noClassrooms ? 'h-full items-center' : 'items-start'}`}>
+            <section className={`w-full flex flex-col ${hasClassrooms ? 'items-start' : 'h-full items-center'}`}>
                 {
-                    noClassrooms
+                    !hasClassrooms
                     ? <div className="h-full flex flex-col justify-center gap-3">
                         <span className="text-lg">
                             {
-                                user.role === 'student'
-                                ? 'Try joining a Classroom!'
-                                : 'Start creating a Classroom!'
+                                user.role === 'teacher'
+                                ? 'Start creating a Classroom!'
+                                : 'Try joining a Classroom!'
                             }
                         </span>
                         {
@@ -60,17 +60,18 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                                 />
                         }
                         </div>
-                    : <div className="flex flex-row flex-wrap gap-9">
+                    : <ul className="flex flex-row flex-wrap gap-9">
                         {
                             classrooms && classrooms.map((c) => (
-                                <ClassroomCard 
-                                    key={c.id}
-                                    classroom={c}
-                                    onDelete={handleDeleteClassroom}
-                                />
+                                <li key={c.id}>
+                                    <ClassroomCard 
+                                        classroom={c}
+                                        onDelete={handleDeleteClassroom}
+                                    />
+                                </li>
                             ))
                         }
-                    </div>
+                    </ul>
                 }
             </section>
         </>

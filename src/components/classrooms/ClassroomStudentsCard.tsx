@@ -17,23 +17,36 @@ export default function ClassroomStudentsCard({
         <Card
             className={`
                 flex p-6
-                ${students ? 'flex-col gap-0' : 'h-full items-center justify-center'}
+                ${students ? '' : 'flex-col gap-2 h-full items-center justify-center'}
                 shadow-none border-none rounded-none
             `}>
             {
-                !students && 
-                <span className="text-gray-400 text-lg">
-                    No students enrolled yet..
-                </span>
+                !students &&
+                <>
+                    <span className="text-gray-400 text-lg">
+                        No students enrolled yet..
+                    </span>
+                    <span className="text-gray-400 text-md">
+                        Share the Classroom code with them to let them join!
+                    </span>
+                </>
             }
             {
-                students && studentList.map((student) => (
-                    <StudentCard 
-                        key={student.id}
-                        student={student}
-                        classroomId={classroomId}
-                        onDelete={onDelete} />
-                ))
+                students && (
+                    <ul className="flex flex-col gap-0">
+                        {
+                            studentList.map((student) => (
+                                <li key={student.id}>
+                                    <StudentCard 
+                                        student={student}
+                                        classroomId={classroomId}
+                                        onDelete={onDelete}
+                                    />
+                                </li>
+                            ))
+                        }
+                    </ul>
+                )
             }
         </Card>
     )
