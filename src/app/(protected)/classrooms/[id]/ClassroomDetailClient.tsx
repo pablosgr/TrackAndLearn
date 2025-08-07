@@ -41,7 +41,7 @@ export default function ClassroomDetailClient(
 }) {
     const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
     const [students, setStudents] = useState<StudentType[]>(studentList);
-    const [tests, setTests] = useState<AssignedTestType[]>(testList);
+    const [assignedTests, setAssignedTests] = useState<AssignedTestType[]>(testList);
     const [selectedTab, setSelectedTab] = useState<string>('tests');
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const user = useUser();
@@ -51,11 +51,11 @@ export default function ClassroomDetailClient(
     }
 
     const handleAssignTest = (newAssignment: AssignedTestType) => {
-        setTests(prev => [newAssignment, ...prev]);
+        setAssignedTests(prev => [newAssignment, ...prev]);
     }
 
     const handleRemoveAssignment = (assignmentId: number) => {
-        setTests(prev => prev.filter((test) => test.id !== assignmentId));
+        setAssignedTests(prev => prev.filter((test) => test.id !== assignmentId));
     }
 
     const handleCodeReset = async () => {
@@ -126,7 +126,7 @@ export default function ClassroomDetailClient(
                             </Card>
                         </section>
                     }
-                    <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
+                    <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full h-full">
                         <TabsList>
                             <TabsTrigger value="tests" className="hover:cursor-pointer">
                                 Assignments
@@ -140,7 +140,7 @@ export default function ClassroomDetailClient(
                         </TabsList>
                         <TabsContent value="tests">
                             <ClassroomAssignmentsCard
-                                testList={tests}
+                                assignedTests={assignedTests}
                                 availableTests={availableTests}
                                 classroomId={classroomDetails.id}
                                 onAssign={handleAssignTest}
@@ -149,7 +149,7 @@ export default function ClassroomDetailClient(
                         </TabsContent>
                         {
                             user.role === 'teacher' &&
-                            <TabsContent value="students" className="w-full h-full">
+                            <TabsContent value="students">
                                 <ClassroomStudentsCard 
                                     studentList={students}
                                     classroomId={classroom.id}

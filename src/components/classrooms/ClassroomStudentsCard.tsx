@@ -11,10 +11,23 @@ export default function ClassroomStudentsCard({
     classroomId: number,
     onDelete: (removedStudentId: number) => void,
 }) {
+    const students = studentList.length > 0;
+
     return (
-        <Card className="flex flex-col gap-0 p-6 shadow-none border-none rounded-none">
+        <Card
+            className={`
+                flex p-6
+                ${students ? 'flex-col gap-0' : 'h-full items-center justify-center'}
+                shadow-none border-none rounded-none
+            `}>
             {
-                studentList.map((student) => (
+                !students && 
+                <span className="text-gray-400 text-lg">
+                    No students enrolled yet..
+                </span>
+            }
+            {
+                students && studentList.map((student) => (
                     <StudentCard 
                         key={student.id}
                         student={student}
