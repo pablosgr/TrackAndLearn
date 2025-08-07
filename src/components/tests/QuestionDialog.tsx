@@ -127,12 +127,13 @@ export default function QuestionDialog({
     }, [optionsNumber]);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        values.options.forEach((opt, index) => {
+            values.correct_option_index === index
+            ? opt.is_correct = true
+            : opt.is_correct = false;
+        });
+
         if (type === 'update' && onUpdate) {
-            values.options.forEach((opt, index) => {
-                values.correct_option_index === index
-                ? opt.is_correct = true
-                : opt.is_correct = false;
-            });
 
             const data: EditQuestionType = {
                 test_id: testId,
@@ -147,6 +148,7 @@ export default function QuestionDialog({
         }
 
         if (type === 'create' && onCreate) {
+
             const questionData: NewQuestionType = {
                 test_id: testId,
                 question_text: values.question_text,
