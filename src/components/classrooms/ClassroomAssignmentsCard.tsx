@@ -28,7 +28,7 @@ export default function ClassroomAssignmentsCard({
         <Card 
             className={
                 `flex p-6
-                ${assignments ? 'flex-col gap-3' : 'h-full items-center justify-center'}
+                ${assignments ? 'flex-col gap-4' : 'h-full items-center justify-center'}
                 shadow-none border-none rounded-none
             `}
         >

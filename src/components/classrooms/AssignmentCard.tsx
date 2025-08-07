@@ -46,7 +46,7 @@ export default function AssignmentCard({
         <Card
             className={`
                 flex flex-col gap-0 border-gray-300
-                shadow-none hover:shadow-(--shadow-xs) transition-shadow
+                shadow-none hover:shadow-(--shadow-sm) transition-shadow
             `}
         >
             <CardHeader>
@@ -63,12 +63,12 @@ export default function AssignmentCard({
                 {
                     user.role === 'teacher'
                     ?    <div className="flex items-center gap-2">
-                            <Label htmlFor={`${test.id}-result`}>Visible result</Label>
                             <Switch 
                                 id={`${test.id}-result`}
                                 checked={test.is_result_visible}
                                 onCheckedChange={handleResultVisibility}
                             />
+                            <Label htmlFor={`${test.id}-result`}>Visible result</Label>
                         </div>
                     :   <span></span>
                 }
