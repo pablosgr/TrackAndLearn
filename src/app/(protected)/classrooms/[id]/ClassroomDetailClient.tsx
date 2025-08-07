@@ -73,11 +73,24 @@ export default function ClassroomDetailClient(
         setIsGenerating(false);
     }
 
-    const handleUpdateName = async (updatedName: string) => {
+    const handleUpdateName = (updatedName: string) => {
         setClassroom(prev => ({
             ...prev,
             name: updatedName
         }));
+    }
+
+    const handleResultVisibility = (assignmentId: number, visible: boolean) => {
+        setAssignedTests(prev => 
+            prev.map((test) => 
+                test.id === assignmentId
+                ? {
+                    ...test,
+                    is_result_visible: visible
+                }
+                : test
+            )
+        );
     }
 
     return (
@@ -145,6 +158,7 @@ export default function ClassroomDetailClient(
                                 classroomId={classroomDetails.id}
                                 onAssign={handleAssignTest}
                                 onDelete={handleRemoveAssignment}
+                                onResult={handleResultVisibility}
                             />
                         </TabsContent>
                         {

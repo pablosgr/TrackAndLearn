@@ -1,10 +1,13 @@
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { useUser } from "../context/userWrapper";
 import { useRouter } from "next/navigation";
+import { updateResultVisibility } from "@/app/(protected)/classrooms/actions/update";
 import { removeAssignment } from "@/app/(protected)/classrooms/actions/delete";
 import CustomAlertDialog from "../CustomAlertDialog";
 import Link from "next/link";
+import { Switch } from "../ui/switch";
 import { Button } from "../ui/button";
+import { Label } from "../ui/label";
 import {
     Card,
     CardAction,
@@ -17,9 +20,11 @@ import {
 export default function AssignmentCard({
     test,
     onDelete,
+    onResult
 }: {
     test: AssignedTestType,
     onDelete: (assignmentId: number) => void,
+    onResult: (assignmentId: number, visible: boolean) => void
 }) {
     const user = useUser();
     const router = useRouter();
@@ -28,6 +33,12 @@ export default function AssignmentCard({
         e.stopPropagation();
         onDelete(test.id);
         await removeAssignment(test.id);
+        router.refresh();
+    }
+
+    const handleResultVisibility = async (checked: boolean) => {
+        onResult(test.id, checked);
+        await updateResultVisibility(test.id, checked);
         router.refresh();
     }
 
@@ -49,7 +60,18 @@ export default function AssignmentCard({
                 }
             </CardHeader>
             <CardContent className="flex flex-row gap-6 items-center justify-between">
-                <span>{test.test_template.name}</span>
+                {
+                    user.role === 'teacher'
+                    ?    <div className="flex items-center gap-2">
+                            <Label htmlFor={`${test.id}-result`}>Visible result</Label>
+                            <Switch 
+                                id={`${test.id}-result`}
+                                checked={test.is_result_visible}
+                                onCheckedChange={handleResultVisibility}
+                            />
+                        </div>
+                    :   <span></span>
+                }
                 {
                     (user.role === 'teacher' || (user.role === 'student' && test.has_result && test.is_result_visible)) && (
                         <Link href={`/classrooms/${test.classroom_id}/test/${test.test_template_id}/result`}>

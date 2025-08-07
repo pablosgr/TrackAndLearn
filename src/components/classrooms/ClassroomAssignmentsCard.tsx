@@ -12,12 +12,14 @@ export default function ClassroomAssignmentsCard({
     classroomId,
     onAssign,
     onDelete,
+    onResult
 }: {
     assignedTests: AssignedTestType[],
     availableTests: TestTemplateType[],
     classroomId: number,
     onAssign?: (newAssignment: AssignedTestType) => void,
     onDelete: (assignmentId: number) => void,
+    onResult: (assignmentId: number, visible: boolean) => void
 }) {
     const user = useUser();
     const assignments = assignedTests.length > 0;
@@ -52,6 +54,7 @@ export default function ClassroomAssignmentsCard({
                         key={test.id}
                         test={test}
                         onDelete={onDelete}
+                        onResult={onResult}
                     />
                 ))
             }
