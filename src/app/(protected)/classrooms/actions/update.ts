@@ -36,3 +36,16 @@ export async function updateClassroomName(classroomId: number, newName: string):
 
     return newName;
 }
+
+export async function updateResultVisibility(assignmentId: number, isVisible: boolean) {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+        .from('test_assignment')
+        .update({ is_result_visible: isVisible })
+        .eq('id', assignmentId);
+    
+    if (error) {
+        console.error('Error updating result visibility', error);
+    }
+}
