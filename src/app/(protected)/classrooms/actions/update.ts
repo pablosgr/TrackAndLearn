@@ -49,3 +49,16 @@ export async function updateResultVisibility(assignmentId: number, isVisible: bo
         console.error('Error updating result visibility', error);
     }
 }
+
+export async function updateTestResult(resultId: number) {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+        .from('test_result')
+        .update({ status: 'completed' })
+        .eq('id', resultId);
+    
+    if (error) {
+        console.error('Error updating test result', error);
+    }
+}
