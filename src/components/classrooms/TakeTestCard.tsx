@@ -20,9 +20,11 @@ const formSchema = z.object({
 });
 
 export default function TakeTestCard({
-    test
+    test,
+    startTime,
 }: {
-    test: TestType
+    test: TestType,
+    startTime: string
 }) {
     const [takenTest, setTakenTest] = useState<TestType>(test);
 

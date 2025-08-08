@@ -1,5 +1,5 @@
 import { getTestsByTemplateId } from "@/app/(protected)/tests/actions/get";
-import isTestCompleted from "../../../actions";
+import getResultStatus from "../../../actions";
 import StudentTestClient from "./StudentTestClient";
 import { notFound } from "next/navigation";
 import requireUser from "@/utils/auth/requireUser";
@@ -15,13 +15,19 @@ export default async function StudentTest({ params }: { params: { id: string, te
         return notFound();
     }
 
-    const completedTest = await isTestCompleted(user?.id, data.id, visibleTest.id);
+    const result = await getResultStatus(user?.id, data.id, visibleTest.id);
 
-    if (completedTest) {
+    console.log(user?.id, data.id, visibleTest.id);
+
+    if (result?.status === 'completed') {
         return <p>Test already done</p>
     }
 
     return (
-        <StudentTestClient test={visibleTest}/>
+        <StudentTestClient 
+            test={visibleTest}
+            classroomId={data.id}
+            resultStatus={result}
+        />
     )
 }
