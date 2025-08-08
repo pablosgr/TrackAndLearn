@@ -1,8 +1,11 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCountdown } from "@/hooks/use-countdown";
+import { updateTestResult } from "@/app/(protected)/classrooms/actions/update";
 import { TestType } from "@/types/test/TestType";
 import { TestResultType } from "@/types/test/TestResultType";
 import TakeQuestionCard from "./TakeQuestionCard";
@@ -30,9 +33,12 @@ export default function TakeTestCard({
     startTime: string,
     provisionalResult: TestResultType
 }) {
+    const router = useRouter();
     const [takenTest] = useState<TestType>(test);
-    const remaining = useCountdown(startTime, test.time_limit, () => {
-        console.log('Finished');
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const remaining = useCountdown(startTime, test.time_limit, async () => {
+        await updateTestResult(provisionalResult.id);
+        router.replace(`/classrooms/${provisionalResult.classroom_id}`);
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -43,6 +49,7 @@ export default function TakeTestCard({
     });
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
+        setIsSubmitting(true);
         console.log("Submitted answers from all questions:", values);
     };
 
@@ -54,7 +61,7 @@ export default function TakeTestCard({
                         <CardTitle className="text-2xl">{takenTest.name}</CardTitle>
                         <CardDescription className="text-md">{takenTest.level}</CardDescription>
                         {
-                            remaining &&
+                            (remaining && remaining !== 0) &&
                             <span>
                                 {
                                     `${ Math.floor((remaining / 1000 / 60) % 60) } minutes 
@@ -71,8 +78,23 @@ export default function TakeTestCard({
                                 </article>
                             ))
                         }
-                        <Button variant="default" type="submit" className="w-30 self-end">
-                            Submit
+                        <Button
+                            variant="default"
+                            type="submit"
+                            className="w-35 self-end"
+                            disabled={isSubmitting}
+                        >
+                            {
+                                isSubmitting
+                                ? (
+                                    <div className="flex flex-row gap-3 items-center">
+                                        <LoaderCircle size={40} strokeWidth={3} className="animate-spin" />
+                                        <span>Submitting..</span>
+                                    </div>
+                                ) : (
+                                    'Submit'
+                                )
+                            }
                         </Button>
                     </CardContent>
                 </Card>
