@@ -150,6 +150,7 @@ async function getCompletedTestTemplates(
         .select('test_id')
         .eq('student_id', userId)
         .eq('classroom_id', classroomId)
+        .eq('status', 'completed')
         .in('test_id', testIds);
 
     if (!resultData || resultError) {
@@ -320,19 +321,25 @@ export async function verifyClassroomOwnership(userId: string, classroomId: numb
     return true;
 }
 
-export default async function isTestCompleted(userId: string, classroomId: string, testId: number): Promise<boolean> {
+export default async function getResultStatus(
+    userId: string,
+    classroomId: string,
+    testId: number
+): Promise<{ status: string, started_at: string } | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
         .from('test_result')
-        .select('id')
+        .select('status, started_at')
         .eq('classroom_id', classroomId)
         .eq('student_id', userId)
         .eq('test_id', testId)
+        .single();
 
-    if (!data || error || data.length === 0) {
-        return false;
+    if (!data || error ) {
+        return null;
     }
 
-    return true;
+    return data;
 }
+
