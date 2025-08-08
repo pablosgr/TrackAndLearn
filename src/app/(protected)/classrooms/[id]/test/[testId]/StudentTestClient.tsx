@@ -3,26 +3,34 @@
 import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { useUser } from "@/components/context/userWrapper";
+import { createTestResult } from "../../../actions/post";
 import { TestType } from "@/types/test/TestType";
+import { TestResultType } from "@/types/test/TestResultType";
 import TakeTestCard from "@/components/classrooms/TakeTestCard";
 import { Button } from "@/components/ui/button";
 
 export default function StudentTestClient({ 
     test,
     classroomId,
-    resultStatus,
+    result,
 }: {
     test: TestType,
     classroomId: string,
-    resultStatus: { status: string, started_at: string } | null
+    result: TestResultType | null
 }) {
-    const [isTestStarted, setIsTestStarted] = useState<boolean>(resultStatus !== null);
+    const [isTestStarted, setIsTestStarted] = useState<boolean>(result?.status === 'ongoing');
+    const [provResult, setProvResult] = useState<TestResultType | null>(result);
     const [isStarting, setIsStarting] = useState<boolean>(false);
     const user = useUser();
 
     const handleStartTest = async () => {
         setIsStarting(true);
-        // generate a new test result (requ. classId, testId, userId)
+        const newResult = await createTestResult(user?.id, classroomId, test.id);
+        if (newResult) {
+            setProvResult(newResult);
+            setIsTestStarted(true);
+        }
+        setIsStarting(false);
     }
 
     return (
@@ -62,8 +70,12 @@ export default function StudentTestClient({
             </section>
         }
         {
-            (isTestStarted && resultStatus) &&
-            <TakeTestCard test={test} startTime={resultStatus.started_at}/>
+            (isTestStarted && provResult) &&
+            <TakeTestCard 
+                test={test}
+                startTime={provResult.started_at}
+                provisionalResult={provResult}
+            />
         }
         </>
     )

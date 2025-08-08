@@ -321,16 +321,16 @@ export async function verifyClassroomOwnership(userId: string, classroomId: numb
     return true;
 }
 
-export default async function getResultStatus(
+export default async function getResult(
     userId: string,
     classroomId: string,
     testId: number
-): Promise<{ status: string, started_at: string } | null> {
+): Promise<TestResultType | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
         .from('test_result')
-        .select('status, started_at')
+        .select('*')
         .eq('classroom_id', classroomId)
         .eq('student_id', userId)
         .eq('test_id', testId)

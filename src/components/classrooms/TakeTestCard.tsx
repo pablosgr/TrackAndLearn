@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { TestType } from "@/types/test/TestType";
+import { TestResultType } from "@/types/test/TestResultType";
 import TakeQuestionCard from "./TakeQuestionCard";
 import { Button } from "../ui/button";
 import {
@@ -22,9 +23,11 @@ const formSchema = z.object({
 export default function TakeTestCard({
     test,
     startTime,
+    provisionalResult,
 }: {
     test: TestType,
-    startTime: string
+    startTime: string,
+    provisionalResult: TestResultType
 }) {
     const [takenTest, setTakenTest] = useState<TestType>(test);
 
