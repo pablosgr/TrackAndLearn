@@ -2,6 +2,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useCountdown } from "@/hooks/use-countdown";
 import { TestType } from "@/types/test/TestType";
 import { TestResultType } from "@/types/test/TestResultType";
 import TakeQuestionCard from "./TakeQuestionCard";
@@ -29,7 +30,10 @@ export default function TakeTestCard({
     startTime: string,
     provisionalResult: TestResultType
 }) {
-    const [takenTest, setTakenTest] = useState<TestType>(test);
+    const [takenTest] = useState<TestType>(test);
+    const remaining = useCountdown(startTime, test.time_limit, () => {
+        console.log('Finished');
+    });
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -49,6 +53,15 @@ export default function TakeTestCard({
                     <CardHeader className="bg-(--color-accent) gap-2 py-6">
                         <CardTitle className="text-2xl">{takenTest.name}</CardTitle>
                         <CardDescription className="text-md">{takenTest.level}</CardDescription>
+                        {
+                            remaining &&
+                            <span>
+                                {
+                                    `${ Math.floor((remaining / 1000 / 60) % 60) } minutes 
+                                    ${ Math.floor((remaining / 1000) % 60) } seconds left`
+                                }
+                            </span>
+                        }
                     </CardHeader>
                     <CardContent className="flex flex-col gap-5">
                         {
