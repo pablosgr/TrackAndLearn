@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { generateClassCode } from "@/utils/general/generateClassCode";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
+import { TestResultType } from "@/types/test/TestResultType";
 
 export async function createClassroom(name: string, teacherId: number): Promise<ClassroomType | null> {
     const supabase = await createClient();
@@ -35,6 +36,32 @@ export async function createClassroom(name: string, teacherId: number): Promise<
     }
 
     return data as ClassroomType;
+}
+
+export async function createTestResult(
+    userId: string,
+    classroomId: string,
+    testId: number
+): Promise<TestResultType | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test_result')
+        .insert({
+            student_id: userId,
+            classroom_id: classroomId,
+            test_id: testId,
+            status: 'ongoing'
+        })
+        .select('*')
+        .single();
+
+    if (!data || error) {
+        console.error('Error creating test result: ', error);
+        return null;
+    }
+
+    return data;
 }
 
 export async function enrollStudent(

@@ -8,7 +8,7 @@ export type TestResultType = {
     score: number;
     total_questions: number;
     correct_answers: number;
-    status: 'completed' | 'in_progress' | 'not_started' | string;
+    status: 'completed' | 'ongoing' | string;
     started_at: string;
     ended_at: string;
     response: TestResponseType[];
