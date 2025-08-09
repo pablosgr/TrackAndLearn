@@ -1,46 +1,77 @@
 import { TestType } from "@/types/test/TestType";
 import { TestResultType } from "@/types/test/TestResultType";
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
-export default function StudentResultClient({ test, testResult }: { test: TestType, testResult: TestResultType }) {
+export default function StudentResultClient({ 
+    test,
+    testResult
+}: {
+    test: TestType,
+    testResult: TestResultType
+}) {
     return (
-        <>
-            <p>Student Result</p>
-            <p>Name - {test.name}</p>
-            {
-                test.adaptation_id && <p>Adaptation - {test.adaptation_id}</p>
-            }
-            <ul className="flex flex-col gap-6 m-8">
-                { 
+        <Card className="w-full h-full">
+            <CardHeader className="bg-(--color-accent) gap-2 py-6">
+                <CardTitle className="text-2xl">Result for {test.name}</CardTitle>
+                <CardDescription className="text-md">{test.level}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+                {
                     test.question.map((q) => {
                         const studentResponse = testResult.response.find((r) => r.question_id === q.id);
 
                         return (
-                            <li key={q.id} className="p-8 bg-purple-300 rounded-lg flex flex-col gap-5">
-                                <p>Question: {q.question_text}</p>
-                                {
-                                    q.option.map((o) => {
-                                        const optionResponse = testResult.response.find((r) => r.selected_option_id === o.id);
-
-                                        return (
-                                            <p key={o.id} className={`
-                                                ${o.is_correct ? 'text-blue-800' : ''}
-                                            `}>
-                                                {o.option_text}
-                                                {
-                                                    o.id === optionResponse?.selected_option_id &&
-                                                    <span className="text-gray-400"> | Your answer</span>
-                                                }
-                                            </p>
-                                        )
-                                    })
-                                }
-                                <p>Result: {studentResponse?.is_correct ? 'Correct' : 'Incorrect'}</p>
-                            </li>
+                            <article key={q.id}>
+                                <Card className="shadow-none rounded-none border-none">
+                                    <CardHeader>
+                                        <CardTitle>{q.index_order}. {q.question_text}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <ul className="flex flex-col gap-4">
+                                            {
+                                                q.option.map((opt) => (
+                                                    <li key={opt.id}>
+                                                        <Card
+                                                            className={`
+                                                                py-6 border-2 border-gray-200
+                                                                shadow-none
+                                                                ${
+                                                                    opt.is_correct
+                                                                    ? 'bg-green-300 border-green-500'
+                                                                    : ''
+                                                                }
+                                                                ${
+                                                                    (studentResponse?.selected_option_id === opt.id && !opt.is_correct)
+                                                                    ? 'bg-red-300 border-red-500'
+                                                                    : ''
+                                                                }
+                                                            `}
+                                                        >
+                                                            <CardContent>
+                                                                <span>{opt.option_text}</span>
+                                                            </CardContent>
+                                                        </Card>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                    </CardContent>
+                                </Card>
+                            </article>
                         )
                     })
                 }
-            </ul>
-            <p>Final Mark: {testResult.score}</p>
-        </>
+                <p className="w-full text-center self-center text-2xl py-6 border-t-1 border-gray-300">
+                    Final score: <strong>{testResult.score}</strong>
+                </p>
+            </CardContent>
+        </Card>
     )
 }
