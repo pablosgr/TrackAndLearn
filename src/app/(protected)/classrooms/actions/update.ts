@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { generateClassCode } from "@/utils/general/generateClassCode";
+import { TestResultType } from "@/types/test/TestResultType";
 
 export async function resetClassCode(classroomId: number): Promise<string | null> {
     const supabase = await createClient();
@@ -50,13 +51,13 @@ export async function updateResultVisibility(assignmentId: number, isVisible: bo
     }
 }
 
-export async function updateTestResult(resultId: number) {
+export async function updateTestResult(finalResult: TestResultType) {
     const supabase = await createClient();
 
     const { error } = await supabase
         .from('test_result')
-        .update({ status: 'completed' })
-        .eq('id', resultId);
+        .update(finalResult)
+        .eq('id', finalResult.id);
     
     if (error) {
         console.error('Error updating test result', error);
