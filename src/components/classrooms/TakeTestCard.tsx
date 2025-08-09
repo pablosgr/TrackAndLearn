@@ -2,10 +2,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useCountdown } from "@/hooks/use-countdown";
 import { updateTestResult } from "@/app/(protected)/classrooms/actions/update";
+import { createTestResponses } from "@/app/(protected)/classrooms/actions/post";
+import { getTestResponses } from "@/utils/tests/getTestResponses";
+import { setFinalTestResult } from "@/utils/tests/setTestResult";
 import { TestType } from "@/types/test/TestType";
 import { TestResultType } from "@/types/test/TestResultType";
 import TakeQuestionCard from "./TakeQuestionCard";
@@ -36,9 +39,22 @@ export default function TakeTestCard({
     const router = useRouter();
     const [takenTest] = useState<TestType>(test);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const executedRef = useRef(false);
     const remaining = useCountdown(startTime, test.time_limit, async () => {
-        await updateTestResult(provisionalResult.id);
-        router.replace(`/classrooms/${provisionalResult.classroom_id}`);
+        if (executedRef.current) return;
+        executedRef.current = true;
+
+        setIsSubmitting(true);
+        const userAnswers = form.getValues().answers;
+        const endedAt = new Date().toISOString();
+
+        const userResponses = getTestResponses(userAnswers, test, provisionalResult.id);
+        const finalResult = setFinalTestResult(userResponses, provisionalResult, endedAt);
+
+        await updateTestResult(finalResult);
+        await createTestResponses(userResponses);
+
+        router.replace(`/classrooms/${finalResult.classroom_id}`);
     });
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -48,9 +64,17 @@ export default function TakeTestCard({
         },
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsSubmitting(true);
-        console.log("Submitted answers from all questions:", values);
+        const endedAt = new Date().toISOString();
+
+        const userResponses = getTestResponses(values.answers, test, provisionalResult.id);
+        const finalResult = setFinalTestResult(userResponses, provisionalResult, endedAt);
+
+        await updateTestResult(finalResult);
+        await createTestResponses(userResponses);
+
+        router.replace(`/classrooms/${finalResult.classroom_id}`);
     };
 
     return (
