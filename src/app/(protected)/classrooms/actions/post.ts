@@ -5,6 +5,7 @@ import { generateClassCode } from "@/utils/general/generateClassCode";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { TestResultType } from "@/types/test/TestResultType";
+import { NewTestResponseType } from "@/types/test/TestResponseType";
 
 export async function createClassroom(name: string, teacherId: number): Promise<ClassroomType | null> {
     const supabase = await createClient();
@@ -62,6 +63,18 @@ export async function createTestResult(
     }
 
     return data;
+}
+
+export async function createTestResponses(testResponses: NewTestResponseType[]) {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+        .from('test_response')
+        .insert(testResponses);
+
+    if (error) {
+        console.error('Error inserting test responses: ', error);
+    }
 }
 
 export async function enrollStudent(
