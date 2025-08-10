@@ -246,13 +246,35 @@ export async function getStudentTestResult(
     return data[0] as TestResultType;
 }
 
-export async function getClassroomTestResults(classroomId: string, testId: string): Promise<ClassroomResultType[]> {
+export async function getClassroomTestResults(classroomId: string, templateId: string): Promise<ClassroomResultType[]> {
     const supabase = await createClient();
+
+    const { data: testData, error: testError } = await supabase
+        .from('test')
+        .select('id')
+        .eq('template_id', templateId);
+
+    if (!testData || testError) {
+        console.error('Error retrieving tests related to template: ', testError);
+        return [];
+    }
+
+    const testIds = testData.flatMap((t) => t.id);
 
     const { data, error } = await supabase
         .from('test_result')
         .select(`
             *,
+            test_data:test(
+                name,
+                level,
+                time_limit,
+                adaptation_id,
+                test_adaptation:adaptation(
+                    name,
+                    code
+                )
+            ),
             student_data:users(
                 id,
                 name,
@@ -268,11 +290,11 @@ export async function getClassroomTestResults(classroomId: string, testId: strin
                 *
             )
         `)
-        .eq('test_id', testId)
+        .in('test_id', testIds)
         .eq('classroom_id', classroomId);
 
     if (!data || error) {
-        console.error('Error retrieving test result: ', error);
+        console.error('Error retrieving test results from classroom: ', error);
         return [];
     }
 
