@@ -202,7 +202,7 @@ export default function TestDialog({
                                     </FormLabel>
                                     <FormControl>
                                         <Select
-                                            value={field.value != null ? field.value.toString() : 'null'}
+                                            value={field.value !== null ? field.value.toString() : 'null'}
                                             onValueChange={(val) => field.onChange(val === 'null' ? null : Number(val))}
                                         >
                                             <SelectTrigger className="w-full">

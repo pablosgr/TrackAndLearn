@@ -1,7 +1,10 @@
 import CustomAlertDialog from "../CustomAlertDialog";
 import { useRouter } from "next/navigation";
 import { removeStudentFromClassroom } from "@/app/(protected)/classrooms/actions/delete";
+import { updateStudentAdaptation } from "@/app/(protected)/classrooms/actions/update";
 import { StudentType } from "@/types/user/StudentType";
+import { AdaptationType } from "@/types/test/AdaptationType";
+import { Label } from "../ui/label";
 import {
     Card,
     CardAction,
@@ -10,15 +13,27 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 export default function StudentCard({
     student,
+    adaptationList,
     classroomId,
     onDelete,
+    onUpdate
 }: {
     student: StudentType,
+    adaptationList: AdaptationType[],
     classroomId: number,
-    onDelete: (removedStudentId: number) => void
+    onDelete: (removedStudentId: number) => void,
+    onUpdate: (student_id: number, adaptationId: string | null) => void
 }) {
     const router = useRouter();
 
@@ -26,6 +41,13 @@ export default function StudentCard({
         e.stopPropagation();
         onDelete(student.id);
         await removeStudentFromClassroom(student.id, classroomId);
+        router.refresh();
+    }
+
+    const handleAdaptationUpdate = async (value: string) => {
+        const adaptationId = value === 'none' ? null : value;
+        onUpdate(student.id, adaptationId);
+        await updateStudentAdaptation(Number(adaptationId), classroomId, student.id);
         router.refresh();
     }
 
@@ -44,10 +66,33 @@ export default function StudentCard({
                     <span>{student.name}</span>
                     <span>{student.email}</span>
                 </div>
-                <CustomAlertDialog 
-                    description="Student will be removed from the classroom. This action cannot be undone."
-                    onDelete={handleStudentRemoval}
-                />
+                <div className="flex flex-row gap-3 items-center">
+                    <p>Adaptation</p>
+                    <Select
+                        value={student.adaptation_id !== null ? student.adaptation_id.toString() : 'none'} 
+                        onValueChange={handleAdaptationUpdate}
+                    >
+                        <SelectTrigger className="w-30">
+                            <SelectValue placeholder="Select one" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="none">None</SelectItem>
+                                {
+                                    adaptationList.map((adp) => (
+                                        <SelectItem key={adp.id} value={adp.id.toString()}>
+                                            {adp.code}
+                                        </SelectItem>
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <CustomAlertDialog 
+                        description="Student will be removed from the classroom. This action cannot be undone."
+                        onDelete={handleStudentRemoval}
+                    />
+                </div>
             </CardContent>
         </Card>
     )

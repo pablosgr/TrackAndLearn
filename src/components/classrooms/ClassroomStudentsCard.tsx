@@ -1,15 +1,20 @@
 import StudentCard from "./StudentCard";
 import { StudentType } from "@/types/user/StudentType";
+import { AdaptationType } from "@/types/test/AdaptationType";
 import { Card } from "../ui/card";
 
 export default function ClassroomStudentsCard({ 
     studentList,
+    adaptationList,
     classroomId,
     onDelete,
+    onUpdate
 }: { 
     studentList: StudentType[],
+    adaptationList: AdaptationType[],
     classroomId: number,
     onDelete: (removedStudentId: number) => void,
+    onUpdate: (student_id: number, adaptationId: string | null) => void
 }) {
     const students = studentList.length > 0;
 
@@ -39,8 +44,10 @@ export default function ClassroomStudentsCard({
                                 <li key={student.id}>
                                     <StudentCard 
                                         student={student}
+                                        adaptationList={adaptationList}
                                         classroomId={classroomId}
                                         onDelete={onDelete}
+                                        onUpdate={onUpdate}
                                     />
                                 </li>
                             ))

@@ -11,6 +11,7 @@ import { resetClassCode } from "../actions/update";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { StudentType } from "@/types/user/StudentType";
+import { AdaptationType } from "@/types/test/AdaptationType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import {
     Card,
@@ -32,11 +33,13 @@ export default function ClassroomDetailClient(
     classroomDetails,
     studentList,
     testList,
+    adaptationList,
     availableTests
 }: {
     classroomDetails: ClassroomType,
     studentList: StudentType[],
     testList: AssignedTestType[],
+    adaptationList: AdaptationType[],
     availableTests: TestTemplateType[]
 }) {
     const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
@@ -48,6 +51,39 @@ export default function ClassroomDetailClient(
 
     const handleStudentDelete = (removedStudentId: number) => {
         setStudents(prev => prev.filter(student => student.id !== removedStudentId));
+    }
+
+    const handleAdaptationUpdate = (studentId: number, adaptationId: string | null) => {
+        if (!adaptationId) {
+            setStudents(prev => prev.map((student) => 
+                student.id === studentId
+                ? {
+                    ...student,
+                    adaptation_id: null,
+                    adaptation_data: null
+                }
+                : student
+            ))
+        }
+        
+        const selectedAdaptation = adaptationList.find((adp) => adp.id === Number(adaptationId));
+
+        if (!selectedAdaptation) {
+            return;
+        }
+
+        setStudents(prev => prev.map((student) => 
+            student.id === Number(studentId)
+            ? {
+                ...student,
+                adaptation_id: selectedAdaptation.id,
+                adaptation_data: {
+                    name: selectedAdaptation.name,
+                    code: selectedAdaptation.code
+                }
+            }
+            : student
+        ))
     }
 
     const handleAssignTest = (newAssignment: AssignedTestType) => {
@@ -166,8 +202,10 @@ export default function ClassroomDetailClient(
                             <TabsContent value="students">
                                 <ClassroomStudentsCard 
                                     studentList={students}
+                                    adaptationList={adaptationList}
                                     classroomId={classroom.id}
                                     onDelete={handleStudentDelete}
+                                    onUpdate={handleAdaptationUpdate}
                                 />
                             </TabsContent>
                         }
