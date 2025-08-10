@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { RawSupabaseClassroomType } from "@/types/classroom/RawClassroomType";
 import { RawClassroomType } from "@/types/classroom/RawClassroomType";
-import { RawStudentType } from "@/types/user/RawStudentFile";
+import { RawStudentType, RawDBStudentType } from "@/types/user/RawStudentFile";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { TestResultType } from "@/types/test/TestResultType";
@@ -94,16 +94,16 @@ export async function getClassroomStudents(classroomId: string): Promise<Student
     const { data, error } = await supabase
         .from('student_classroom')
         .select(`
-            student:users(
+            student:users!student_id(
                 id,
                 name,
                 username,
-                email,
-                adaptation_id,
-                adaptation_data:adaptation(
-                    name,
-                    code
-                )
+                email
+            ),
+            adaptation_id,
+            adaptation_data:adaptation!adaptation_id(
+                name,
+                code
             )
         `)
         .eq('classroom_id', classroomId);
@@ -113,7 +113,14 @@ export async function getClassroomStudents(classroomId: string): Promise<Student
         return [];
     }
 
-    const students = (data as RawStudentType[]).flatMap(item => item.student);
+    const students = ((data as unknown) as RawStudentType[]).map(item => ({
+        id: item.student.id,
+        name: item.student.name,
+        username: item.student.username,
+        email: item.student.email,
+        adaptation_id: item.adaptation_id ?? null,
+        adaptation_data: item.adaptation_data ?? null
+    }));
 
     return students as StudentType[];
 }
@@ -236,14 +243,15 @@ export async function getStudentTestResult(
         `)
         .eq('test_id', testId)
         .eq('classroom_id', classroomId)
-        .eq('student_id', userId);
+        .eq('student_id', userId)
+        .single();
 
     if (!data || error) {
         console.error('Error retrieving test result: ', error);
         return null;
     }
 
-    return data[0] as TestResultType;
+    return data as TestResultType;
 }
 
 export async function getClassroomTestResults(classroomId: string, templateId: string): Promise<ClassroomResultType[]> {
@@ -279,12 +287,7 @@ export async function getClassroomTestResults(classroomId: string, templateId: s
                 id,
                 name,
                 username,
-                email,
-                adaptation_id,
-                adaptation_data:adaptation(
-                    name,
-                    code
-                )
+                email
             ),
             response:test_response(
                 *
@@ -298,7 +301,19 @@ export async function getClassroomTestResults(classroomId: string, templateId: s
         return [];
     }
 
-    return data as ClassroomResultType[];
+    const results = data.map((item) => ({
+        ...item,
+        student_data: {
+            id: item.student_data.id,
+            name: item.student_data.name,
+            username: item.student_data.username,
+            email: item.student_data.email,
+            adaptation_id: item.test_data.adaptation_id,
+            adaptation_data: item.test_data.test_adaptation,
+        }
+    }));
+
+    return results as ClassroomResultType[];
 }
 
 export async function verifyClassroomEnrollment(userId: string, classroomId: number): Promise<boolean> {

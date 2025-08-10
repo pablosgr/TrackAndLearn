@@ -50,7 +50,7 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
     return data as TestTemplateType[];
 }
 
-export async function getTestsByTemplateId(testId: string): Promise <TestType[]> {
+export async function getTestsByTemplateId(templateId: string): Promise <TestType[]> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -75,7 +75,7 @@ export async function getTestsByTemplateId(testId: string): Promise <TestType[]>
                 )
             )
         `)
-        .eq("template_id", testId)
+        .eq("template_id", templateId)
         .order('id', { ascending: true} )
         .order('index_order', { referencedTable: 'question', ascending: true })
         .order('index_order', { referencedTable: 'question.option', ascending: true });

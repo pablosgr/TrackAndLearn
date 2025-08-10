@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, ReactNode, useContext } from "react";
-import UserContextType from "@/types/context/UserContextType";
+import { UserContextType } from "@/types/context/UserContextType";
 
 const UserContext = createContext<UserContextType | null>(null);
 
