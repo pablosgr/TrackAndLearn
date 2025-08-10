@@ -63,3 +63,23 @@ export async function updateTestResult(finalResult: TestResultType) {
         console.error('Error updating test result', error);
     }
 }
+
+export async function updateStudentAdaptation(
+    adaptationId: number | null,
+    classroomId: number,
+    studentId: number
+) {
+    const supabase = await createClient();
+
+    const { error } = await supabase
+        .from('student_classroom')
+        .update({
+            adaptation_id: adaptationId
+        })
+        .eq('classroom_id', classroomId)
+        .eq('student_id', studentId);
+    
+    if (error) {
+        console.error('Error updating student adaptation', error);
+    }
+}
