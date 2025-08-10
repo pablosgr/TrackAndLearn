@@ -33,7 +33,7 @@ export default function StudentCard({
     adaptationList: AdaptationType[],
     classroomId: number,
     onDelete: (removedStudentId: number) => void,
-    onUpdate: (student_id: number, adaptationId: string | null) => void
+    onUpdate: (student_id: number, adaptationId: number | null) => void
 }) {
     const router = useRouter();
 
@@ -45,9 +45,9 @@ export default function StudentCard({
     }
 
     const handleAdaptationUpdate = async (value: string) => {
-        const adaptationId = value === 'none' ? null : value;
+        const adaptationId = value === 'none' ? null : Number(value);
         onUpdate(student.id, adaptationId);
-        await updateStudentAdaptation(Number(adaptationId), classroomId, student.id);
+        await updateStudentAdaptation(adaptationId, classroomId, student.id);
         router.refresh();
     }
 

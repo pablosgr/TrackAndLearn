@@ -53,7 +53,7 @@ export default function ClassroomDetailClient(
         setStudents(prev => prev.filter(student => student.id !== removedStudentId));
     }
 
-    const handleAdaptationUpdate = (studentId: number, adaptationId: string | null) => {
+    const handleAdaptationUpdate = (studentId: number, adaptationId: number | null) => {
         if (!adaptationId) {
             setStudents(prev => prev.map((student) => 
                 student.id === studentId

@@ -14,7 +14,7 @@ export default function ClassroomStudentsCard({
     adaptationList: AdaptationType[],
     classroomId: number,
     onDelete: (removedStudentId: number) => void,
-    onUpdate: (student_id: number, adaptationId: string | null) => void
+    onUpdate: (student_id: number, adaptationId: number | null) => void
 }) {
     const students = studentList.length > 0;
 
