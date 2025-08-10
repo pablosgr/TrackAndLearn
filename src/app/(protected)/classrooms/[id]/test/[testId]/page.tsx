@@ -1,4 +1,5 @@
 import { getTestsByTemplateId } from "@/app/(protected)/tests/actions/get";
+import { getStudentIdAdaptation } from "@/app/(protected)/classrooms/actions/get";
 import getResult from "../../../actions";
 import StudentTestClient from "./StudentTestClient";
 import { notFound } from "next/navigation";
@@ -8,8 +9,9 @@ export default async function StudentTest({ params }: { params: { id: string, te
     const data = await params;
     const user = await requireUser();
     const tests = await getTestsByTemplateId(data.testId);
+    const adaptationId = await getStudentIdAdaptation(data.id, user.id);
 
-    const visibleTest = tests.find(t => t.adaptation_id === user?.adaptation_id) ?? tests[0];
+    const visibleTest = tests.find(t => t.adaptation_id === adaptationId) ?? tests[0];
 
     if (!visibleTest) {
         return notFound();
