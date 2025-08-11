@@ -301,7 +301,9 @@ export async function getClassroomTestResults(classroomId: string, templateId: s
         `)
         .in('test_id', testIds)
         .eq('classroom_id', classroomId)
-        .order('score', { ascending: true });
+        .order('score', { ascending: true })
+        .order('index_order', { referencedTable: 'test_data.question', ascending: true })
+        .order('index_order', { referencedTable: 'test_data.question.option', ascending: true });
 
     if (!data || error) {
         console.error('Error retrieving test results from classroom: ', error);

@@ -1,12 +1,5 @@
 import { ClassroomResultType } from "@/types/test/ClassroomResultType";
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import StudentsAnswersCard from "./StudentsAnswersCard";
 import {
   Accordion,
   AccordionContent,
@@ -54,32 +47,38 @@ export default function StudentsResultAccordion({
                                 </div>
                             </AccordionTrigger>
                             <AccordionContent className="p-5 flex flex-row gap-15">
-                                <section className="w-fit flex flex-col gap-3">
-                                    <h3 className="font-semibold">Time used</h3>
-                                    <p>{takenTime} minute/s</p>
+                                <section className="w-fit flex flex-col gap-5">
+                                    <div className="flex flex-col gap-3">
+                                        <h3 className="font-semibold">Time used</h3>
+                                        <p>{takenTime} minute/s</p>
+                                    </div>
+                                    <div className="flex flex-col gap-3">
+                                        <h3 className="font-semibold">Adaptation</h3>
+                                        <p>
+                                            {
+                                                item.test_data.test_adaptation
+                                                ? item.test_data.test_adaptation.code
+                                                : 'None'
+                                            }
+                                        </p>
+                                    </div>
                                 </section>
                                 <section className="flex-1 flex flex-col gap-3">
                                     <h3 className="font-semibold">Answers</h3>
                                     <div className="flex flex-row gap-5">
                                         <article className="flex-1">
-                                            <Card className="shadow-none bg-green-200">
-                                                <CardHeader>
-                                                    <CardTitle>Right</CardTitle>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    
-                                                </CardContent>
-                                            </Card>
+                                            <StudentsAnswersCard 
+                                                type="correct"
+                                                questions={item.test_data.question}
+                                                studentResponses={item.response}
+                                            />
                                         </article>
                                         <article className="flex-1">
-                                            <Card className="shadow-none bg-red-200">
-                                                <CardHeader>
-                                                    <CardTitle>Wrong</CardTitle>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    
-                                                </CardContent>
-                                            </Card>
+                                            <StudentsAnswersCard 
+                                                type="incorrect"
+                                                questions={item.test_data.question}
+                                                studentResponses={item.response}
+                                            />
                                         </article>
                                     </div>
                                 </section>
