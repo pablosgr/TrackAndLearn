@@ -52,19 +52,16 @@ export default function AverageScoreCard({
     
     const chartConfig = {
         students: {
-            label: "Students",
+            label: "Students"
         },
         high: {
-            label: "High (7 to 10)",
-            color: "var(--chart-1)",
+            label: "High (7 to 10)"
         },
         mid: {
-            label: "Mid (5 to 7)",
-            color: "var(--chart-2)",
+            label: "Mid (5 to 7)"
         },
         low: {
-            label: "Low (0 to 5)",
-            color: "var(--chart-3)",
+            label: "Low (0 to 5)"
         }
     } satisfies ChartConfig
 

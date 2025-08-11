@@ -1,5 +1,6 @@
 import StudentsResultAccordion from "@/components/classrooms/StudentsResultAccordion";
 import AverageScoreCard from "@/components/classrooms/AverageScoreCard";
+import QuestionsResultsCard from "@/components/classrooms/QuestionsResultsCard";
 import { ClassroomResultType } from "@/types/test/ClassroomResultType";
 
 export default function ClassroomResultClient({ classroomResults }: { classroomResults: ClassroomResultType[] }) {
@@ -10,6 +11,7 @@ export default function ClassroomResultClient({ classroomResults }: { classroomR
                 <section className="w-full flex flex-col gap-3">
                     <h2 className="text-xl mb-5">Classroom result</h2>
                     <AverageScoreCard classroomResults={classroomResults} />
+                    <QuestionsResultsCard classroomResults={classroomResults} />
                 </section>
                 <section className="w-full flex flex-col gap-3">
                     <h2 className="text-xl mb-5">Individual results</h2>
