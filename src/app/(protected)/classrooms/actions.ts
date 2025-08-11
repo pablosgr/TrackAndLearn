@@ -281,6 +281,12 @@ export async function getClassroomTestResults(classroomId: string, templateId: s
                 test_adaptation:adaptation(
                     name,
                     code
+                ),
+                question(
+                    *,
+                    option(
+                        *
+                    )
                 )
             ),
             student_data:users(
