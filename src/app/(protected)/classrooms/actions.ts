@@ -294,7 +294,8 @@ export async function getClassroomTestResults(classroomId: string, templateId: s
             )
         `)
         .in('test_id', testIds)
-        .eq('classroom_id', classroomId);
+        .eq('classroom_id', classroomId)
+        .order('score', { ascending: true });
 
     if (!data || error) {
         console.error('Error retrieving test results from classroom: ', error);

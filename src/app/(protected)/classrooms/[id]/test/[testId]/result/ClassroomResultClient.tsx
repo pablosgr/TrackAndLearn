@@ -1,19 +1,17 @@
-import { ClassroomResultType } from "@/types/test/ClassroomResultType"
+// import StudentsResultAccordion from "@/components/classrooms/StudentsResultAccordion";
+import { ClassroomResultType } from "@/types/test/ClassroomResultType";
 
 export default function ClassroomResultClient({ classroomResults }: { classroomResults: ClassroomResultType[] }) {
     return (
-        <div>
-            Classroom result
-            <ul className="flex flex-col gap-6">
-                {
-                    classroomResults.map((res) => (
-                        <li key={res.id} className="p-6 rounded-lg bg-green-300">
-                            <p>Student: {res.student_data.name}</p>
-                            <p>Final score: {res.score}</p>
-                        </li>
-                    ))
-                }
-            </ul>
-        </div>
+        <>
+            <h1>Results</h1>
+            <section className="w-full flex">
+                <h2 className="text-xl mb-5">Classroom result</h2>
+            </section>
+            <section className="w-full flex flex-col gap-3">
+                <h2 className="text-xl mb-5">Individual results</h2>
+                {/* <StudentsResultAccordion classroomResults={classroomResults} /> */}
+            </section>
+        </>
     )
 }
