@@ -1,4 +1,4 @@
-// import StudentsResultAccordion from "@/components/classrooms/StudentsResultAccordion";
+import StudentsResultAccordion from "@/components/classrooms/StudentsResultAccordion";
 import { ClassroomResultType } from "@/types/test/ClassroomResultType";
 
 export default function ClassroomResultClient({ classroomResults }: { classroomResults: ClassroomResultType[] }) {
@@ -10,7 +10,7 @@ export default function ClassroomResultClient({ classroomResults }: { classroomR
             </section>
             <section className="w-full flex flex-col gap-3">
                 <h2 className="text-xl mb-5">Individual results</h2>
-                {/* <StudentsResultAccordion classroomResults={classroomResults} /> */}
+                <StudentsResultAccordion classroomResults={classroomResults} />
             </section>
         </>
     )

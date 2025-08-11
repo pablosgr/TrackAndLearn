@@ -1,0 +1,94 @@
+import { ClassroomResultType } from "@/types/test/ClassroomResultType";
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+export default function StudentsResultAccordion({
+    classroomResults
+}: { 
+    classroomResults: ClassroomResultType[]
+}) {
+    return (
+        <Accordion
+            type="multiple"
+        >
+            {
+                classroomResults.map((item) => {
+                    const startTime = new Date(item.started_at).getTime();
+                    const endTime = new Date(item.ended_at).getTime();
+
+                    const diff = endTime - startTime;
+                    const takenTime = Math.floor(diff / 1000 / 60);
+
+                    return (
+                        <AccordionItem key={item.id} value={`result-${item.id}`}>
+                            <AccordionTrigger 
+                                className={`
+                                    p-5 border-b-1 rounded-none border-gray-400
+                                    hover:cursor-pointer hover:bg-accent/20
+                                `}
+                            >
+                                <div>{item.student_data.name}</div>
+                                <div>{item.student_data.username}</div>
+                                <div className="flex flex-row gap-3 items-center">
+                                    <div 
+                                        className={`
+                                            rounded-full w-4 h-4
+                                            ${item.score < 5 ? 'bg-red-500' : ''}
+                                            ${item.score >= 5 && item.score < 7 ? 'bg-yellow-400' : ''}
+                                            ${item.score >= 7 ? 'bg-green-500' : ''}
+                                        `}
+                                    ></div>
+                                    Score: {item.score}
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="p-5 flex flex-row gap-15">
+                                <section className="w-fit flex flex-col gap-3">
+                                    <h3 className="font-semibold">Time used</h3>
+                                    <p>{takenTime} minute/s</p>
+                                </section>
+                                <section className="flex-1 flex flex-col gap-3">
+                                    <h3 className="font-semibold">Answers</h3>
+                                    <div className="flex flex-row gap-5">
+                                        <article className="flex-1">
+                                            <Card className="shadow-none bg-green-200">
+                                                <CardHeader>
+                                                    <CardTitle>Right</CardTitle>
+                                                </CardHeader>
+                                                <CardContent>
+                                                    
+                                                </CardContent>
+                                            </Card>
+                                        </article>
+                                        <article className="flex-1">
+                                            <Card className="shadow-none bg-red-200">
+                                                <CardHeader>
+                                                    <CardTitle>Wrong</CardTitle>
+                                                </CardHeader>
+                                                <CardContent>
+                                                    
+                                                </CardContent>
+                                            </Card>
+                                        </article>
+                                    </div>
+                                </section>
+
+                            </AccordionContent>
+                        </AccordionItem>
+                    )
+                })
+            }
+        </Accordion>
+    )
+}
