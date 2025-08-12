@@ -3,15 +3,19 @@
 import { useState } from "react";
 import TemplateCard from "@/components/tests/TemplateCard";
 import TemplateDialog from "@/components/tests/TemplateDialog";
+import GenerateTestDialog from "@/components/tests/GenerateTestDialog";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { TopicType } from "@/types/test/TopicType";
+import { AdaptationType } from "@/types/test/AdaptationType";
 
 export default function TestsPageClient({ 
     testList,
-    topicList 
+    topicList,
+    adaptationList,
 }: { 
     testList: TestTemplateType[],
-    topicList: TopicType[]
+    topicList: TopicType[],
+    adaptationList: AdaptationType[]
 }) {
     const [templates, setTemplates] = useState<TestTemplateType[]>(testList);
     const hasTests = templates.length > 0;
@@ -45,29 +49,41 @@ export default function TestsPageClient({
 
     return (
         <>
-            <header className="w-full flex flex-row items-center justify-between pb-10">
+            <header className="w-full flex flex-row flex-wrap items-center justify-between pb-10">
                 <h1 className="text-3xl">My Tests</h1>
                 {
                     hasTests &&
+                    <div className="flex flex-row gap-5">
+                        <GenerateTestDialog 
+                            adaptationList={adaptationList}
+                            topicList={topicList}
+                        />
                         <TemplateDialog 
                             type="create"
                             topics={topicList}
                             onCreate={handleCreateTemplate}
                         />
+                    </div>
                 }
             </header>
             <section className={`w-full flex flex-col ${hasTests ? 'items-start' : 'h-full items-center'}`}>
                 {
                     !hasTests
                     ? <div className="h-full flex flex-col justify-center gap-3">
-                            <span className="text-lg">
+                            <span className="text-lg text-center">
                                 Start creating a Test!
                             </span>
-                            <TemplateDialog 
-                                type="create"
-                                topics={topicList}
-                                onCreate={handleCreateTemplate}
-                            />
+                            <div className="flex flex-row gap-3">
+                                <GenerateTestDialog 
+                                    adaptationList={adaptationList}
+                                    topicList={topicList}
+                                />
+                                <TemplateDialog 
+                                    type="create"
+                                    topics={topicList}
+                                    onCreate={handleCreateTemplate}
+                                />
+                            </div>
                         </div>
                     : <ul className="flex flex-row flex-wrap gap-9">
                         {
