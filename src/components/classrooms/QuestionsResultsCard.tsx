@@ -1,7 +1,7 @@
 'use client';
 
 import type { ClassroomResultType } from "@/types/test/ClassroomResultType";
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import {
   ChartConfig,
   ChartContainer,
@@ -53,111 +53,92 @@ export default function QuestionsResultsCard({
         .map(([qid, count]) => [Number(qid), count] as [number, number])
         .sort(([, countA], [, countB]) => countB - countA);
 
-    let limit = Math.min(sortedCorrect.length, sortedIncorrect.length);
-    limit = limit < 5 ? limit : 5;
+    const displayLimit = Math.min(sortedCorrect.length, sortedIncorrect.length) === 0
+        ? Math.max(sortedCorrect.length, sortedIncorrect.length)
+        : Math.min(Math.min(sortedCorrect.length, sortedIncorrect.length), 5);
 
     const incorrectChartData = [];
     const correctChartData = [];
 
-    for (let i = 0; i < limit; i++) {
-        const newIncorrectItem = {
-            question: `q${sortedIncorrect[i][0]}`,
-            value: sortedIncorrect[i][1],
-            fill: 'tomato'
-        };
-
-        incorrectChartData.push(newIncorrectItem);
-
+    for (let i = 0; i < displayLimit; i++) {
         const newCorrectItem = {
-            question: `q${sortedCorrect[i][0]}`,
-            value: sortedCorrect[i][1],
-            fill: '#27F554'
+            question: `${correctQuestionsText[sortedCorrect[i][0]]}`,
+            value: sortedCorrect[i][1]
         };
 
         correctChartData.push(newCorrectItem);
+
+        if (sortedIncorrect.length > 0) {
+            const newIncorrectItem = {
+                question: `${incorrectQuestionsText[sortedIncorrect[i][0]]}`,
+                value: sortedIncorrect[i][1]
+            };
+
+            incorrectChartData.push(newIncorrectItem);
+        }
     }
     
     const correctChartConfig = {
-        value: { label: "Correct" },
-        ...Object.fromEntries(
-            sortedCorrect.map(([qid]) => [
-                `q${qid}`, 
-                { label: correctQuestionsText[qid] || `Q${qid}` }
-            ])
-        )
+        value: { label: 'Correct', color: '#27F554' }
     } satisfies ChartConfig;
 
     const incorrectChartConfig = {
-        value: { label: "Incorrect" },
-        ...Object.fromEntries(
-            sortedIncorrect.map(([qid]) => [
-                `q${qid}`, 
-                { label: incorrectQuestionsText[qid] || `Q${qid}` }
-            ])
-        )
+        value: { label: "Incorrect", color: 'tomato' }
     } satisfies ChartConfig;
 
     return (
         <Card className="flex flex-col w-full">
             <CardHeader className="items-center">
-                <CardTitle>Most correct and failed questions for {classroomResults[0].test_data.name}</CardTitle>
+                <CardTitle>Most correct and incorrect questions for {classroomResults[0].test_data.name}</CardTitle>
                 <CardDescription>These charts display a maximum of 5 questions each</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-row pb-0">
-                <ChartContainer config={correctChartConfig} className="flex-1">
-                    <BarChart
-                        accessibilityLayer
-                        data={correctChartData}
-                        layout="vertical"
-                        margin={{
-                            left: 20,
-                        }}
-                    >
-                        <YAxis
-                            dataKey="question"
-                            type="category"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                            tickFormatter={(value) =>
-                                correctChartConfig[value as keyof typeof correctChartConfig]?.label
-                            }
-                        />
-                        <XAxis dataKey="value" type="number" hide />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Bar dataKey="value" layout="vertical" radius={5} />
-                    </BarChart>
+                {
+                    sortedCorrect.length > 0 &&
+                    <ChartContainer config={correctChartConfig} className="flex-1 max-h-120">
+                        <BarChart
+                            accessibilityLayer
+                            data={correctChartData}
+                        >
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="question"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                                tickFormatter={(value) => value}
+                            />
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <Bar dataKey="value" fill="#27F554" radius={8} />
+                        </BarChart>
                     </ChartContainer>
-                    <ChartContainer config={incorrectChartConfig} className="flex-1">
-                    <BarChart
-                        accessibilityLayer
-                        data={incorrectChartData}
-                        layout="vertical"
-                        margin={{
-                            left: 30,
-                        }}
-                    >
-                        <YAxis
-                            dataKey="question"
-                            type="category"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                            tickFormatter={(value) =>
-                                incorrectChartConfig[value as keyof typeof incorrectChartConfig]?.label
-                            }
-                        />
-                        <XAxis dataKey="value" type="number" hide />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Bar dataKey="value" layout="vertical" radius={5} />
-                    </BarChart>
+                }
+                {
+                    sortedIncorrect.length > 0 &&
+                    <ChartContainer config={incorrectChartConfig} className="flex-1 max-h-120">
+                        <BarChart
+                            accessibilityLayer
+                            data={incorrectChartData}
+                        >
+                            <CartesianGrid vertical={false} />
+                            <XAxis
+                                dataKey="question"
+                                tickLine={false}
+                                tickMargin={10}
+                                axisLine={false}
+                                tickFormatter={(value) => value}
+                            />
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <Bar dataKey="value" fill="tomato" radius={8} />
+                        </BarChart>
                     </ChartContainer>
+                }
             </CardContent>
         </Card>
     )
