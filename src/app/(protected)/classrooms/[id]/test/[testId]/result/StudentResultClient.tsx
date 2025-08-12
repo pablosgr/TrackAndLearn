@@ -44,13 +44,11 @@ export default function StudentResultClient({
                                                                 shadow-none
                                                                 ${
                                                                     opt.is_correct
-                                                                    ? 'bg-green-300 border-green-500'
-                                                                    : ''
+                                                                    && 'bg-green-300 border-green-500'
                                                                 }
                                                                 ${
                                                                     (studentResponse?.selected_option_id === opt.id && !opt.is_correct)
-                                                                    ? 'bg-red-300 border-red-500'
-                                                                    : ''
+                                                                    && 'bg-red-300 border-red-500'
                                                                 }
                                                             `}
                                                         >

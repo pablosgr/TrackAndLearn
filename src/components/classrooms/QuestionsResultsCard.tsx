@@ -92,7 +92,7 @@ export default function QuestionsResultsCard({
                 <CardTitle>Most correct and incorrect questions for {classroomResults[0].test_data.name}</CardTitle>
                 <CardDescription>These charts display a maximum of 5 questions each</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-row pb-0">
+            <CardContent className="flex flex-row pb-2 gap-5">
                 {
                     sortedCorrect.length > 0 &&
                     <ChartContainer config={correctChartConfig} className="flex-1 max-h-120">
