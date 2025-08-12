@@ -2,7 +2,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { fetchLLMResponse } from "@/utils/llm/fetchLlmResponse";
+import { fetchLLMResponse } from "@/utils/llm/fetchLLMResponse";
 import { formatPrompt } from "@/utils/llm/formatPrompt";
 import { Bot, LoaderCircle } from 'lucide-react';
 import { createTest } from "@/app/(protected)/tests/actions/post";
