@@ -57,6 +57,7 @@ export default function TestsPageClient({
                         <GenerateTestDialog 
                             adaptationList={adaptationList}
                             topicList={topicList}
+                            onGenerate={handleCreateTemplate}
                         />
                         <TemplateDialog 
                             type="create"
@@ -77,6 +78,7 @@ export default function TestsPageClient({
                                 <GenerateTestDialog 
                                     adaptationList={adaptationList}
                                     topicList={topicList}
+                                    onGenerate={handleCreateTemplate}
                                 />
                                 <TemplateDialog 
                                     type="create"

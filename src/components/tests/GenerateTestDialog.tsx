@@ -2,11 +2,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { fetchLLMResponse } from "@/utils/llm/fetchLLMResponse";
+import { useUser } from "../context/userWrapper";
+import { useRouter } from "next/navigation";
+import { fetchLLMTestResponse } from "@/utils/llm/fetchLLMTestResponse";
+import { createGeneratedTest } from "@/app/(protected)/tests/actions/post";
 import { formatPrompt } from "@/utils/llm/formatPrompt";
 import { Bot, LoaderCircle } from 'lucide-react';
-import { createTest } from "@/app/(protected)/tests/actions/post";
-import { TestType } from "@/types/test/TestType";
+import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import { TopicType } from "@/types/test/TopicType";
 import { Button } from "@/components/ui/button";
@@ -54,10 +56,13 @@ export default function GenerateTestDialog({
 }: {
     adaptationList: AdaptationType[],
     topicList: TopicType[],
-    onGenerate?: (newTest: TestType) => void,
+    onGenerate: (newTest: TestTemplateType) => void,
 }) {
+    const user = useUser();
+    const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -70,7 +75,9 @@ export default function GenerateTestDialog({
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        setError(null);
         setIsGenerating(true);
+
         const selectedTopic = topicList.find((t) => t.id === Number(values.topic_id));
         const selectedAdaptation = adaptationList.find((a) => a.id === values.adaptation_id);
 
@@ -81,19 +88,38 @@ export default function GenerateTestDialog({
             selectedAdaptation?.name ?? null
         );
 
-        const llmResponse = await fetchLLMResponse(prompt);
+        try {
+            const llmResponse = await fetchLLMTestResponse(prompt);
 
-        if (!llmResponse) {
+            if (!llmResponse) {
+                throw new Error('Error generating test');
+            }
+
+            const formattedResponse = JSON.parse(llmResponse);
+            console.log(formattedResponse);
+
+            const newTemplate = await createGeneratedTest(
+                formattedResponse,
+                user.id,
+                selectedTopic!,
+                values.level,
+                values.adaptation_id
+            );
+
+            if (!newTemplate) {
+                throw new Error('Error saving generated test');
+            }
+
+            onGenerate(newTemplate);
+            setOpen(false);
+            router.refresh();
+
+        } catch (e) {
+            console.error(e);
+            setError('An error occurred, please try again');
+        } finally {
             setIsGenerating(false);
-            // show error
-            return;
         }
-
-        const formattedResponse = JSON.parse(llmResponse);
-        console.log(formattedResponse);
-
-        setIsGenerating(false);
-        setOpen(false);
     }
 
     return (
@@ -216,6 +242,10 @@ export default function GenerateTestDialog({
                             )}
                         />
                         <DialogFooter className="pt-4">
+                            {
+                                error &&
+                                <span className="text-red-500">{error}</span>
+                            }
                             <DialogClose asChild>
                                 <Button variant="outline" onClick={() => form.clearErrors()}>Cancel</Button>
                             </DialogClose>
