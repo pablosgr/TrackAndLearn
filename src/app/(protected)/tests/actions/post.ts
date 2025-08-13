@@ -3,8 +3,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { NewOptionType } from "@/types/test/OptionType";
+import { TopicType } from "@/types/test/TopicType";
 import { NewQuestionType, QuestionType } from "@/types/test/QuestionType";
 import { NewTestType, TestType } from "@/types/test/TestType";
+import { LLMTestResponseType } from "@/types/llm/LLMTestResponseType";
 
 export async function createTemplate(name: string, topic: string, userId: string): Promise<TestTemplateType | null> {
     const supabase = await createClient();
@@ -78,6 +80,101 @@ export async function createTest(newTest: NewTestType): Promise<TestType | null>
     }
 
     return data as TestType;
+}
+
+export async function createGeneratedTest(
+    data: LLMTestResponseType,
+    userId: string,
+    topic: TopicType,
+    level: string,
+    adaptationId: number | null,
+): Promise<TestTemplateType | null> {
+    const supabase = await createClient();
+
+    const { data: templateData, error: templateError } = await supabase
+        .from('test_template')
+        .insert({
+            name: data.test_template_name,
+            teacher_id: userId,
+            topic_id: topic.id
+        })
+        .select('*')
+        .single();
+
+    if (!templateData || templateError) {
+        console.error('Error inserting generated template');
+        return null;
+    }
+
+    const testsToInsert = data.tests.map((test, index) => ({
+        template_id: templateData.id,
+        name: test.name,
+        level: level,
+        time_limit: test.time_limit,
+        adaptation_id: index === 0 ? null : adaptationId
+    }));
+
+    const { data: testData, error: testError } = await supabase
+        .from('test')
+        .insert(testsToInsert)
+        .select('id');
+    
+    if (!testData || testError) {
+        console.error('Error inserting generated test/s');
+        return null;
+    }
+
+    const questionsToInsert = data.tests.flatMap((test, index) => 
+        test.questions.map((q) => ({
+            test_id: testData[index].id,
+            question_text: q.question_text,
+            options_number: q.options_number,
+            index_order: q.index_order
+        }))
+    );
+
+    const { data: questionData, error: questionError } = await supabase
+        .from('question')
+        .insert(questionsToInsert)
+        .select('id');
+    
+    if (!questionData || questionError) {
+        console.error('Error inserting generated questions');
+        return null;
+    }
+
+    let questionCounter = 0;
+
+    const optionsToInsert = data.tests.flatMap((test) =>
+        test.questions.flatMap((question) => {
+            const opts = question.options.map((opt) => ({
+                question_id: questionData[questionCounter].id,
+                option_text: opt.option_text,
+                is_correct: opt.is_correct,
+                index_order: opt.index_order
+            }));
+            questionCounter++;
+            return opts;
+        })
+    );
+
+    const { error: optionError } = await supabase
+        .from('option')
+        .insert(optionsToInsert);
+    
+    if (optionError) {
+        console.error('Error inserting generated options');
+        return null;
+    }
+
+    const formattedTemplate = {
+        ...templateData,
+        topic_data: {
+            name: topic.name
+        }
+    }
+
+    return formattedTemplate;
 }
 
 export async function createQuestion(
