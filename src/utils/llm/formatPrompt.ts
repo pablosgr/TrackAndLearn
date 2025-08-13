@@ -14,6 +14,7 @@ export function formatPrompt(
           - Each question: 2 or 4 options, 1 correct answer
           - Include a realistic time limit (minutes)
           - If adaptation exists, add an adapted version as an extra object in "tests" array. Set its "name" field to: <test_template_name> - <Adaptation acronym> adapted.
+          - Keep "test_template_name" short (max. 4 words) and generic, without specific dates or educational level.
           Example structure (replace all example content with new relevant data):
             {
                 "test_template_name": "Cubism",
