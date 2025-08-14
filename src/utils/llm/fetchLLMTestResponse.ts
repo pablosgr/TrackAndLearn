@@ -3,10 +3,21 @@ import { GoogleGenAI } from "@google/genai";
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: apiKey });
 
-export async function fetchLLMTestResponse(prompt: string): Promise<string | null> {
+export async function fetchLLMTestResponse(prompt: string, pdf: string | null): Promise<string | null> {
+    const contents: any[] = [{ text: prompt }];
+
+    if (pdf) {
+        contents.push({
+            inlineData: {
+                mimeType: 'application/pdf',
+                data: pdf
+            }
+        })
+    }
+
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-        contents: prompt,
+        contents: contents,
     });
 
     if (!response.text) {

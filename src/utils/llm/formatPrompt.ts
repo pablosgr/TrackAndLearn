@@ -2,7 +2,8 @@ export function formatPrompt(
     description: string,
     level: string,
     topic: string,
-    adaptation: string | null
+    adaptation: string | null,
+    pdf: string | null
 ): string {
     const formattedPrompt = `
         Generate a multiple-choice test in valid JSON (no markdown, comments, or extra text) which follows these requirements:
@@ -13,6 +14,9 @@ export function formatPrompt(
           - 4 questions maximum
           - Each question: 2 or 4 options, 1 correct answer
           - Include a realistic time limit (minutes)
+          ${pdf 
+          ? '- Use the attached PDF as reference along with the description. Prioritize PDF content if it conflicts with the description, but do not reference PDF content directly' 
+          : ''}
           - If adaptation exists, add an adapted version as an extra object in "tests" array. Set its "name" field to: <test_template_name> - <Adaptation acronym> adapted.
           - Keep "test_template_name" short (max. 4 words) and generic, without specific dates or educational level.
           Example structure (replace all example content with new relevant data):
