@@ -13,6 +13,7 @@ import { AdaptationType } from "@/types/test/AdaptationType";
 import { TopicType } from "@/types/test/TopicType";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "../ui/label";
 import { Input } from "@/components/ui/input";
 import {
     Dialog,
@@ -47,6 +48,9 @@ const formSchema = z.object({
     level: z.string().min(3, { message: 'Level must have between 3 and 100 characters' }).max(100),
     topic_id: z.string().min(1, { message: 'You must select a topic' }),
     adaptation_id: z.number().nullable(),
+    pdf: z.instanceof(File).optional()
+        .refine(file => !file || file.type === 'application/pdf', { message: 'File must be a PDF' })
+        .refine(file => !file || file.size <= 20 * 1024 * 1024, { message: 'Max size is 20MB' })
 });
 
 export default function GenerateTestDialog({
@@ -80,23 +84,36 @@ export default function GenerateTestDialog({
 
         const selectedTopic = topicList.find((t) => t.id === Number(values.topic_id));
         const selectedAdaptation = adaptationList.find((a) => a.id === values.adaptation_id);
+        let pdfBase64: string | null = null;
+
+        if (values.pdf) {
+            pdfBase64 = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const result = reader.result as string;
+                    resolve(result.split(',')[1]);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(values.pdf!);
+            });
+        }
 
         const prompt = formatPrompt(
             values.description,
             values.level,
             selectedTopic?.name!,
-            selectedAdaptation?.name ?? null
+            selectedAdaptation?.name ?? null,
+            pdfBase64
         );
 
         try {
-            const llmResponse = await fetchLLMTestResponse(prompt);
+            const llmResponse = await fetchLLMTestResponse(prompt, pdfBase64);
 
             if (!llmResponse) {
                 throw new Error('Error generating test');
             }
 
             const formattedResponse = JSON.parse(llmResponse);
-            console.log(formattedResponse);
 
             const newTemplate = await createGeneratedTest(
                 formattedResponse,
@@ -112,6 +129,7 @@ export default function GenerateTestDialog({
 
             onGenerate(newTemplate);
             setOpen(false);
+            form.reset();
             router.refresh();
 
         } catch (e) {
@@ -130,13 +148,13 @@ export default function GenerateTestDialog({
                     <span>Generate with AI</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle>
                         Generate test with AI
                     </DialogTitle>
                     <DialogDescription className="pt-2">
-                        Generate a test and, optionally, a related adapted version
+                        Generate a test from a description and/or reference PDF, optionally including an adapted version
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -209,11 +227,45 @@ export default function GenerateTestDialog({
                         />
                         <FormField
                             control={form.control}
+                            name="pdf"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel asChild>Attach PDF (optional, max 20MB)</FormLabel>
+                                    <FormControl>
+                                        <div>
+                                            <Label
+                                                htmlFor="input-file"
+                                                className={`
+                                                    flex flex-row gap-3
+                                                    hover:cursor-pointer border-input border-1 
+                                                    hover:bg-accent/20 text-gray-700 px-3 py-2
+                                                    shadow-xs rounded-md transition-colors
+                                                `}
+                                            >
+                                                <span className="text-sm text-gray-500">
+                                                    {field.value ? field.value.name : "No file selected"}
+                                                </span>
+                                            </Label>
+                                            <Input
+                                                type="file"
+                                                id="input-file"
+                                                className="hidden"
+                                                accept="application/pdf"
+                                                onChange={(e) => field.onChange(e.target.files?.[0] || null)}
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="adaptation_id"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel asChild>
-                                        <span>Generate Adaptation</span>
+                                        <span>Generate Adaptation (optional)</span>
                                     </FormLabel>
                                     <FormControl>
                                         <Select
