@@ -99,10 +99,11 @@ export default function GenerateTestDialog({
         }
 
         const prompt = formatPrompt(
+            'test',
             values.description,
-            values.level,
-            selectedTopic?.name!,
             selectedAdaptation?.name ?? null,
+            values.level,
+            selectedTopic?.name,
             pdfBase64
         );
 
