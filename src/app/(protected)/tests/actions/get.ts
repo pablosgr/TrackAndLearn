@@ -50,10 +50,13 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
     return data as TestTemplateType[];
 }
 
-export async function getTestsByTemplateId(templateId: string): Promise <TestType[]> {
+export async function getTestsById(
+    ids: string | string[],
+    filterBy: 'test' | 'template'
+): Promise <TestType[]> {
     const supabase = await createClient();
 
-    const { data, error } = await supabase
+    let query = supabase
         .from("test")
         .select(`
             id,
@@ -75,10 +78,14 @@ export async function getTestsByTemplateId(templateId: string): Promise <TestTyp
                 )
             )
         `)
-        .eq("template_id", templateId)
-        .order('id', { ascending: true} )
+        .order('id', { ascending: true})
         .order('index_order', { referencedTable: 'question', ascending: true })
         .order('index_order', { referencedTable: 'question.option', ascending: true });
+
+    filterBy === 'template' && query.eq("template_id", ids);
+    (filterBy === 'test' && Array.isArray(ids)) && query.in("id", ids);
+
+    const { data, error } = await query;
 
         if (!data || error) {
             console.error('Error fetching test: ', error);
