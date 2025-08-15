@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server";
+import { getTestsById } from "./get";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { NewOptionType } from "@/types/test/OptionType";
 import { TopicType } from "@/types/test/TopicType";
@@ -114,14 +115,36 @@ export async function createGeneratedTest(
         adaptation_id: index === 0 ? null : adaptationId
     }));
 
+    try {
+        await createGeneratedTestVersions(data, testsToInsert);
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+
+    const formattedTemplate = {
+        ...templateData,
+        topic_data: {
+            name: topic.name
+        }
+    }
+
+    return formattedTemplate;
+}
+
+export async function createGeneratedTestVersions(
+    data: LLMTestResponseType,
+    testsToInsert: NewTestType[]
+): Promise<TestType[]> {
+    const supabase = await createClient();
+
     const { data: testData, error: testError } = await supabase
         .from('test')
         .insert(testsToInsert)
         .select('id');
     
     if (!testData || testError) {
-        console.error('Error inserting generated test/s');
-        return null;
+        throw new Error('Error inserting generated test/s');
     }
 
     const questionsToInsert = data.tests.flatMap((test, index) => 
@@ -139,8 +162,7 @@ export async function createGeneratedTest(
         .select('id');
     
     if (!questionData || questionError) {
-        console.error('Error inserting generated questions');
-        return null;
+        throw new Error('Error inserting generated questions');
     }
 
     let questionCounter = 0;
@@ -163,18 +185,14 @@ export async function createGeneratedTest(
         .insert(optionsToInsert);
     
     if (optionError) {
-        console.error('Error inserting generated options');
-        return null;
+        throw new Error('Error inserting generated options');
     }
 
-    const formattedTemplate = {
-        ...templateData,
-        topic_data: {
-            name: topic.name
-        }
-    }
+    const testIds = testData.flatMap((t) => t.id);
 
-    return formattedTemplate;
+    const recoveredTests = await getTestsById(testIds, 'test');
+
+    return recoveredTests;
 }
 
 export async function createQuestion(
