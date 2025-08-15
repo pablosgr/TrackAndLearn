@@ -1,6 +1,7 @@
 'use client';
 
 import QuestionDetailCard from "./QuestionDetailCard";
+import GenerateVersionDialog from "./GenerateVersionDialog";
 import { useRouter } from "next/navigation";
 import { deleteTestById } from "@/app/(protected)/tests/actions/delete";
 import { TestType } from "@/types/test/TestType";
@@ -31,6 +32,7 @@ export default function TestDetailCard({
     onQuestionCreate,
     onTestUpdate,
     onTestDelete,
+    onTestGenerate,
 }: {
     test: TestType,
     templateName: string,
@@ -40,6 +42,7 @@ export default function TestDetailCard({
     onQuestionCreate: (testId: number, newQuestion: QuestionType) => void,
     onTestUpdate: (testId: number, data: NewTestType) => void,
     onTestDelete: (testId: number) => void,
+    onTestGenerate: (newTest: TestType) => void
 }) {
     const router = useRouter();
 
@@ -62,6 +65,14 @@ export default function TestDetailCard({
                     </CardDescription>
                 </div>
                 <div className="flex flex-row gap-3 items-center">
+                    {
+                        !test.adaptation_id &&
+                        <GenerateVersionDialog 
+                            baseTest={test}
+                            adaptationList={adaptations}
+                            onGenerate={onTestGenerate}
+                        />
+                    }
                     {
                         test.question.length < 9 &&
                         <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />

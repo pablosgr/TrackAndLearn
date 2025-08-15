@@ -115,7 +115,7 @@ export default function TestDialog({
                 {
                     type === 'update'
                     ? <Button variant="outline">Edit test</Button>
-                    : <Button variant="default">Add version</Button>
+                    : <Button variant="default">Add adaptation</Button>
                 }
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -124,13 +124,13 @@ export default function TestDialog({
                         {
                             type === 'update'
                             ? 'Edit test'
-                            : 'Create new version'
+                            : 'Create adapted version'
                         }
                     </DialogTitle>
                     <DialogDescription className="pt-2">
                         {
                             type === 'create'
-                            ? `Create a new test version for the template. 
+                            ? `Create a new adapted version for the test. 
                                 Chosen adaptation will be added automatically to the name.`
                             : 'Edit test information'
                         }

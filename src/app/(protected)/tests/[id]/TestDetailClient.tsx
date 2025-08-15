@@ -87,6 +87,10 @@ export default function TestDetailClient({
         );
     }
 
+    const createGeneratedTest = (newTest: TestType) => {
+        setTests(prev => [...prev, newTest]);
+    }
+
     const createTest = (newTest: TestType) => {
         const adaptation = adaptationList.find((item) => item.id === newTest.adaptation_id);
 
@@ -174,6 +178,7 @@ export default function TestDetailClient({
                                     onQuestionCreate={createQuestion}
                                     onTestUpdate={updateTest}
                                     onTestDelete={deleteTest}
+                                    onTestGenerate={createGeneratedTest}
                                 />
                             </TabsContent>
                         ))
