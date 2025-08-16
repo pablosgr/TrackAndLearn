@@ -112,11 +112,13 @@ export default function TestDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                {
-                    type === 'update'
-                    ? <Button variant="outline">Edit test</Button>
-                    : <Button variant="default">Add adaptation</Button>
-                }
+                <Button variant="outline">
+                    {
+                        type === 'update'
+                        ? 'Edit test'
+                        : 'Add adaptation'
+                    }
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

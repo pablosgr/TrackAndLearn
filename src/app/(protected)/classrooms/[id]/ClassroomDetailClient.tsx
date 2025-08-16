@@ -146,16 +146,16 @@ export default function ClassroomDetailClient(
                     />
                 }
             </CardHeader>
-            <CardContent className="h-full w-full">
+            <CardContent>
                 <div className="h-full flex flex-row gap-5">
                     {
                         user.role === 'teacher' &&
-                        <section className="min-w-48 h-full">
+                        <section className="min-w-50 h-full">
                             <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
                                 <CardHeader>
                                     <CardTitle>Classroom code</CardTitle>
                                 </CardHeader>
-                                <CardContent className="w-full flex flex-col gap-3">
+                                <CardContent className="w-full flex flex-col gap-4">
                                     <span className="text-2xl text-accent text-shadow-2xs">
                                         {classroom.code}
                                     </span>

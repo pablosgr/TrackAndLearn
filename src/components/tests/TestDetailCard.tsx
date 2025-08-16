@@ -54,15 +54,10 @@ export default function TestDetailCard({
     }
     
     return (
-        <Card className="w-full shadow-none border-0">
+        <Card className="shadow-none border-0">
             <CardHeader className="flex flex-row justify-between items-center flex-wrap gap-5">
                 <div className="flex flex-col gap-3">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
-                    <CardDescription className="flex flex-col gap-2">
-                        <span>Level: { test.level ? test.level : 'Level not defined' }</span>
-                        <span>Time Limit: { test.time_limit ? test.time_limit + ' minutes' : 'None' }</span>
-                        <span>Adaptation: { test.adaptation_data ? test.adaptation_data.name : 'Not adapted' }</span>
-                    </CardDescription>
                 </div>
                 <div className="flex flex-row gap-3 items-center">
                     {

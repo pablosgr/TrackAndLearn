@@ -57,6 +57,7 @@ export default function StudentCard({
                 border-0 border-b-1 border-gray-300
                 py-5 rounded-none shadow-none
                 hover:cursor-pointer hover:bg-accent/20
+                transition-colors
             `}
         >
             <CardContent className="w-full flex flex-row justify-between gap-6 items-center">

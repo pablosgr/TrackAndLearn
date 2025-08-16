@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TestType } from "@/types/test/TestType";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { QuestionType } from "@/types/test/QuestionType";
@@ -36,7 +36,8 @@ export default function TestDetailClient({
     testTemplate: TestTemplateType
 }) {
     const [tests, setTests] = useState<TestType[]>(testList);
-    const [selectedTab, setSelectedTab] = useState(tests[0]?.id.toString());
+    const [selectedTab, setSelectedTab] = useState<string>(tests[0]?.id.toString());
+    const selectedTest = tests.find(t => t.id.toString() === selectedTab);
     const user = useUser();
 
     const createQuestion = (testId: number, newQuestion: QuestionType) => {
@@ -147,43 +148,72 @@ export default function TestDetailClient({
                 <CardDescription>Created on {new Date(testTemplate.created_at).toLocaleDateString()}</CardDescription>
             </CardHeader>
             <CardContent>
-                <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-                    <div className="flex flex-row gap-5 items-center">
-                    <TabsList>
+                <div className="h-full flex flex-row gap-5">
+                    <section className="w-52 h-full flex flex-col gap-5">
+                        <TestDialog 
+                            type="create"
+                            templateName={testTemplate.name}
+                            templateId={Number(testTemplate.id)}
+                            adaptationList={adaptationList}
+                            onCreate={createTest}
+                        />
+                        <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
+                            <CardHeader>
+                                <CardTitle>Tets details</CardTitle>
+                            </CardHeader>
+                            <CardContent className="w-full flex flex-col gap-3">
+                                {
+                                    selectedTest &&
+                                    <>
+                                    <p
+                                        className="text-sm text-gray-500"
+                                    >
+                                        Level: { selectedTest.level ? selectedTest.level : 'Level not defined' }
+                                    </p>
+                                    <p 
+                                        className="text-sm text-gray-500"
+                                    >
+                                        Time Limit: { selectedTest.time_limit ? selectedTest.time_limit + ' minutes' : 'None' }
+                                    </p>
+                                    <p 
+                                        className="text-sm text-gray-500"
+                                    >
+                                        Adaptation: { selectedTest.adaptation_data ? selectedTest.adaptation_data.code : 'Not adapted' }
+                                    </p>
+                                    </>
+                                }
+                            </CardContent>
+                        </Card>
+                    </section>
+                    <Tabs value={selectedTab} onValueChange={setSelectedTab} className="flex-1">
+                        <TabsList>
+                            {
+                                tests.map((test) => (
+                                    <TabsTrigger key={test.id} value={test.id.toString()} className="hover:cursor-pointer">
+                                        {test.name}
+                                    </TabsTrigger>
+                                ))
+                            }
+                        </TabsList>
                         {
                             tests.map((test) => (
-                                <TabsTrigger key={test.id} value={test.id.toString()} className="hover:cursor-pointer">
-                                    {test.name}
-                                </TabsTrigger>
+                                <TabsContent key={test.id} value={test.id.toString()}>
+                                    <TestDetailCard
+                                        test={test}
+                                        templateName={testTemplate.name}
+                                        adaptations={adaptationList}
+                                        onQuestionDelete={deleteQuestion}
+                                        onQuestionUpdate={updateQuestion}
+                                        onQuestionCreate={createQuestion}
+                                        onTestUpdate={updateTest}
+                                        onTestDelete={deleteTest}
+                                        onTestGenerate={createGeneratedTest}
+                                    />
+                                </TabsContent>
                             ))
                         }
-                    </TabsList>
-                    <TestDialog 
-                        type="create"
-                        templateName={testTemplate.name}
-                        templateId={Number(testTemplate.id)}
-                        adaptationList={adaptationList}
-                        onCreate={createTest}
-                    />
-                    </div>
-                    {
-                        tests.map((test) => (
-                            <TabsContent key={test.id} value={test.id.toString()}>
-                                <TestDetailCard 
-                                    test={test}
-                                    templateName={testTemplate.name}
-                                    adaptations={adaptationList}
-                                    onQuestionDelete={deleteQuestion}
-                                    onQuestionUpdate={updateQuestion}
-                                    onQuestionCreate={createQuestion}
-                                    onTestUpdate={updateTest}
-                                    onTestDelete={deleteTest}
-                                    onTestGenerate={createGeneratedTest}
-                                />
-                            </TabsContent>
-                        ))
-                    }
-                </Tabs>
+                    </Tabs>
+                </div>
             </CardContent>
         </Card>
     );
