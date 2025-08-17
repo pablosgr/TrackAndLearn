@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import TemplateDialog from "./TemplateDialog";
 import CustomAlertDialog from "../CustomAlertDialog";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import {
     Card,
     CardAction,
@@ -40,7 +41,11 @@ export default function TemplateCard({
             <CardHeader className="h-30 flex flex-row justify-between bg-(--color-accent) truncate">
                 <div className="max-w-55 flex flex-col gap-2">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
-                    <CardDescription>Topic: {test.topic_data.name}</CardDescription>
+                    <CardDescription>
+                        <Badge className="bg-white/80 text-black font-medium">
+                            {test.topic_data.name}
+                        </Badge>
+                    </CardDescription>
                 </div>
                 <div className="flex flex-row gap-2">
                     <TemplateDialog
