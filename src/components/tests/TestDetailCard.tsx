@@ -25,6 +25,7 @@ import {
 
 export default function TestDetailCard({
     test,
+    testCount,
     templateName,
     adaptations,
     onQuestionDelete,
@@ -35,6 +36,7 @@ export default function TestDetailCard({
     onTestGenerate,
 }: {
     test: TestType,
+    testCount: number,
     templateName: string,
     adaptations: AdaptationType[],
     onQuestionDelete: (testId: number, id: number) => void,
@@ -45,6 +47,8 @@ export default function TestDetailCard({
     onTestGenerate: (newTest: TestType) => void
 }) {
     const router = useRouter();
+    const MAX_TESTS = 3;
+    const MAX_QUESTIONS = 15;
 
     const handleTestDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -61,15 +65,15 @@ export default function TestDetailCard({
                 </div>
                 <div className="flex flex-row gap-3 items-center">
                     {
-                        !test.adaptation_id &&
-                        <GenerateVersionDialog 
+                        (!test.adaptation_id && testCount < MAX_TESTS) &&
+                        <GenerateVersionDialog
                             baseTest={test}
                             adaptationList={adaptations}
                             onGenerate={onTestGenerate}
                         />
                     }
                     {
-                        test.question.length < 9 &&
+                        test.question.length < MAX_QUESTIONS &&
                         <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
                     }
                     <TestDialog 

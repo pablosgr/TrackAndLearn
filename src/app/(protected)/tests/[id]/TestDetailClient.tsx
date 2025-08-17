@@ -39,6 +39,7 @@ export default function TestDetailClient({
     const [selectedTab, setSelectedTab] = useState<string>(tests[0]?.id.toString());
     const selectedTest = tests.find(t => t.id.toString() === selectedTab);
     const user = useUser();
+    const MAX_TESTS = 3;
 
     const createQuestion = (testId: number, newQuestion: QuestionType) => {
         setTests(prev => 
@@ -150,13 +151,16 @@ export default function TestDetailClient({
             <CardContent>
                 <div className="h-full flex flex-col lg:flex-row gap-5">
                     <section className="w-full lg:w-52 h-full flex flex-col gap-5">
-                        <TestDialog 
-                            type="create"
-                            templateName={testTemplate.name}
-                            templateId={Number(testTemplate.id)}
-                            adaptationList={adaptationList}
-                            onCreate={createTest}
-                        />
+                        {
+                            tests.length < MAX_TESTS &&
+                            <TestDialog
+                                type="create"
+                                templateName={testTemplate.name}
+                                templateId={Number(testTemplate.id)}
+                                adaptationList={adaptationList}
+                                onCreate={createTest}
+                            />
+                        }
                         <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
                             <CardHeader>
                                 <CardTitle>Tets details</CardTitle>
@@ -165,19 +169,13 @@ export default function TestDetailClient({
                                 {
                                     selectedTest &&
                                     <>
-                                    <p
-                                        className="text-sm text-gray-500"
-                                    >
+                                    <p className="text-sm text-gray-500">
                                         Level: { selectedTest.level ? selectedTest.level : 'Level not defined' }
                                     </p>
-                                    <p 
-                                        className="text-sm text-gray-500"
-                                    >
+                                    <p className="text-sm text-gray-500">
                                         Time Limit: { selectedTest.time_limit ? selectedTest.time_limit + ' minutes' : 'None' }
                                     </p>
-                                    <p 
-                                        className="text-sm text-gray-500"
-                                    >
+                                    <p className="text-sm text-gray-500">
                                         Adaptation: { selectedTest.adaptation_data ? selectedTest.adaptation_data.code : 'Not adapted' }
                                     </p>
                                     </>
@@ -204,6 +202,7 @@ export default function TestDetailClient({
                                 <TabsContent key={test.id} value={test.id.toString()}>
                                     <TestDetailCard
                                         test={test}
+                                        testCount={tests.length}
                                         templateName={testTemplate.name}
                                         adaptations={adaptationList}
                                         onQuestionDelete={deleteQuestion}
