@@ -5,6 +5,15 @@ import { organizeResultsByAdaptation } from "@/utils/tests/organizeResultsByAdap
 import { ClassroomResultType } from "@/types/test/ClassroomResultType";
 
 export default function ClassroomResultClient({ classroomResults }: { classroomResults: ClassroomResultType[] }) {
+    if (classroomResults.length === 0) {
+        return (
+            <div className="w-full h-full flex flex-col gap-4 items-center justify-center">
+                <h2 className="text-2xl">No results registered yet</h2>
+                <p className="text-lg">Come back when a student completes the test</p>
+            </div>
+        )
+    }
+
     const organizedResults = organizeResultsByAdaptation(classroomResults);
 
     return (
@@ -15,8 +24,8 @@ export default function ClassroomResultClient({ classroomResults }: { classroomR
                 <QuestionsResultsCard classroomResults={organizedResults.find(([id]) => id === 0)?.[1] ?? []} />
                 {
                     organizedResults.map((res, index) => {
-                        return res[0] !== 0
-                        && <QuestionsResultsCard key={index} classroomResults={res[1]} />
+                        return res[0] !== 0 &&
+                        <QuestionsResultsCard key={index} classroomResults={res[1]} />
                     })
                 }
             </section>
