@@ -11,12 +11,14 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
         <UserWrapper user={user}>
             <SidebarProvider>
                 <AppSidebar />
-                <div className="w-fit p-2.5">
-                    <SidebarTrigger />
+                <div className="w-full flex flex-col sm:flex-row">
+                    <div className="w-fit p-2.5">
+                        <SidebarTrigger />
+                    </div>
+                    <main className="sm:py-14 px-5 sm:px-[8%] flex-1 flex flex-col items-center">
+                        { children }
+                    </main>
                 </div>
-                <main className="py-14 pr-10 w-screen flex flex-col items-center">
-                    { children }
-                </main>
             </SidebarProvider>
         </UserWrapper>
     )

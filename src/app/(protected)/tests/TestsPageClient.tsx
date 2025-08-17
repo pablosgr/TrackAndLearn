@@ -67,7 +67,7 @@ export default function TestsPageClient({
                     </div>
                 }
             </header>
-            <section className={`w-full flex flex-col ${hasTests ? 'items-start' : 'h-full items-center'}`}>
+            <section className={`w-full flex flex-col @container ${!hasTests && 'h-full items-center'}`}>
                 {
                     !hasTests
                     ? <div className="h-full flex flex-col justify-center gap-3">
@@ -87,7 +87,7 @@ export default function TestsPageClient({
                                 />
                             </div>
                         </div>
-                    : <ul className="flex flex-row flex-wrap gap-9">
+                    : <ul className="flex flex-row flex-wrap gap-10 justify-center @6xl:justify-start">
                         {
                             templates && templates.map((t) => (
                                 <li key={t.id}>

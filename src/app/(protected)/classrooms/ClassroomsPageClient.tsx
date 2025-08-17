@@ -36,7 +36,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                         />
                 }
             </header>
-            <section className={`w-full flex flex-col ${hasClassrooms ? 'items-start' : 'h-full items-center'}`}>
+            <section className={`w-full flex flex-col @container ${!hasClassrooms && 'h-full items-center'}`}>
                 {
                     !hasClassrooms
                     ? <div className="h-full flex flex-col justify-center gap-3">
@@ -60,7 +60,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                                 />
                         }
                         </div>
-                    : <ul className="flex flex-row flex-wrap gap-9">
+                    : <ul className="flex flex-row flex-wrap gap-10 justify-center @6xl:justify-start">
                         {
                             classrooms && classrooms.map((c) => (
                                 <li key={c.id}>
