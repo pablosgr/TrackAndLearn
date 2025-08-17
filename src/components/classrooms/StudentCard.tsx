@@ -60,10 +60,10 @@ export default function StudentCard({
                 transition-colors
             `}
         >
-            <CardContent className="w-full flex flex-row justify-between gap-6 items-center">
-                <div className="flex flex-row gap-10 items-center">
-                    <span>{student.username}</span>
+            <CardContent className="w-full flex flex-row flex-wrap justify-between gap-6 items-center text-sm">
+                <div className="flex flex-row gap-10 items-center self-center">
                     <span>{student.name}</span>
+                    <span>{student.username}</span>
                     <span>{student.email}</span>
                 </div>
                 <div className="flex flex-row gap-3 items-center">
@@ -72,7 +72,7 @@ export default function StudentCard({
                         value={student.adaptation_id !== null ? student.adaptation_id.toString() : 'none'} 
                         onValueChange={handleAdaptationUpdate}
                     >
-                        <SelectTrigger className="w-30">
+                        <SelectTrigger className="w-30 hover:cursor-pointer">
                             <SelectValue placeholder="Select one" />
                         </SelectTrigger>
                         <SelectContent>

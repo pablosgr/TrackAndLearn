@@ -147,7 +147,7 @@ export default function ClassroomDetailClient(
                 }
             </CardHeader>
             <CardContent>
-                <div className="h-full flex flex-row gap-5">
+                <div className="h-full flex flex-col lg:flex-row gap-5">
                     {
                         user.role === 'teacher' &&
                         <section className="min-w-50 h-full">

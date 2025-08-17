@@ -55,7 +55,7 @@ export default function QuestionDetailCard({
                         question.option.map((opt) => (
                             <li key={opt.id} className="flex flex-row gap-4 items-center">
                                 {opt.option_text}
-                                { opt.is_correct ? <Check size={20} className="text-green-600"/> : '' }
+                                { opt.is_correct && <Check size={20} className="text-green-600"/> }
                             </li>
                         ))
                     }

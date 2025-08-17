@@ -148,8 +148,8 @@ export default function TestDetailClient({
                 <CardDescription>Created on {new Date(testTemplate.created_at).toLocaleDateString()}</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="h-full flex flex-row gap-5">
-                    <section className="w-52 h-full flex flex-col gap-5">
+                <div className="h-full flex flex-col lg:flex-row gap-5">
+                    <section className="w-full lg:w-52 h-full flex flex-col gap-5">
                         <TestDialog 
                             type="create"
                             templateName={testTemplate.name}
@@ -189,8 +189,12 @@ export default function TestDetailClient({
                         <TabsList>
                             {
                                 tests.map((test) => (
-                                    <TabsTrigger key={test.id} value={test.id.toString()} className="hover:cursor-pointer">
-                                        {test.name}
+                                    <TabsTrigger
+                                        key={test.id}
+                                        value={test.id.toString()}
+                                        className="hover:cursor-pointer max-w-30 sm:max-w-40 lg:max-w-60"
+                                    >
+                                        <span className="truncate">{test.name}</span>
                                     </TabsTrigger>
                                 ))
                             }
