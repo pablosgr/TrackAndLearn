@@ -89,7 +89,12 @@ export async function enrollStudent(
 
     const { data: classroom, error: classroomError } = await supabase
         .from('classroom')
-        .select('*')
+        .select(`
+            *,
+            teacher:users!teacher_id(
+                name
+            )
+        `)
         .eq('code', classroomCode)
         .single();
 
