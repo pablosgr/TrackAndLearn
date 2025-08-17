@@ -22,7 +22,7 @@ export default async function StudentResult({ params }: { params: { id: string, 
     const completedTest = tests.find(t => t.adaptation_id === adaptationId) ?? tests[0];
     
     if (!completedTest) {
-        return <div>Could not find test</div>
+        notFound();
     }
 
     const testResult = await getStudentTestResult(completedTest.id, data.testId, user?.id, data.id);

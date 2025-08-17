@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { redirect } from "next/navigation";
 import { verifyClassroomEnrollment, verifyClassroomOwnership } from "../actions";
 import requireUser from "@/utils/auth/requireUser";
 
@@ -17,17 +18,13 @@ export default async function ClassroomLayout(
     const isEnrolled = await verifyClassroomEnrollment(user?.id, classroomId);
     
     if (user?.role === 'student' && !isEnrolled) {
-        return (
-            <p>You are not enrolled in this classroom</p>
-        )
+        redirect('/unauthorized');
     }
 
     const isOwner = await verifyClassroomOwnership(user?.id, classroomId);
 
     if (user?.role === 'teacher' && !isOwner) {
-        return (
-            <p>You are not the owner of the classroom</p>
-        )
+        redirect('/unauthorized');
     }
 
     return (

@@ -14,7 +14,7 @@ export default async function StudentTest({ params }: { params: { id: string, te
     const visibleTest = tests.find(t => t.adaptation_id === adaptationId) ?? tests[0];
 
     if (!visibleTest) {
-        return notFound();
+        notFound();
     }
 
     const result = await getResult(user?.id, data.id, visibleTest.id);

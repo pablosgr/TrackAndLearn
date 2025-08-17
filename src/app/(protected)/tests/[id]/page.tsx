@@ -1,7 +1,7 @@
 import { getTestsById, getTestTemplate, getAdaptations } from "../actions/get";
 import requireUser from "@/utils/auth/requireUser";
 import TestDetailClient from "./TestDetailClient";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function TestsDetail({ params }: { params: { id: string } }) {
     const data = await params;
@@ -21,9 +21,7 @@ export default async function TestsDetail({ params }: { params: { id: string } }
     const isAuthor = Number(userData?.id) === tests[0].test_template?.teacher_id;
 
     if (!isAuthor) {
-        return (
-            <p>You are not the author of this test</p>
-        )
+        redirect('/unauthorized');
     }
 
     return (
