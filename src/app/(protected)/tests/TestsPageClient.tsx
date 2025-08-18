@@ -49,7 +49,7 @@ export default function TestsPageClient({
 
     return (
         <>
-            <header className="w-full flex flex-row flex-wrap items-center justify-between pb-10">
+            <header className="w-full flex flex-row flex-wrap items-center justify-between gap-6 pb-10">
                 <h1 className="text-3xl font-bold">My Tests</h1>
                 {
                     hasTests &&
@@ -87,7 +87,7 @@ export default function TestsPageClient({
                                 />
                             </div>
                         </div>
-                    : <ul className="flex flex-row flex-wrap gap-10 justify-center @6xl:justify-start">
+                    : <ul className="flex flex-row flex-wrap gap-10 justify-center @3xl:justify-start">
                         {
                             templates && templates.map((t) => (
                                 <li key={t.id}>
