@@ -33,12 +33,14 @@ export default function ClassroomCard({
 
     return (
         <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-lg) transition-shadow">
-            <CardHeader className="h-30 flex flex-row justify-between bg-(--color-secondary) truncate">
+            <CardHeader className="h-30 flex flex-row justify-between bg-(--color-primary) text-white truncate">
                 <div className="flex flex-col gap-2">
                     <CardTitle className="text-lg truncate">{classroom.name}</CardTitle>
                     {
                         user.role === 'student' &&
-                        <CardDescription>Teacher: {classroom.teacher?.name}</CardDescription>
+                        <CardDescription className="text-white">
+                            Teacher: {classroom.teacher?.name}
+                        </CardDescription>
                     }
                 </div>
                 <div className="flex flex-row gap-2">
@@ -56,7 +58,7 @@ export default function ClassroomCard({
             </CardHeader>
             <CardContent className="w-full flex flex-row gap-8 justify-end">
                 <Link href={`/classrooms/${classroom.id}`}>
-                    <Button variant={'outline'}>
+                    <Button variant={'outline'} className="hover:bg-secondary hover:text-white">
                         Go to classroom
                     </Button>
                 </Link>

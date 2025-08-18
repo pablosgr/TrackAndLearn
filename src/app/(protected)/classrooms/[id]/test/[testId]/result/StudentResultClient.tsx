@@ -18,9 +18,9 @@ export default function StudentResultClient({
 }) {
     return (
         <Card className="w-full h-full">
-            <CardHeader className="bg-(--color-accent) gap-2 py-6">
+            <CardHeader className="bg-primary gap-2 py-6 text-white">
                 <CardTitle className="text-2xl">Result for {test.name}</CardTitle>
-                <CardDescription className="text-md">{test.level}</CardDescription>
+                <CardDescription className="text-md text-white">{test.level}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
                 {

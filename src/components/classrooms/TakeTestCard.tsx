@@ -81,9 +81,9 @@ export default function TakeTestCard({
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full h-full">
                 <Card>
-                    <CardHeader className="bg-(--color-accent) gap-2 py-6">
+                    <CardHeader className="bg-primary gap-2 py-6 text-white">
                         <CardTitle className="text-2xl">{takenTest.name}</CardTitle>
-                        <CardDescription className="text-md">{takenTest.level}</CardDescription>
+                        <CardDescription className="text-md text-white">{takenTest.level}</CardDescription>
                         {
                             (remaining && remaining !== 0) &&
                             <span>

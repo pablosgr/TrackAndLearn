@@ -91,7 +91,7 @@ export default function ClassroomDialog({
                 {
                     type === 'create'
                     ? <Button variant="default">Add Classroom</Button>
-                    : <CardAction className="p-2 hover:bg-accent hover:cursor-pointer rounded-lg transition-colors">
+                    : <CardAction className="p-2 hover:bg-accent hover:text-primary hover:cursor-pointer rounded-lg transition-colors">
                         <PencilLine size={22} />
                     </CardAction>
                 }

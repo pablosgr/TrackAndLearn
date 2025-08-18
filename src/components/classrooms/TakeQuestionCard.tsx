@@ -21,7 +21,7 @@ export default function TakeQuestionCard({
     return (
         <Card className="shadow-none border-none">
             <CardHeader>
-                <CardTitle>{question.index_order}. {question.question_text}</CardTitle>
+                <CardTitle className="text-xl">{question.index_order}. {question.question_text}</CardTitle>
             </CardHeader>
             <CardContent>
                 <Controller
@@ -41,12 +41,13 @@ export default function TakeQuestionCard({
                                             >
                                                 <Card 
                                                     className={`
+                                                        text-lg
                                                         py-6 border-2 border-gray-200
                                                         shadow-none transition-colors
                                                         hover:cursor-pointer
                                                         ${isSelected 
-                                                            ? 'bg-accent border-cyan-500' 
-                                                            : 'hover:bg-accent/20'
+                                                            ? 'bg-secondary/60 border-secondary' 
+                                                            : 'hover:bg-secondary/20'
                                                         }
                                                     `}
                                                 >

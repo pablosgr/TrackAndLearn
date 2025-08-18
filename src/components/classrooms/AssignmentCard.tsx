@@ -68,7 +68,7 @@ export default function AssignmentCard({
                                 checked={test.is_result_visible}
                                 onCheckedChange={handleResultVisibility}
                             />
-                            <Label htmlFor={`${test.id}-result`}>Visible result</Label>
+                            <Label htmlFor={`${test.id}-result`}>Show results</Label>
                         </div>
                     :   <span></span>
                 }

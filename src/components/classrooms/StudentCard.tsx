@@ -56,7 +56,7 @@ export default function StudentCard({
                 w-full flex flex-row my-0
                 border-0 border-b-1 border-gray-300
                 py-5 rounded-none shadow-none
-                hover:cursor-pointer hover:bg-accent/20
+                hover:cursor-pointer hover:bg-secondary/20
                 transition-colors
             `}
         >
