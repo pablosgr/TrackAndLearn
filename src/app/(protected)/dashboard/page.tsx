@@ -4,7 +4,7 @@ import { signOut } from "../../actions";
 import { useUser } from "@/components/context/userWrapper";
 
 export default function Dashboard() {
-    const userData = useUser();
+    const {user} = useUser();
 
     const handleSignOut = async () => {
         await signOut();
@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-row p-10 gap-6">
-        <p>Hello, {userData.username}</p>
+        <p>Hello, {user.username}</p>
     </div>
   )
 }

@@ -42,12 +42,12 @@ export default function ClassroomDetailClient(
     adaptationList: AdaptationType[],
     availableTests: TestTemplateType[]
 }) {
+    const {user} = useUser();
     const [classroom, setClassroom] = useState<ClassroomType>(classroomDetails);
     const [students, setStudents] = useState<StudentType[]>(studentList);
     const [assignedTests, setAssignedTests] = useState<AssignedTestType[]>(testList);
     const [selectedTab, setSelectedTab] = useState<string>('tests');
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
-    const user = useUser();
 
     const handleStudentDelete = (removedStudentId: number) => {
         setStudents(prev => prev.filter(student => student.id !== removedStudentId));

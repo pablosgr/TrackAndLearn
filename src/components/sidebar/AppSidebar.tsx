@@ -43,7 +43,7 @@ const items = [
 
 export default function AppSidebar() {
     const pathname = usePathname();
-    const user = useUser();
+    const {user} = useUser();
 
     const handleSignOut = async () => {
         await signOut();

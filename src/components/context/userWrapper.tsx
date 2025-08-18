@@ -1,19 +1,21 @@
 'use client'
 
-import { createContext, ReactNode, useContext } from "react";
-import { UserContextType } from "@/types/context/UserContextType";
+import { createContext, ReactNode, useState, useContext } from "react";
+import { UserContextType, UserContextValue } from "@/types/context/UserContextType";
 
-const UserContext = createContext<UserContextType | null>(null);
+const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 export function UserWrapper({  
-    user,
-    children 
+    user: initialUser,
+    children
 }: {
-    user: UserContextType | null,
+    user: UserContextType,
     children: ReactNode
 }) {
+    const [user, setUser] = useState<UserContextType>(initialUser);
+
     return (
-        <UserContext.Provider value={user}>
+        <UserContext.Provider value={{ user, setUser }}>
             { children }
         </UserContext.Provider>
     )

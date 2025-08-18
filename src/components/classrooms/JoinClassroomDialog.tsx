@@ -43,7 +43,7 @@ export default function JoinClassroomDialog({
     onJoin: (newClassroom: ClassroomType) => void,
 }) {
     const router = useRouter();
-    const user = useUser();
+    const {user} = useUser();
     const [open, setOpen] = useState<boolean>(false);
     const chosenSize = size ?? 'default';
 

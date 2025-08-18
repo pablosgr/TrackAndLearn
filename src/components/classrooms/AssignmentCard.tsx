@@ -26,7 +26,7 @@ export default function AssignmentCard({
     onDelete: (assignmentId: number) => void,
     onResult: (assignmentId: number, visible: boolean) => void
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const router = useRouter();
 
     const handleRemoveAssignment = async (e: React.MouseEvent) => {

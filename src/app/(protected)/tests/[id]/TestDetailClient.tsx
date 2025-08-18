@@ -35,10 +35,10 @@ export default function TestDetailClient({
     testList: TestType[],
     testTemplate: TestTemplateType
 }) {
+    const {user} = useUser();
     const [tests, setTests] = useState<TestType[]>(testList);
     const [selectedTab, setSelectedTab] = useState<string>(tests[0]?.id.toString());
     const selectedTest = tests.find(t => t.id.toString() === selectedTab);
-    const user = useUser();
     const MAX_TESTS = 3;
 
     const createQuestion = (testId: number, newQuestion: QuestionType) => {

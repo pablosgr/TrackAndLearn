@@ -18,10 +18,10 @@ export default function StudentTestClient({
     classroomId: string,
     result: TestResultType | null
 }) {
+    const {user} = useUser();
     const [isTestStarted, setIsTestStarted] = useState<boolean>(result?.status === 'ongoing');
     const [provResult, setProvResult] = useState<TestResultType | null>(result);
     const [isStarting, setIsStarting] = useState<boolean>(false);
-    const user = useUser();
 
     const handleStartTest = async () => {
         setIsStarting(true);

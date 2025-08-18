@@ -62,7 +62,7 @@ export default function GenerateTestDialog({
     topicList: TopicType[],
     onGenerate: (newTest: TestTemplateType) => void,
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);

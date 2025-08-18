@@ -21,7 +21,7 @@ export default function ClassroomAssignmentsCard({
     onDelete: (assignmentId: number) => void,
     onResult: (assignmentId: number, visible: boolean) => void
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const assignments = assignedTests.length > 0;
 
     return (

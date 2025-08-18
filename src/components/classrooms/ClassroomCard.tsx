@@ -21,7 +21,7 @@ export default function ClassroomCard({
     classroom: ClassroomType,
     onDelete: (classroomId: number) => void,
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const router = useRouter();
 
     const handleDelete = async (e: React.MouseEvent) => {

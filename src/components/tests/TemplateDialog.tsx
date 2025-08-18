@@ -59,7 +59,7 @@ export default function TemplateDialog({
     onUpdate?: (updatedTemplate: TestTemplateType) => void
 }) {
     const router = useRouter();
-    const user = useUser();
+    const {user} = useUser();
     const [open, setOpen] = useState<boolean>(false);
 
     const defaultTest = test ?? {

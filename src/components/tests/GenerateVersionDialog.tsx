@@ -52,7 +52,7 @@ export default function GenerateVersionDialog({
     adaptationList: AdaptationType[],
     onGenerate: (newTest: TestType) => void,
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);

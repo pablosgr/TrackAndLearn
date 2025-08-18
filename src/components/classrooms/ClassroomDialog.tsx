@@ -47,7 +47,7 @@ export default function ClassroomDialog({
     onUpdate?: (updatedName: string) => void
 }) {
     const router = useRouter();
-    const user = useUser();
+    const {user} = useUser();
     const [open, setOpen] = useState<boolean>(false);
 
     const defaultClassroom = classroom ?? {

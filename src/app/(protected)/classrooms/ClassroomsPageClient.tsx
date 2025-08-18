@@ -8,7 +8,7 @@ import JoinClassroomDialog from "@/components/classrooms/JoinClassroomDialog";
 import ClassroomCard from "@/components/classrooms/ClassroomCard";
 
 export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
-    const user = useUser();
+    const {user} = useUser();
     const [classrooms, setClassrooms] = useState<ClassroomType[]>(data);
     const hasClassrooms = classrooms.length > 0;
 
