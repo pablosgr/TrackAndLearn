@@ -133,7 +133,7 @@ export default function ClassroomDetailClient(
         <Card className="w-full h-full">
             <CardHeader className="bg-(--color-secondary) gap-2 py-6">
                 <CardTitle className="text-2xl">{classroom.name}</CardTitle>
-                <CardDescription className="flex flex-col gap-2">
+                <CardDescription className="flex flex-col gap-2 text-card-foreground">
                     <span>Teacher: {classroom.teacher?.name}</span>
                     <span>Created on {new Date(classroom.created_at).toLocaleDateString()}</span>
                 </CardDescription>
@@ -156,7 +156,7 @@ export default function ClassroomDetailClient(
                                     <CardTitle>Classroom code</CardTitle>
                                 </CardHeader>
                                 <CardContent className="w-full flex flex-col gap-4">
-                                    <span className="text-2xl text-accent text-shadow-2xs">
+                                    <span className="text-2xl text-primary font-semibold">
                                         {classroom.code}
                                     </span>
                                     <Button variant="outline" disabled={isGenerating} onClick={handleCodeReset}>

@@ -19,7 +19,7 @@ export default function ClassroomResultClient({ classroomResults }: { classroomR
     return (
         <div className="flex flex-col gap-17 w-full">
             <section className="w-full flex flex-col gap-10">
-                <h2 className="text-3xl">Classroom result</h2>
+                <h2 className="text-3xl font-bold">Classroom result</h2>
                 <AverageScoreCard classroomResults={classroomResults} />
                 <QuestionsResultsCard classroomResults={organizedResults.find(([id]) => id === 0)?.[1] ?? []} />
                 {
@@ -30,7 +30,7 @@ export default function ClassroomResultClient({ classroomResults }: { classroomR
                 }
             </section>
             <section className="w-full flex flex-col gap-3">
-                <h2 className="text-3xl mb-5">Individual results</h2>
+                <h2 className="text-3xl font-bold mb-5">Individual results</h2>
                 <StudentsResultAccordion classroomResults={classroomResults} />
             </section>
         </div>

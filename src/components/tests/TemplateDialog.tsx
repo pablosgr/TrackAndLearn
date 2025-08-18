@@ -103,7 +103,7 @@ export default function TemplateDialog({
                 {
                     type === 'create'
                     ? <Button variant="default">Add test</Button>
-                    : <CardAction className="p-2 hover:bg-cyan-100 hover:cursor-pointer rounded-lg transition-colors">
+                    : <CardAction className="p-2 hover:bg-white hover:cursor-pointer rounded-lg transition-colors">
                         <PencilLine size={22} />
                     </CardAction>
                 }

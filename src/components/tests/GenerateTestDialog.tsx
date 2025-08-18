@@ -231,7 +231,9 @@ export default function GenerateTestDialog({
                             name="pdf"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel asChild>Attach PDF (optional, max 20MB)</FormLabel>
+                                    <FormLabel asChild>
+                                        <span>Attach PDF (optional, max 20MB)</span>
+                                    </FormLabel>
                                     <FormControl>
                                         <div>
                                             <Label
@@ -239,11 +241,11 @@ export default function GenerateTestDialog({
                                                 className={`
                                                     flex flex-row gap-3
                                                     hover:cursor-pointer border-input border-1 
-                                                    hover:bg-accent/20 text-gray-700 px-3 py-2
+                                                    hover:bg-accent text-card-foreground px-3 py-2
                                                     shadow-xs rounded-md transition-colors
                                                 `}
                                             >
-                                                <span className="text-sm text-gray-500">
+                                                <span className="text-sm text-card-foreground">
                                                     {field.value ? field.value.name : "No file selected"}
                                                 </span>
                                             </Label>

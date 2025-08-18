@@ -50,7 +50,7 @@ export default function TestsPageClient({
     return (
         <>
             <header className="w-full flex flex-row flex-wrap items-center justify-between pb-10">
-                <h1 className="text-3xl">My Tests</h1>
+                <h1 className="text-3xl font-bold">My Tests</h1>
                 {
                     hasTests &&
                     <div className="flex flex-row gap-5">

@@ -29,7 +29,7 @@ export default function StudentsResultAccordion({
                             <AccordionTrigger 
                                 className={`
                                     p-5 border-b-1 rounded-none border-gray-400
-                                    hover:cursor-pointer hover:bg-accent/20
+                                    hover:cursor-pointer hover:bg-secondary/20
                                 `}
                             >
                                 <div>{item.student_data.name}</div>
@@ -38,9 +38,9 @@ export default function StudentsResultAccordion({
                                     <div 
                                         className={`
                                             rounded-full w-4 h-4
-                                            ${item.score < 5 ? 'bg-red-500' : ''}
-                                            ${item.score >= 5 && item.score < 7 ? 'bg-yellow-400' : ''}
-                                            ${item.score >= 7 ? 'bg-green-500' : ''}
+                                            ${item.score < 5 && 'bg-chart-r'}
+                                            ${item.score >= 5 && item.score < 7 ? 'bg-chart-y' : ''}
+                                            ${item.score >= 7 && 'bg-chart-g'}
                                         `}
                                     ></div>
                                     Score: {item.score}

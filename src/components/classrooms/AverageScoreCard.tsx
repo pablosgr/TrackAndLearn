@@ -45,9 +45,9 @@ export default function AverageScoreCard({
     const averageScore = scoreSum / count;
 
     const chartData = [
-        { score: "high", students: highScores.length, fill: "#27F554" },
-        { score: "mid", students: midScores.length, fill: "#EEF527" },
-        { score: "low", students: lowScores.length, fill: "tomato" }
+        { score: "high", students: highScores.length, fill: "var(--color-chart-g)" },
+        { score: "mid", students: midScores.length, fill: "var(--color-chart-y)" },
+        { score: "low", students: lowScores.length, fill: "var(--color-chart-r)" }
     ];
     
     const chartConfig = {

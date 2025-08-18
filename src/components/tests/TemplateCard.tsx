@@ -63,11 +63,9 @@ export default function TemplateCard({
                 </div>
             </CardHeader>
             <CardContent className="flex flex-row justify-between gap-8 items-center">
-                <span className="truncate text-sm">
-                    Created on {new Date(test.created_at).toLocaleDateString()}
-                </span>
+                <span></span>
                 <Link href={`/tests/${test.id}`}>
-                    <Button variant={'outline'} className="ml-6">
+                    <Button variant={'outline'} className="ml-6 hover:bg-secondary hover:text-white">
                         Go to test
                     </Button>
                 </Link>

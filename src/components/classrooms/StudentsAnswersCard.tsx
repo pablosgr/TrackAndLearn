@@ -22,7 +22,7 @@ export default function StudentsAnswersCard(
     return (
         <Card className="shadow-xs">
             <CardHeader className="pb-0">
-                <CardTitle>
+                <CardTitle className={`${type === 'correct' ? 'text-chart-g' : 'text-chart-r'}`}>
                     {
                         type === 'correct'
                         ? 'Correct'
@@ -45,10 +45,10 @@ export default function StudentsAnswersCard(
                                             <li 
                                                 key={o.id}
                                                 className={`
-                                                    ${o.is_correct && 'text-green-500 font-semibold'}
+                                                    ${o.is_correct && 'text-chart-g font-semibold'}
                                                     ${
                                                         (o.id === questionResult?.selected_option_id && !o.is_correct)
-                                                        && 'text-red-600 font-semibold'
+                                                        && 'text-chart-r font-semibold'
                                                     }
                                                 `}
                                             >

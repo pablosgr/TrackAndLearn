@@ -23,7 +23,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
     return (
         <>
             <header className="w-full flex flex-row items-center justify-between pb-10">
-                <h1 className="text-3xl">My Classrooms</h1>
+                <h1 className="text-3xl font-bold">My Classrooms</h1>
                 {
                     user.role === 'teacher'
                     ? hasClassrooms && <ClassroomDialog

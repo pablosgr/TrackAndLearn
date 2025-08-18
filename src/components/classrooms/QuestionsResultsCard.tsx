@@ -79,11 +79,11 @@ export default function QuestionsResultsCard({
     }
     
     const correctChartConfig = {
-        value: { label: 'Correct', color: '#27F554' }
+        value: { label: 'Correct', color: 'var(--color-chart-g)' }
     } satisfies ChartConfig;
 
     const incorrectChartConfig = {
-        value: { label: "Incorrect", color: 'tomato' }
+        value: { label: "Incorrect", color: 'var(--color-chart-r)' }
     } satisfies ChartConfig;
 
     return (
@@ -112,7 +112,7 @@ export default function QuestionsResultsCard({
                                 cursor={false}
                                 content={<ChartTooltipContent hideLabel />}
                             />
-                            <Bar dataKey="value" fill="#27F554" radius={8} />
+                            <Bar dataKey="value" fill="var(--color-chart-g)" radius={8} />
                         </BarChart>
                     </ChartContainer>
                 }
@@ -135,7 +135,7 @@ export default function QuestionsResultsCard({
                                 cursor={false}
                                 content={<ChartTooltipContent hideLabel />}
                             />
-                            <Bar dataKey="value" fill="tomato" radius={8} />
+                            <Bar dataKey="value" fill="var(--color-chart-r)" radius={8} />
                         </BarChart>
                     </ChartContainer>
                 }
