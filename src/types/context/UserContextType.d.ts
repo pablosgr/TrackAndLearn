@@ -7,3 +7,8 @@ export type UserContextType = {
     auth_id: string;
     created_at: string;
 }
+
+export type UserContextValue = {
+    user: UserContextType;
+    setUser: (user: UserContextType) => void;
+}
