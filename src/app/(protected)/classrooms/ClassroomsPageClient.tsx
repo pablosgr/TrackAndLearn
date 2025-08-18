@@ -54,7 +54,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                                     onCreate={handleCreateClassroom}
                                 />
                             : <JoinClassroomDialog
-                                    version="outline"
+                                    version="default"
                                     size="lg"
                                     onJoin={handleCreateClassroom}
                                 />

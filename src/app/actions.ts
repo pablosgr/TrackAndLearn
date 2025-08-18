@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import { hashPassword } from "@/utils/general/hashPassword";
 
 export async function logIn(formData: FormData) {
     const supabase = await createClient();
@@ -38,13 +39,15 @@ export async function signUp(formData: FormData) {
         return { error: 'Could not sign up' };
     }
 
+    const hashedPassword = await hashPassword(supabaseData.password);
+
     const data = {
-        name: formData.get('name') as string,
-        username: formData.get('username') as string,
-        email: formData.get('email') as string,
-        role: formData.get('role') as string,
-        password_hash: formData.get('password') as string,
-        auth_id: signUpData.user?.id as string
+        name: formData.get('name'),
+        username: formData.get('username'),
+        email: formData.get('email'),
+        role: formData.get('role'),
+        password_hash: hashedPassword,
+        auth_id: signUpData.user?.id
     }
 
     const { error: insertError } = await supabase.from('users').insert(data);
