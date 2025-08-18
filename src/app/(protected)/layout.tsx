@@ -13,7 +13,7 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
                 <AppSidebar />
                 <div className="w-full flex flex-col sm:flex-row">
                     <div className="w-fit h-fit p-2.5 sticky top-0">
-                        <SidebarTrigger />
+                        <SidebarTrigger className="hover:bg-secondary hover:text-white"/>
                     </div>
                     <main className="pb-5 sm:py-14 px-5 sm:pr-[4%] flex-1 flex flex-col items-center">
                         { children }

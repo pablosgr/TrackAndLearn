@@ -1,17 +1,15 @@
 'use client'
 
 import { useUser } from "@/components/context/userWrapper";
+import ProfileCard from "@/components/profile/ProfileCard";
 
 export default function Profile() {
-    const {user} = useUser();
+    const {user, setUser} = useUser();
 
     return (
-        <div>
-            <h2>Your user information</h2>
-            <p>Name: {user.name}</p>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>Role: {user.role}</p>
-        </div>
+        <>
+            <h1 className="text-3xl font-bold self-start pb-10">My Profile</h1>
+            <ProfileCard />
+        </>
     )
 }
