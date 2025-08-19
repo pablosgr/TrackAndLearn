@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
+import { updateUserById } from "@/app/(protected)/profile/actions/update";
 import { UserContextType } from "@/types/context/UserContextType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,10 +33,10 @@ const formSchema = z.object({
     username: z.string().min(2, { message: 'Username must have between 2 and 10 characters' }).max(10),
 });
 
-export default function TemplateDialog({
+export default function ProfileDialog({
     onUpdate,
 }: {
-    onUpdate?: (updatedUser: UserContextType) => void
+    onUpdate: (updatedUser: UserContextType) => void
 }) {
     const router = useRouter();
     const {user} = useUser();
@@ -50,10 +51,11 @@ export default function TemplateDialog({
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // const updatedUser = await updateUserById(user.id);
-        // if (updatedUser) {
-        //     onUpdate(updatedUser);
-        // }
+        const updatedUser = await updateUserById(user.id, values);
+
+        if (updatedUser) {
+            onUpdate(updatedUser);
+        }
 
         setOpen(false);
         router.refresh();
@@ -62,7 +64,9 @@ export default function TemplateDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Edit profile</Button>
+                <Button variant="outline" className="max-w-25">
+                    Edit profile
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

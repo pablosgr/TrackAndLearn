@@ -1,17 +1,14 @@
+import { UserContextType } from "@/types/context/UserContextType";
 import { useUser } from "../context/userWrapper";
 import ProfileAvatar from "./ProfileAvatar";
-import { Button } from "../ui/button";
+import ProfileDialog from "./ProfileDialog";
 import {
     Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+    CardContent
 } from "@/components/ui/card";
 
 export default function ProfileCard() {
-    const {user} = useUser();
+    const {user, setUser} = useUser();
     const userInfo = [
         {label: 'Name', value: user.name},
         {label: 'Username', value: user.username},
@@ -19,12 +16,18 @@ export default function ProfileCard() {
         {label: 'Role', value: user.role}
     ];
 
+    const handleUpdateUser = (updatedUser: UserContextType) => {
+        setUser(updatedUser);
+    }
+
     return (
         <Card className="w-full h-full md:w-[80%]">
-            <CardContent className="pt-12 px-12 flex flex-col xl:flex-row gap-20">
+            <CardContent className="pt-12 px-12 pb-6 flex flex-col xl:flex-row gap-20">
                 <section className="flex flex-col items-center gap-8">
                     <ProfileAvatar name={user.name} size={13} />
-                    <p className="text-2xl font-semibold">{user.name}</p>
+                    <p className="text-2xl font-semibold truncate">
+                        {user.name}
+                    </p>
                     <span className="text-foreground-card text-sm">
                         Joined on {new Date(user.created_at).toLocaleDateString()}
                     </span>
@@ -40,6 +43,7 @@ export default function ProfileCard() {
                             </div>
                         ))
                     }
+                    <ProfileDialog onUpdate={handleUpdateUser} />
                 </section>
             </CardContent>
         </Card>

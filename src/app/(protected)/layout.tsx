@@ -9,7 +9,7 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
 
     return (
         <UserWrapper user={user}>
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={false}>
                 <AppSidebar />
                 <div className="w-full flex flex-col sm:flex-row">
                     <div className="w-fit h-fit p-2.5 sticky top-0">
