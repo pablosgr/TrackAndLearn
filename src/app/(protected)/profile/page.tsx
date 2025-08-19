@@ -8,8 +8,10 @@ export default function Profile() {
 
     return (
         <>
-            <h1 className="text-3xl font-bold self-start pb-10">My Profile</h1>
-            <ProfileCard />
+        <header className="pb-10 w-full">
+            <h1 className="text-3xl font-bold self-start">My Profile</h1>
+        </header>
+        <ProfileCard />
         </>
     )
 }

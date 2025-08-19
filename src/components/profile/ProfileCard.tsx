@@ -2,6 +2,7 @@ import { UserContextType } from "@/types/context/UserContextType";
 import { useUser } from "../context/userWrapper";
 import ProfileAvatar from "./ProfileAvatar";
 import ProfileDialog from "./ProfileDialog";
+import PasswordDialog from "./PasswordDialog";
 import {
     Card,
     CardContent
@@ -43,7 +44,10 @@ export default function ProfileCard() {
                             </div>
                         ))
                     }
-                    <ProfileDialog onUpdate={handleUpdateUser} />
+                    <div className="flex flex-row gap-5">
+                        <PasswordDialog />
+                        <ProfileDialog onUpdate={handleUpdateUser} />
+                    </div>
                 </section>
             </CardContent>
         </Card>
