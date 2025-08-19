@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
 import { updatePassword } from "@/app/(protected)/profile/actions/update";
+import PasswordInput from "./PasswordInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -98,62 +99,23 @@ export default function PasswordDialog() {
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                        <FormField
-                            control={form.control}
+                        <PasswordInput
+                            form={form}
+                            label="Current Password"
                             name="current_password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        Current Password
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="password"
-                                            placeholder="Write your current password" 
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                            placeholder="Write your current password"
                         />
-                        <FormField
-                            control={form.control}
+                        <PasswordInput
+                            form={form}
+                            label="New Password"
                             name="new_password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        New Password
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="password"
-                                            placeholder="Write your new password"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                            placeholder="Write your new password"
                         />
-                        <FormField
-                            control={form.control}
+                        <PasswordInput
+                            form={form}
+                            label="Confirm New Password"
                             name="confirm_password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        Confirm New Password
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="password"
-                                            placeholder="Write your new password again"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                            placeholder="Write your new password again"
                         />
                         <DialogFooter className="pt-4 items-center sm:justify-between">
                             <p className="text-chart-r max-w-40 truncate">

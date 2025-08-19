@@ -1,10 +1,8 @@
 'use client'
 
-import { useUser } from "@/components/context/userWrapper";
 import ProfileCard from "@/components/profile/ProfileCard";
 
 export default function Profile() {
-    const {user, setUser} = useUser();
 
     return (
         <>
