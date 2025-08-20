@@ -1,14 +1,16 @@
+'use client';
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { PencilLine } from "lucide-react";
+import { showToast } from "@/utils/general/showToast";
 import { assignTestTemplate } from "@/app/(protected)/classrooms/actions/post";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CardAction } from "../ui/card";
 import {
     Dialog,
@@ -70,10 +72,7 @@ export default function AssignmentDialog({
             const newAssignment = await assignTestTemplate(classroomId, Number(values.test_template_id));
 
             if (!newAssignment) {
-                form.setError('test_template_id', {
-                    type: 'manual',
-                    message: 'Test already assigned'
-                });
+                showToast('Test already assigned', 'error');
                 return;
             }
 

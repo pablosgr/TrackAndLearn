@@ -1,9 +1,12 @@
+'use client';
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
+import { showToast } from "@/utils/general/showToast";
 import { updatePassword } from "@/app/(protected)/profile/actions/update";
 import PasswordInput from "./PasswordInput";
 import { Button } from "@/components/ui/button";
@@ -38,11 +41,9 @@ export default function PasswordDialog() {
     const router = useRouter();
     const {user} = useUser();
     const [open, setOpen] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
 
     const handleCancel = () => {
         form.clearErrors();
-        setError(null);
     }
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -55,8 +56,6 @@ export default function PasswordDialog() {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setError(null);
-
         try {
             await updatePassword(
                 user.id,
@@ -68,7 +67,7 @@ export default function PasswordDialog() {
             router.refresh();
         } catch (e) {
             if (e instanceof Error) {
-                setError(e.message);
+                showToast(e.message, 'error');
             }
         }
     }
@@ -113,11 +112,7 @@ export default function PasswordDialog() {
                             placeholder="Write your new password again"
                         />
                         <DialogFooter className="pt-4 items-center sm:justify-between">
-                            <p className="text-chart-r max-w-40 truncate">
-                                {
-                                    error && error
-                                }
-                            </p>
+                            <p></p>
                             <div className="flex flex-row gap-3">
                                 <DialogClose asChild>
                                     <Button variant="outline" onClick={handleCancel}>Cancel</Button>

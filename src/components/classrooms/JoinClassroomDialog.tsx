@@ -1,14 +1,16 @@
+'use client';
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/userWrapper";
+import { showToast } from "@/utils/general/showToast";
 import { enrollStudent } from "@/app/(protected)/classrooms/actions/post";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CardAction } from "../ui/card";
 import {
     Dialog,
     DialogClose,
@@ -58,10 +60,7 @@ export default function JoinClassroomDialog({
         const result = await enrollStudent(user.id, values.code);
 
         if (!result.success) {
-            form.setError('code', {
-                type: 'manual',
-                message: result.message,
-            });
+            showToast(result.message, 'error');
             return;
         }
         
