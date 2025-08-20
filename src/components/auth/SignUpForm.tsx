@@ -58,7 +58,7 @@ export default function SignUpForm() {
     };
 
     return (
-        <Card className="w-[25%] min-w-70 h-fit p-6">
+        <Card className="w-[20%] min-w-65 h-fit p-6">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
                     <FormField
