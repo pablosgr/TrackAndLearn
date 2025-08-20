@@ -1,51 +1,59 @@
-'use server'
+'use server';
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { hashPassword } from "@/utils/general/hashPassword";
 
-export async function logIn(formData: FormData) {
+export async function signIn(formData: { email: string, password: string }) {
     const supabase = await createClient();
 
-    const data = {
-        email: formData.get('email') as string,
-        password: formData.get('password') as string
-    }
-
-    const { error } = await supabase.auth.signInWithPassword(data);
+    const { error } = await supabase.auth.signInWithPassword(formData);
 
     if (error) {
-        console.error('Failed to log in', error);
-        return { error: 'Invalid credentials' };
+        console.error('Failed to sign in', error);
+        throw new Error('Invalid credentials');
     }
 
     revalidatePath('/', 'layout');
     redirect('/dashboard');
 }
 
-export async function signUp(formData: FormData) {
+export async function signUp(
+    formData: {
+        name: string,
+        username: string,
+        email: string,
+        password: string,
+        role: string,
+    }
+) {
     const supabase = await createClient();
 
     const supabaseData = {
-        email: formData.get('email') as string,
-        password: formData.get('password') as string
+        email: formData.email,
+        password: formData.password
     }
 
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp(supabaseData);
 
     if (signUpError) {
         console.error('Failed to insert user in Supabase auth table', signUpError);
-        return { error: 'Could not sign up' };
+
+        if (signUpError.status === 422) {
+            throw new Error('Email or username already in use');
+        }
+
+        throw new Error('Error signing up');
     }
 
     const hashedPassword = await hashPassword(supabaseData.password);
 
     const data = {
-        name: formData.get('name'),
-        username: formData.get('username'),
-        email: formData.get('email'),
-        role: formData.get('role'),
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        role: formData.role,
         password_hash: hashedPassword,
         auth_id: signUpData.user?.id
     }
@@ -54,7 +62,7 @@ export async function signUp(formData: FormData) {
 
     if (insertError) {
         console.error('Failed to insert user in DB', insertError);
-        return { error: 'Could not register user in database' };
+        throw new Error('Error signing up');
     }
 
     revalidatePath('/', 'layout');
