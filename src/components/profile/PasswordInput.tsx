@@ -3,7 +3,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import {
-    Form,
     FormControl,
     FormField,
     FormItem,
@@ -14,13 +13,15 @@ import {
 export default function PasswordInput(
 { 
     form,
+    type,
     name,
     label,
     placeholder
 }: {
     form: any,
+    type: 'reset' | 'auth',
     name: string,
-    label: string,
+    label?: string,
     placeholder: string
 }) {
     const [isvisible, setIsVisible] = useState<boolean>(false);
@@ -31,14 +32,19 @@ export default function PasswordInput(
             name={name}
             render={({ field }) => (
                 <FormItem>
-                    <FormLabel asChild>
-                        <span>{label}</span>
-                    </FormLabel>
+                    {
+                        label && (
+                            <FormLabel asChild>
+                                <span>{label}</span>
+                            </FormLabel>
+                        )
+                    }
                     <FormControl>
                         <div className="relative w-full">
                             <Input
                                 type={`${isvisible ? 'text' : 'password'}`}
                                 placeholder={placeholder}
+                                className={`${type === 'auth' && 'py-5'}`}
                                 {...field}
                             />
                             <Button

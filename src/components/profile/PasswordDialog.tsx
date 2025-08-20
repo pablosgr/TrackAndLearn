@@ -7,7 +7,7 @@ import { useUser } from "../context/userWrapper";
 import { updatePassword } from "@/app/(protected)/profile/actions/update";
 import PasswordInput from "./PasswordInput";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import {
     Dialog,
     DialogClose,
@@ -18,14 +18,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 
 
 const formSchema = z.object({
@@ -101,18 +93,21 @@ export default function PasswordDialog() {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                         <PasswordInput
                             form={form}
+                            type="reset"
                             label="Current Password"
                             name="current_password"
                             placeholder="Write your current password"
                         />
                         <PasswordInput
                             form={form}
+                            type="reset"
                             label="New Password"
                             name="new_password"
                             placeholder="Write your new password"
                         />
                         <PasswordInput
                             form={form}
+                            type="reset"
                             label="Confirm New Password"
                             name="confirm_password"
                             placeholder="Write your new password again"
