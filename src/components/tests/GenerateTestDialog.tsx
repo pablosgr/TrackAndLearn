@@ -1,3 +1,5 @@
+'use client';
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -5,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useUser } from "../context/userWrapper";
 import { useRouter } from "next/navigation";
 import { fetchLLMTestResponse } from "@/utils/llm/fetchLLMTestResponse";
+import { showToast } from "@/utils/general/showToast";
 import { createGeneratedTest } from "@/app/(protected)/tests/actions/post";
 import { formatPrompt } from "@/utils/llm/formatPrompt";
 import { Bot, LoaderCircle } from 'lucide-react';
@@ -66,7 +69,6 @@ export default function GenerateTestDialog({
     const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -79,7 +81,6 @@ export default function GenerateTestDialog({
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setError(null);
         setIsGenerating(true);
 
         const selectedTopic = topicList.find((t) => t.id === Number(values.topic_id));
@@ -135,7 +136,7 @@ export default function GenerateTestDialog({
 
         } catch (e) {
             console.error(e);
-            setError('An error occurred, please try again');
+            showToast('An error ocurred, please try again', 'error');
         } finally {
             setIsGenerating(false);
         }
@@ -297,10 +298,6 @@ export default function GenerateTestDialog({
                             )}
                         />
                         <DialogFooter className="pt-4">
-                            {
-                                error &&
-                                <span className="text-red-500">{error}</span>
-                            }
                             <DialogClose asChild>
                                 <Button variant="outline" onClick={() => form.clearErrors()}>Cancel</Button>
                             </DialogClose>
