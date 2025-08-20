@@ -1,8 +1,10 @@
+'use client';
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { signUp } from "@/app/actions";
+import { showToast } from "@/utils/general/showToast";
 import PasswordInput from "../profile/PasswordInput";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -33,7 +35,6 @@ const signUpSchema = z.object({
 });
 
 export default function SignUpForm() {
-    const [error, setError] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
@@ -47,18 +48,17 @@ export default function SignUpForm() {
     });
 
     const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
-        setError(null);
         try {
             await signUp(values);
         } catch (e: any) {
             if (e instanceof Error && e.message !== "NEXT_REDIRECT") {
-                setError(e.message);
+                showToast(e.message, 'error');
             }
         }
     };
 
     return (
-        <Card className="w-[20%] min-w-65 h-fit p-6">
+        <Card className="w-75 h-fit p-6">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
                     <FormField
@@ -143,9 +143,6 @@ export default function SignUpForm() {
                             </FormItem>
                         )}
                     />
-                    <p className="text-red-500 truncate">
-                        {error && error}
-                    </p>
                     <Button type="submit" className="w-full h-11 mt-4 text-md">
                         Sign Up
                     </Button>
