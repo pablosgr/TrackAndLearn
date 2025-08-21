@@ -3,6 +3,33 @@
 import { createClient } from "@/utils/supabase/server";
 import { hashPassword } from "@/utils/general/hashPassword";
 
+export async function sendOTP(email: string) {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase.auth.signInWithOtp({
+        email: email
+    });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+}
+
+export async function validateEmail(email: string) {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .single();
+    
+    if (!data || error) {
+        console.error('Error validating email: ', error);
+        throw new Error('Email is not registered');
+    }
+}
+
 export async function resetPassword(newPassword: string, email: string) {
     const supabase = await createClient();
 
