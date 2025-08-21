@@ -7,6 +7,7 @@ import { PencilLine } from "lucide-react";
 import { useUser } from "../context/userWrapper";
 import { createClassroom } from "@/app/(protected)/classrooms/actions/post";
 import { updateClassroomName } from "@/app/(protected)/classrooms/actions/update";
+import { showToast } from "@/utils/general/showToast";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,8 +69,11 @@ export default function ClassroomDialog({
             const newClassroom = await createClassroom(values.name, Number(defaultClassroom.teacher_id));
 
             if (newClassroom) {
+                showToast('Classroom created successfully', 'success');
                 onCreate(newClassroom);
                 form.reset();
+            } else {
+                showToast('Error creating classroom', 'error');
             }
         }
 
