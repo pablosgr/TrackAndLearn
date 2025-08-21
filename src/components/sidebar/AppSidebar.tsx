@@ -56,7 +56,7 @@ export default function AppSidebar() {
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
-                        <SidebarMenu className="gap-4">
+                        <SidebarMenu className="gap-3">
                             {items.map((item) => {
                                 const isActive = pathname.includes(item.url);
 
@@ -68,7 +68,7 @@ export default function AppSidebar() {
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton
                                             asChild
-                                            className='[&>svg]:size-6 py-5 gap-4'
+                                            className='[&>svg]:size-6 py-6 gap-4'
                                         >
                                             <Link href={item.url}>
                                                 <item.icon
