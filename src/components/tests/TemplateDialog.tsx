@@ -7,6 +7,7 @@ import { PencilLine } from "lucide-react";
 import { useUser } from "../context/userWrapper";
 import { createTemplate} from "@/app/(protected)/tests/actions/post";
 import { updateTemplateById } from "@/app/(protected)/tests/actions/update";
+import { showToast } from "@/utils/general/showToast";
 import { TopicType } from "@/types/test/TopicType";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { Button } from "@/components/ui/button";
@@ -81,8 +82,11 @@ export default function TemplateDialog({
             const newTemplate = await createTemplate(values.name, values.topic_id, user.id);
 
             if (newTemplate) {
+                showToast('Test created successfully', 'success');
                 onCreate(newTemplate);
                 form.reset();
+            } else {
+                showToast('Error creating test', 'error');
             }
         }
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { updateTestById } from "@/app/(protected)/tests/actions/update";
 import { createTest } from "@/app/(protected)/tests/actions/post";
+import { showToast } from "@/utils/general/showToast";
 import { TestType } from "@/types/test/TestType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import { NewTestType } from "@/types/test/TestType";
@@ -101,8 +102,11 @@ export default function TestDialog({
             const newTest = await createTest(values);
 
             if (newTest) {
+                showToast('Adaptation created successfully', 'success');
                 onCreate(newTest);
                 form.reset();
+            } else {
+                showToast('Error creating adaptation', 'error');
             }
         }
 

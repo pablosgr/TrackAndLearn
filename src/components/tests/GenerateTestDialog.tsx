@@ -129,6 +129,7 @@ export default function GenerateTestDialog({
                 throw new Error('Error saving generated test');
             }
 
+            showToast('Test created successfully', 'success');
             onGenerate(newTemplate);
             setOpen(false);
             form.reset();

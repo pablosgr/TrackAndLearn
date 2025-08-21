@@ -104,6 +104,7 @@ export default function GenerateVersionDialog({
                 throw new Error('Error saving generated test');
             }
 
+            showToast('Adaptation created successfully', 'success');
             onGenerate(newVersion[0]);
             setOpen(false);
             form.reset();
