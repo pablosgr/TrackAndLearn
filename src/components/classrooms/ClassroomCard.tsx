@@ -33,12 +33,12 @@ export default function ClassroomCard({
 
     return (
         <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-lg) transition-shadow">
-            <CardHeader className="h-30 flex flex-row justify-between bg-(--color-primary) text-white truncate">
+            <CardHeader className="h-30 flex flex-row justify-between bg-(--color-primary) dark:text-slate-800 text-white truncate">
                 <div className="flex flex-col gap-2">
                     <CardTitle className="text-lg truncate">{classroom.name}</CardTitle>
                     {
                         user.role === 'student' &&
-                        <CardDescription className="text-white">
+                        <CardDescription className="text-white dark:text-slate-800">
                             Teacher: {classroom.teacher?.name}
                         </CardDescription>
                     }

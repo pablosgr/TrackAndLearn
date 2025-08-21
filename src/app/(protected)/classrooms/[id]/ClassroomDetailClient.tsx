@@ -131,9 +131,9 @@ export default function ClassroomDetailClient(
 
     return (
         <Card className="w-full h-full">
-            <CardHeader className="bg-(--color-primary) text-white gap-2 py-6">
+            <CardHeader className="bg-(--color-primary) dark:text-slate-800 text-white gap-2 py-6">
                 <CardTitle className="text-2xl">{classroom.name}</CardTitle>
-                <CardDescription className="flex flex-col gap-2 text-white">
+                <CardDescription className="flex flex-col gap-2 dark:text-slate-800 text-white">
                     <span>Teacher: {classroom.teacher?.name}</span>
                     <span>Created on {new Date(classroom.created_at).toLocaleDateString()}</span>
                 </CardDescription>
@@ -151,7 +151,12 @@ export default function ClassroomDetailClient(
                     {
                         user.role === 'teacher' &&
                         <section className="min-w-50 h-full">
-                            <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
+                            <Card
+                                className={`
+                                    flex flex-col gap-0 shadow-none rounded-lg
+                                    border-gray-300 dark:border-white/30
+                                `}
+                            >
                                 <CardHeader>
                                     <CardTitle>Classroom code</CardTitle>
                                 </CardHeader>
@@ -200,7 +205,7 @@ export default function ClassroomDetailClient(
                         {
                             user.role === 'teacher' &&
                             <TabsContent value="students">
-                                <ClassroomStudentsCard 
+                                <ClassroomStudentsCard
                                     studentList={students}
                                     adaptationList={adaptationList}
                                     classroomId={classroom.id}

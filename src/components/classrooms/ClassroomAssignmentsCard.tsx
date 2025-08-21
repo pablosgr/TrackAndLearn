@@ -34,7 +34,7 @@ export default function ClassroomAssignmentsCard({
         >
             {
                 !assignments && (
-                    <span className="text-gray-400 text-lg">
+                    <span className="text-gray-400 dark:text-white/60 text-lg">
                         No tests assigned yet..
                     </span>
                 )

@@ -161,21 +161,23 @@ export default function TestDetailClient({
                                 onCreate={createTest}
                             />
                         }
-                        <Card className="flex flex-col gap-0 shadow-none border-gray-300 rounded-lg">
+                        <Card className="flex flex-col gap-0 shadow-none border-gray-300 dark:border-white/30 rounded-lg">
                             <CardHeader>
                                 <CardTitle>Tets details</CardTitle>
                             </CardHeader>
-                            <CardContent className="w-full flex flex-col gap-3">
+                            <CardContent
+                                className="w-full flex flex-col gap-3 text-sm text-gray-500 dark:text-white/60"
+                            >
                                 {
                                     selectedTest &&
                                     <>
-                                    <p className="text-sm text-gray-500">
+                                    <p>
                                         Level: { selectedTest.level ? selectedTest.level : 'Level not defined' }
                                     </p>
-                                    <p className="text-sm text-gray-500">
+                                    <p>
                                         Time Limit: { selectedTest.time_limit ? selectedTest.time_limit + ' minutes' : 'None' }
                                     </p>
-                                    <p className="text-sm text-gray-500">
+                                    <p>
                                         Adaptation: { selectedTest.adaptation_data ? selectedTest.adaptation_data.code : 'Not adapted' }
                                     </p>
                                     </>

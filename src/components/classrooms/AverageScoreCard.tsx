@@ -121,7 +121,7 @@ export default function AverageScoreCard({
                     </PieChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="text-sm self-center text-gray-500">
+            <CardFooter className="text-sm self-center text-gray-500 dark:text-white/60">
                 <p>*Based on {count} recorded results</p>
             </CardFooter>
         </Card>

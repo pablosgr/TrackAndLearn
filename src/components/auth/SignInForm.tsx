@@ -78,7 +78,7 @@ export default function SignInForm() {
                     </div>
                 </form>
             </Form>
-            <p className=" text-center text-xs text-gray-400">
+            <p className=" text-center text-xs text-gray-400 dark:text-white/60">
                 Forgot your password? Reset it
                 <Link href={'http://localhost:3000/auth/forgot-password'}>
                     <span className="text-primary"> here</span>

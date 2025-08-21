@@ -45,7 +45,7 @@ export default function AssignmentCard({
     return (
         <Card
             className={`
-                flex flex-col gap-0 border-gray-300
+                flex flex-col gap-0 border-gray-300 dark:border-white/30
                 shadow-none hover:shadow-(--shadow-sm) transition-shadow
             `}
         >

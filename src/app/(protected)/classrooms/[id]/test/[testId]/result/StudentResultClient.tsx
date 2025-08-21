@@ -18,9 +18,9 @@ export default function StudentResultClient({
 }) {
     return (
         <Card className="w-full h-full">
-            <CardHeader className="bg-primary gap-2 py-6 text-white">
+            <CardHeader className="bg-primary gap-2 py-6 text-white dark:text-slate-800">
                 <CardTitle className="text-2xl">Result for {test.name}</CardTitle>
-                <CardDescription className="text-md text-white">{test.level}</CardDescription>
+                <CardDescription className="text-md text-white dark:text-slate-800">{test.level}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
                 {
@@ -44,11 +44,11 @@ export default function StudentResultClient({
                                                                 shadow-none
                                                                 ${
                                                                     opt.is_correct
-                                                                    && 'bg-green-300 border-green-500'
+                                                                    && 'bg-green-300 border-green-500 text-green-800'
                                                                 }
                                                                 ${
                                                                     (studentResponse?.selected_option_id === opt.id && !opt.is_correct)
-                                                                    && 'bg-red-300 border-red-500'
+                                                                    && 'bg-red-300 border-red-500 text-red-800'
                                                                 }
                                                             `}
                                                         >

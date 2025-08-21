@@ -36,7 +36,12 @@ export default function QuestionDetailCard({
     }
 
     return (
-        <Card className="flex flex-col gap-0 shadow-none hover:shadow-(--shadow-xs) transition-shadow border-gray-300">
+        <Card
+            className={`
+                flex flex-col gap-0 shadow-none hover:shadow-(--shadow-xs)
+                transition-shadow border-gray-300 dark:border-white/30
+            `}
+        >
             <CardHeader className="flex flex-row justify-between">
                 <CardTitle>{question.question_text}</CardTitle>
                 <div className="flex flex-row gap-1">

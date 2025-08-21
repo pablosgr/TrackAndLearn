@@ -30,6 +30,7 @@ export default function StudentsResultAccordion({
                                 className={`
                                     p-5 border-b-1 rounded-none border-gray-400
                                     hover:cursor-pointer hover:bg-secondary/20
+                                    dark:hover:bg-primary/20
                                 `}
                             >
                                 <div>{item.student_data.name}</div>
