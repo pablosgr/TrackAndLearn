@@ -39,26 +39,27 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
             <section className={`w-full flex flex-col @container ${!hasClassrooms && 'h-full items-center'}`}>
                 {
                     !hasClassrooms
-                    ? <div className="h-full flex flex-col justify-center gap-3">
-                        <span className="text-lg">
+                    ? <div className="h-full flex flex-col justify-center gap-5">
+                        <span className="text-2xl">
                             {
                                 user.role === 'teacher'
                                 ? 'Start creating a Classroom!'
                                 : 'Try joining a Classroom!'
                             }
                         </span>
-                        {
-                            user.role === 'teacher'
-                            ? <ClassroomDialog
-                                    type="create"
-                                    onCreate={handleCreateClassroom}
-                                />
-                            : <JoinClassroomDialog
-                                    version="default"
-                                    size="lg"
-                                    onJoin={handleCreateClassroom}
-                                />
-                        }
+                        <div className="flex justify-center items-center">
+                            {
+                                user.role === 'teacher'
+                                ? <ClassroomDialog
+                                        type="create"
+                                        onCreate={handleCreateClassroom}
+                                    />
+                                : <JoinClassroomDialog
+                                        version="default"
+                                        onJoin={handleCreateClassroom}
+                                    />
+                            }
+                        </div>
                         </div>
                     : <ul className="flex flex-row flex-wrap gap-10 justify-center @3xl:justify-start">
                         {

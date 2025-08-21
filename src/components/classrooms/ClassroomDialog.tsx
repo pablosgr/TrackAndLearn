@@ -94,7 +94,7 @@ export default function ClassroomDialog({
             <DialogTrigger asChild>
                 {
                     type === 'create'
-                    ? <Button variant="default">Add Classroom</Button>
+                    ? <Button variant="default" className="w-fit">Add Classroom</Button>
                     : <CardAction className="p-2 hover:bg-accent hover:text-primary hover:cursor-pointer rounded-lg transition-colors">
                         <PencilLine size={22} />
                     </CardAction>

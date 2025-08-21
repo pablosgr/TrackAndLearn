@@ -27,14 +27,14 @@ export default function ClassroomStudentsCard({
             `}>
             {
                 !students &&
-                <>
+                <div className="h-full flex flex-col gap-3 items-center">
                     <span className="text-gray-400 text-lg">
                         No students enrolled yet..
                     </span>
                     <span className="text-gray-400 text-md">
                         Share the Classroom code to let them join!
                     </span>
-                </>
+                </div>
             }
             {
                 students && (

@@ -70,8 +70,8 @@ export default function TestsPageClient({
             <section className={`w-full flex flex-col @container ${!hasTests && 'h-full items-center'}`}>
                 {
                     !hasTests
-                    ? <div className="h-full flex flex-col justify-center gap-3">
-                            <span className="text-lg text-center">
+                    ? <div className="h-full flex flex-col justify-center gap-5">
+                            <span className="text-2xl text-center">
                                 Start creating a Test!
                             </span>
                             <div className="flex flex-row gap-3">
