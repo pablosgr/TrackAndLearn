@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "@/app/actions";
 import { showToast } from "@/utils/general/showToast";
@@ -44,7 +45,7 @@ export default function SignInForm() {
     }
 
     return (
-        <Card className="w-75 h-fit p-6">
+        <Card className="w-75 h-fit p-6 gap-3">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
                         <FormField
@@ -77,6 +78,12 @@ export default function SignInForm() {
                     </div>
                 </form>
             </Form>
+            <p className=" text-center text-xs text-gray-400">
+                Forgot your password? Reset it
+                <Link href={'http://localhost:3000/auth/forgot-password'}>
+                    <span className="text-primary"> here</span>
+                </Link>
+            </p>
         </Card>
     )
 }
