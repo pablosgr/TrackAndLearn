@@ -11,7 +11,6 @@ import {
     SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -57,7 +56,7 @@ export default function AppSidebar() {
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
-                        <SidebarMenu>
+                        <SidebarMenu className="gap-4">
                             {items.map((item) => {
                                 const isActive = pathname.includes(item.url);
 
@@ -67,9 +66,14 @@ export default function AppSidebar() {
 
                                 return (
                                     <SidebarMenuItem key={item.title}>
-                                        <SidebarMenuButton asChild>
+                                        <SidebarMenuButton
+                                            asChild
+                                            className='[&>svg]:size-6 py-5 gap-4'
+                                        >
                                             <Link href={item.url}>
-                                                <item.icon />
+                                                <item.icon
+                                                    strokeWidth={`${isActive ? 2.3 : 1.6}`}
+                                                />
                                                 <span className={`${ isActive ? 'font-bold' : '' }`}>{item.title}</span>
                                             </Link>
                                         </SidebarMenuButton>
@@ -81,11 +85,14 @@ export default function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <SidebarGroup>
+                <SidebarGroup className="p-0">
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton onClick={handleSignOut}>
+                                <SidebarMenuButton
+                                    onClick={handleSignOut}
+                                    className="hover:cursor-pointer [&>svg]:size-6 py-5 gap-4"
+                                >
                                     <LogOut />
                                     <span>Log out</span>
                                 </SidebarMenuButton>
