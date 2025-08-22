@@ -2,6 +2,7 @@
 
 import { LayoutDashboard, BookOpenText, School, UserRound, LogOut, Info } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useUser } from "../context/userWrapper";
 import { signOut } from "@/app/actions";
@@ -55,8 +56,8 @@ export default function AppSidebar() {
 
     return (
         <Sidebar collapsible="icon">
-            <SidebarHeader className="group-data-[collapsible=icon]:hidden">
-                <span className="font-semibold">Track & Learn</span>
+            <SidebarHeader className="group-data-[collapsible=icon]:hidden flex items-start pl-4 pt-4">
+                <Image src={'/logo-b.png'} alt="Track & Learn Logo" width={110} height={50}/>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
@@ -73,7 +74,7 @@ export default function AppSidebar() {
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton
                                             asChild
-                                            className='[&>svg]:size-6 py-6 gap-4'
+                                            className='[&>svg]:size-6 py-6 gap-4 transition-colors'
                                         >
                                             <Link href={item.url}>
                                                 <item.icon
@@ -96,7 +97,7 @@ export default function AppSidebar() {
                             <SidebarMenuItem>
                                 <SidebarMenuButton
                                     onClick={handleSignOut}
-                                    className="hover:cursor-pointer [&>svg]:size-6 py-5 gap-4"
+                                    className="hover:cursor-pointer [&>svg]:size-6 py-5 gap-4 transition-colors"
                                 >
                                     <LogOut />
                                     <span>Sign out</span>

@@ -20,7 +20,7 @@ export default function AboutPage() {
                 {
                     aboutTexts.map((item, index) => (
                         <AccordionItem key={index} value={item.title} >
-                            <AccordionTrigger className="text-lg font-bold w-full">
+                            <AccordionTrigger className="text-lg font-bold w-full hover:cursor-pointer">
                                 {item.title}
                             </AccordionTrigger>
                             <AccordionContent className="text-[16px] w-full">
