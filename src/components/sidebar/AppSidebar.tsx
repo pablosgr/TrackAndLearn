@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { LayoutDashboard, BookOpenText, School, UserRound, LogOut } from "lucide-react";
+import { LayoutDashboard, BookOpenText, School, UserRound, LogOut, Info } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "../context/userWrapper";
@@ -37,6 +37,11 @@ const items = [
         title: "Profile",
         url: "/profile",
         icon: UserRound,
+    },
+    {
+        title: "About",
+        url: "/about",
+        icon: Info
     }
 ]
 
@@ -72,9 +77,9 @@ export default function AppSidebar() {
                                         >
                                             <Link href={item.url}>
                                                 <item.icon
-                                                    strokeWidth={`${isActive ? 2.3 : 1.6}`}
+                                                    strokeWidth={`${isActive ? 2.3 : 1.7}`}
                                                 />
-                                                <span className={`${ isActive ? 'font-bold' : '' }`}>{item.title}</span>
+                                                <span className={`${ isActive ? 'font-bold' : '' } text-[15px]`}>{item.title}</span>
                                             </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
@@ -94,7 +99,7 @@ export default function AppSidebar() {
                                     className="hover:cursor-pointer [&>svg]:size-6 py-5 gap-4"
                                 >
                                     <LogOut />
-                                    <span>Log out</span>
+                                    <span>Sign out</span>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
