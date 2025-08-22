@@ -10,14 +10,13 @@ import { OptionType } from "@/types/test/OptionType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import { EditQuestionType } from "@/types/test/EditQuestionType";
 import { NewTestType } from "@/types/test/TestType";
+import ExportTestButton from "./ExportTestButton";
 import CustomAlertDialog from "../CustomAlertDialog";
 import QuestionDialog from "./QuestionDialog";
 import TestDialog from "./TestDialog";
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -72,6 +71,7 @@ export default function TestDetailCard({
                             onGenerate={onTestGenerate}
                         />
                     }
+                    <ExportTestButton testId={test.id} />
                     {
                         test.question.length < MAX_QUESTIONS &&
                         <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
