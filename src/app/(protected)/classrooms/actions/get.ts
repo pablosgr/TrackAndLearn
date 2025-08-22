@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -18,4 +18,29 @@ export async function getStudentAdaptationId(classroomId: string, studentId: str
     }
 
     return data.adaptation_id;
+}
+
+export async function getTopicByTestId(testId: number): Promise<string | null> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+        .from('test')
+        .select(`
+            template_id,
+            template_data:test_template!template_id(
+                topic_id,
+                topic_data:topic!topic_id(
+                    name
+                )
+            )
+        `)
+        .eq('id', testId)
+        .single();
+
+    if (!data || error) {
+        console.error('Error retrieving topic name: ', error);
+        return null;
+    }
+
+    return data.template_data.topic_data.name as string;
 }
