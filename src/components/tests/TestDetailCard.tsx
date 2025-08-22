@@ -58,11 +58,11 @@ export default function TestDetailCard({
     
     return (
         <Card className="shadow-none border-0">
-            <CardHeader className="flex flex-row justify-between items-center flex-wrap gap-5">
+            <CardHeader className="flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-5">
                 <div className="flex flex-col gap-3">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
                 </div>
-                <div className="flex flex-row gap-3 items-center">
+                <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
                     {
                         (!test.adaptation_id && testCount < MAX_TESTS) &&
                         <GenerateVersionDialog

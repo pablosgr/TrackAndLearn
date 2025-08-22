@@ -121,7 +121,7 @@ export default function GenerateVersionDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default" className="flex flex-row items-center gap-3">
+                <Button variant="default" className="flex flex-row items-center gap-3 w-fit">
                     <Bot size={22} />
                     <span>Adapt with AI</span>
                 </Button>
