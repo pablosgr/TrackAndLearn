@@ -80,7 +80,7 @@ export default function SignInForm() {
             </Form>
             <p className=" text-center text-xs text-gray-400 dark:text-white/60">
                 Forgot your password? Reset it
-                <Link href={'http://localhost:3000/auth/forgot-password'}>
+                <Link href={'/auth/forgot-password'}>
                     <span className="text-primary"> here</span>
                 </Link>
             </p>

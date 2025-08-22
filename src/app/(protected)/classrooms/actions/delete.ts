@@ -29,7 +29,15 @@ export async function removeStudentFromClassroom(studentId: number, classroomId:
         console.error('Error removing student: ', response.statusText);
     }
 
+    const resultResponse = await supabase
+        .from('test_result')
+        .delete()
+        .eq('student_id', studentId)
+        .eq('classroom_id', classroomId);
 
+    if (response.status !== 204) {
+        console.error('Error removing student results: ', resultResponse.statusText);
+    }
 }
 
 export async function removeAssignment(assignmentId: number) {
