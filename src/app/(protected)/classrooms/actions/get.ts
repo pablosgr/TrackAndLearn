@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function getStudentIdAdaptation(classroomId: string, studentId: string): Promise<string | null> {
+export async function getStudentAdaptationId(classroomId: string, studentId: string): Promise<string | null> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
