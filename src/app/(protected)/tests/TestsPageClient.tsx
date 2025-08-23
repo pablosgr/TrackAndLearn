@@ -1,6 +1,11 @@
-'use client'
+'use client';
 
 import { useState } from "react";
+import { useUser } from "@/components/context/userWrapper";
+import { LoaderCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { showToast } from "@/utils/general/showToast";
+import { getTestTemplatesByUserId } from "./actions/get";
 import TemplateCard from "@/components/tests/TemplateCard";
 import TemplateDialog from "@/components/tests/TemplateDialog";
 import GenerateTestDialog from "@/components/tests/GenerateTestDialog";
@@ -17,7 +22,10 @@ export default function TestsPageClient({
     topicList: TopicType[],
     adaptationList: AdaptationType[]
 }) {
+    const {user} = useUser();
     const [templates, setTemplates] = useState<TestTemplateType[]>(testList);
+    const [range, setRange] = useState<[number, number]>([6, 11]);
+    const [isloading, setIsLoading] = useState<boolean>(false);
     const hasTests = templates.length > 0;
 
     const handleDeleteTemplate = (id: string) => {
@@ -45,6 +53,20 @@ export default function TestsPageClient({
                 : t
             )
         );
+    }
+
+    const handleFetchTemplates = async () => {
+        setIsLoading(true);
+        const newTemplates: TestTemplateType[] = await getTestTemplatesByUserId(user.id, [range[0], range[1]]);
+
+        if (newTemplates.length > 0) {
+            setTemplates(prev => [...prev, ...newTemplates]);
+            setRange([range[1] + 1, range[1] + 6]);
+        } else {
+            showToast('No tests found', 'error');
+        }
+
+        setIsLoading(false);
     }
 
     return (
@@ -87,7 +109,7 @@ export default function TestsPageClient({
                                 />
                             </div>
                         </div>
-                    : <ul className="flex flex-row flex-wrap gap-10 justify-center @3xl:justify-start">
+                    : <ul className="flex-1 flex flex-row flex-wrap gap-20 justify-center @3xl:justify-start">
                         {
                             templates && templates.map((t) => (
                                 <li key={t.id}>
@@ -104,6 +126,27 @@ export default function TestsPageClient({
                     </ul>
                 }
             </section>
+            {
+                hasTests && (
+                    <footer className="w-full mt-auto pt-15 flex flex-row items-center justify-center">
+                        <Button
+                            onClick={handleFetchTemplates}
+                            variant={'outline'}
+                            disabled={isloading}
+                            className="w-fit text-[17px] p-6 rounded-2xl flex flex-row gap-4 items-center"
+                        >
+                            {
+                                isloading
+                                ? <>
+                                    <LoaderCircle className="animate-spin" />
+                                    Loading..
+                                    </>
+                                : 'Load more tests'
+                            }
+                        </Button>
+                    </footer>
+                )
+            }
         </>
     )
 }

@@ -1,15 +1,15 @@
 'use client';
 
 import { LoaderCircle } from "lucide-react";
-import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { useState } from "react";
 import { useUser } from "@/components/context/userWrapper";
 import { getClassroomsByRole } from "./actions";
 import { showToast } from "@/utils/general/showToast";
+import { Button } from "@/components/ui/button";
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
 import JoinClassroomDialog from "@/components/classrooms/JoinClassroomDialog";
 import ClassroomCard from "@/components/classrooms/ClassroomCard";
-import { Button } from "@/components/ui/button";
+import { ClassroomType } from "@/types/classroom/ClassroomType";
 
 export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
     const {user} = useUser();
