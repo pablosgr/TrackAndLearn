@@ -75,7 +75,7 @@ export default function Dashboard() {
                       min-w-100 sm:min-w-120 w-full flex-row
                       gap-3 p-8 hover:cursor-pointer hover:scale-105
                       hover:shadow-[0px_10px_17px_0_rgba(0,0,0,0.2)]
-                      transition-all duration-300
+                      transition-all duration-300 rounded-2xl
                     `}>
                     <div className="flex flex-col justify-center">
                       <div className="w-fit h-fit p-5 rounded-full bg-primary/30">

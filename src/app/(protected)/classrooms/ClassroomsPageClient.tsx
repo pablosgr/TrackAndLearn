@@ -1,15 +1,21 @@
-'use client'
+'use client';
 
+import { LoaderCircle } from "lucide-react";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { useState } from "react";
 import { useUser } from "@/components/context/userWrapper";
+import { getClassroomsByRole } from "./actions";
+import { showToast } from "@/utils/general/showToast";
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
 import JoinClassroomDialog from "@/components/classrooms/JoinClassroomDialog";
 import ClassroomCard from "@/components/classrooms/ClassroomCard";
+import { Button } from "@/components/ui/button";
 
 export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }) {
     const {user} = useUser();
     const [classrooms, setClassrooms] = useState<ClassroomType[]>(data);
+    const [range, setRange] = useState<[number, number]>([6, 11]);
+    const [isloading, setIsLoading] = useState<boolean>(false);
     const hasClassrooms = classrooms.length > 0;
 
     const handleCreateClassroom = (newClassroom: ClassroomType) => {
@@ -18,6 +24,20 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
 
     const handleDeleteClassroom = (classroomId: number) => {
         setClassrooms(prev => prev.filter((item) => item.id !== classroomId));
+    }
+
+    const handleFetchClassrooms = async () => {
+        setIsLoading(true);
+        const newClassrooms: ClassroomType[] = await getClassroomsByRole(user.id, user.role, [range[0], range[1]]);
+
+        if (newClassrooms.length > 0) {
+            setClassrooms(prev => [...prev, ...newClassrooms]);
+            setRange([range[1] + 1, range[1] + 6]);
+        } else {
+            showToast('No classrooms found', 'error');
+        }
+
+        setIsLoading(false);
     }
     
     return (
@@ -61,7 +81,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                             }
                         </div>
                         </div>
-                    : <ul className="flex flex-row flex-wrap gap-10 justify-center @3xl:justify-start">
+                    : <ul className="flex-1 flex flex-row flex-wrap gap-20 justify-center @3xl:justify-start">
                         {
                             classrooms && classrooms.map((c) => (
                                 <li key={c.id}>
@@ -75,6 +95,27 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                     </ul>
                 }
             </section>
+            {
+                hasClassrooms && (
+                    <footer className="w-full mt-auto pt-15 flex flex-row items-center justify-center">
+                        <Button
+                            onClick={handleFetchClassrooms}
+                            variant={'outline'}
+                            disabled={isloading}
+                            className="w-fit text-[17px] p-6 rounded-2xl flex flex-row gap-4 items-center"
+                        >
+                            {
+                                isloading
+                                ? <>
+                                    <LoaderCircle className="animate-spin" />
+                                    Loading..
+                                    </>
+                                : 'Load more classrooms'
+                            }
+                        </Button>
+                    </footer>
+                )
+            }
         </>
     )
 }
