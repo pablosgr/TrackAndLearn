@@ -30,10 +30,10 @@ export const aboutTexts = [
       <div className="flex flex-col gap-5">
         <p>
           One of the core features of Track & Learn is the ability to create tests with 
-          <strong>great flexibility</strong>. Teachers can build them manually through a simple form or 
-          generate them using <strong>AI</strong>, either from a prompt or a PDF document, always editable afterwards. 
-          They can also decide on aspects such as the academic level of the test or whether it should 
-          include a time limit.
+          <strong> great flexibility</strong>. Teachers can build them manually or 
+          generate them using <strong>AI</strong>, either from a prompt or a PDF document, 
+          always editable afterwards. They can also decide on aspects such as the academic 
+          level or whether it should include a time limit.
         </p>
         <p>
           Every time a test is created, what is actually generated is a <b>template</b>. 
@@ -58,8 +58,8 @@ export const aboutTexts = [
         </p>
         <p>
           When assigned, these versions will only be displayed to students previously 
-          tagged with the corresponding profile, ensuring <strong>inclusivity</strong> while keeping test 
-          management simple and consistent for the teacher.
+          tagged with the corresponding profile, ensuring <strong>inclusivity</strong> while 
+          keeping test management simple and consistent.
         </p>
       </div>
     )
@@ -80,8 +80,8 @@ export const aboutTexts = [
           while the rest of the class receives the standard one.
         </p>
         <p>
-          Results are presented both <b>individually</b> and at the <b>classroom level</b>, giving teachers 
-          a clear view of performance while keeping the process streamlined.
+          Results are presented both <b>individually</b> and at the <b>classroom level</b>, giving 
+          a clear view of performance.
         </p>
       </div>
     )
@@ -91,20 +91,18 @@ export const aboutTexts = [
     content: (
       <div className="flex flex-col gap-10">
         <p>
-          Track & Learn integrates with{" "}
-          <Link href="https://www.carousel-learning.com/" target="_blank" className="text-secondary">
-            <strong>Carousel Learning</strong>
-          </Link>, a companion app created for educators. Carousel focuses on open-ended 
-          questions, question bank creation, and knowledge sharing within a growing 
-          educational community.
+          Track & Learn integrates with <strong>Carousel Learning</strong>, a companion app 
+          created for educators. Carousel focuses on open-ended questions, question bank creation, 
+          and knowledge sharing within a growing educational community.
         </p>
-        <Image
-          src={'/carousel-logo.ae25f049.svg'}
-          alt="Carousel Logo"
-          width={400}
-          height={200}
-          className="self-center"
-        />
+        <Link href="https://www.carousel-learning.com/" target="_blank" className="w-fit self-center">
+            <Image
+              src={'/carousel-logo.ae25f049.svg'}
+              alt="Carousel Logo"
+              width={400}
+              height={200}
+            />
+        </Link>
         <p>
           From each test page in Track & Learn, teachers can <strong>export their questions </strong> 
           directly for Carousel Learning. This connection bridges two complementary 
