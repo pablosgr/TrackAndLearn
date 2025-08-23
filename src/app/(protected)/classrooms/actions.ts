@@ -10,15 +10,25 @@ import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { TestResultType } from "@/types/test/TestResultType";
 import { ClassroomResultType } from "@/types/test/ClassroomResultType";
 
-export async function getClassroomsByRole(userId: string, userRole: string): Promise<ClassroomType[]> {
+export async function getClassroomsByRole(
+    userId: string,
+    userRole: string,
+    range?: number[]
+): Promise<ClassroomType[]> {
     const supabase = await createClient();
 
     if (userRole === 'teacher') {
-        const { data, error } = await supabase
+        let teacherQuery = supabase
             .from('classroom')
             .select('*')
             .eq('teacher_id', userId)
             .order('id', { ascending: false });
+
+        if (range) {
+            teacherQuery.range(range[0], range[1]);
+        }
+
+        const { data, error } = await teacherQuery;
 
         if (!data || error) {
             console.error("Error fetching teacher classrooms: ", error);
@@ -29,7 +39,7 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
     }
 
     if (userRole === 'student') {
-        const { data, error } = await supabase
+        let studentQuery = supabase
             .from("student_classroom")
             .select(`
                 classroom(
@@ -43,6 +53,12 @@ export async function getClassroomsByRole(userId: string, userRole: string): Pro
             `)
             .eq("student_id", userId)
             .order("classroom_id", { ascending: false });
+
+        if (range) {
+            studentQuery.range(range[0], range[1]);
+        }
+
+        const { data, error } = await studentQuery;
 
         if (!data || error) {
             console.error("Error fetching student classrooms: ", error);
