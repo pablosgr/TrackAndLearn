@@ -25,6 +25,7 @@ export async function signUp(
         username: string,
         email: string,
         password: string,
+        confirm_password: string,
         role: string,
     }
 ) {
@@ -32,7 +33,7 @@ export async function signUp(
 
     const supabaseData = {
         email: formData.email,
-        password: formData.password
+        password: formData.confirm_password
     }
 
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp(supabaseData);

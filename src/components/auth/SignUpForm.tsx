@@ -31,7 +31,11 @@ const signUpSchema = z.object({
   username: z.string().min(2, { message: "Username is required" }).max(10),
   email: z.email({ message: "Invalid email format" }),
   password: z.string().min(8, { message: "Password must have at least 8 characters" }),
+  confirm_password: z.string().min(8, { message: "Password must have at least 8 characters" }),
   role: z.string().min(1, { message: 'Choose a role' })
+}).refine((data) => data.password === data.confirm_password, {
+    message: "Passwords don't match",
+    path: ["confirm_password"],
 });
 
 export default function SignUpForm() {
@@ -43,6 +47,7 @@ export default function SignUpForm() {
             username: "",
             email: "",
             password: "",
+            confirm_password: "",
             role: "",
         },
     });
@@ -117,6 +122,12 @@ export default function SignUpForm() {
                         type="auth"
                         name="password"
                         placeholder="Password"
+                    />
+                    <PasswordInput
+                        form={form}
+                        type="auth"
+                        name="confirm_password"
+                        placeholder="Confirm password"
                     />
                     <FormField
                         control={form.control}

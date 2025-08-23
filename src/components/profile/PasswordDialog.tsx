@@ -24,17 +24,12 @@ import {
 
 
 const formSchema = z.object({
-    current_password: z.string()
-        .min(1, { message: 'Password cannot be empty' }),
-    new_password: z.string()
-        .min(8, { message: 'Password must have at least 8 characters' })
-        .max(150),
-    confirm_password: z.string()
-        .min(8, { message: 'Password must have at least 8 characters' })
-        .max(150),
+    current_password: z.string().min(1, { message: 'Password cannot be empty' }),
+    new_password: z.string().min(8, { message: 'Password must have at least 8 characters' }).max(150),
+    confirm_password: z.string().min(8, { message: 'Password must have at least 8 characters' }).max(150),
 }).refine((data) => data.new_password === data.confirm_password, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ["confirm_password"],
 });
 
 export default function PasswordDialog() {
@@ -82,7 +77,7 @@ export default function PasswordDialog() {
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>
-                        Reset your password
+                        Reset password
                     </DialogTitle>
                     <DialogDescription className="pt-2">
                         Set a new password for your account
@@ -109,7 +104,7 @@ export default function PasswordDialog() {
                             type="reset"
                             label="Confirm New Password"
                             name="confirm_password"
-                            placeholder="Write your new password again"
+                            placeholder="Confirm your new password"
                         />
                         <DialogFooter className="pt-4 items-center sm:justify-between">
                             <p></p>

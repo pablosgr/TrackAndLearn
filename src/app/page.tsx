@@ -5,15 +5,15 @@ import { Separator } from "@/components/ui/separator";
 import SignInForm from "@/components/auth/SignInForm";
 import SignUpForm from "@/components/auth/SignUpForm";
 import { 
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger 
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger 
 } from "@/components/ui/tabs";
 
 export default function Login() {
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center gap-10">
+    <div className="w-full min-h-screen h-full py-10 flex flex-col items-center justify-center gap-10">
       <Image src={'/logo-s.png'} alt="Track & Learn Logo" width={300} height={400}/>
       <Tabs defaultValue="signin" className="w-full flex flex-col items-center justify-center gap-3">
         <TabsList className="bg-transparent shadow-none">
@@ -39,7 +39,6 @@ export default function Login() {
             Sign Up
           </TabsTrigger>
         </TabsList>
-
         <TabsContent value="signin" className="w-full flex justify-center">
           <SignInForm />
         </TabsContent>
