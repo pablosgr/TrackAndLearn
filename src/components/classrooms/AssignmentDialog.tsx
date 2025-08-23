@@ -106,7 +106,7 @@ export default function AssignmentDialog({
                     <DialogDescription className="pt-2">
                         {
                             type === 'create'
-                            ? 'This action will assign a test to the classroom, including their adapted versions.'
+                            ? 'Assign a test to the classroom, including their adapted versions.'
                             : 'Edit assignment information'
                         }
                     </DialogDescription>

@@ -124,7 +124,7 @@ export default function TemplateDialog({
                     <DialogDescription className="pt-2">
                         {
                             type === 'create'
-                            ? 'This action will create a test template with an attached base test'
+                            ? 'Create a test template with an attached base test'
                             : 'Edit test information'
                         }
                     </DialogDescription>

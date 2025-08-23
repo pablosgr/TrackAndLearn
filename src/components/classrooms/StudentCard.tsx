@@ -89,7 +89,7 @@ export default function StudentCard({
                         </SelectContent>
                     </Select>
                     <CustomAlertDialog 
-                        description="Student will be removed from the classroom. This action cannot be undone."
+                        description="Student and related results will be removed from the classroom. This action cannot be undone."
                         onDelete={handleStudentRemoval}
                     />
                 </div>

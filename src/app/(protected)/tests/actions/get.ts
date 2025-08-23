@@ -106,7 +106,8 @@ export async function getTopics(): Promise<TopicType[]> {
 
     const { data, error } = await supabase
         .from('topic')
-        .select('*');
+        .select('*')
+        .order('name', { ascending: true });
     
     if (!data || error) {
         console.error('Error retrieving topics');

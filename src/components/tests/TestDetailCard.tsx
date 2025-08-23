@@ -88,7 +88,8 @@ export default function TestDetailCard({
                         test.adaptation_id &&
                         <CustomAlertDialog
                             description={`
-                                ${ test.adaptation_data?.code } version will be permanently removed. This action cannot be undone.
+                                ${ test.adaptation_data?.code } adaptation will be permanently removed. 
+                                This action cannot be undone.
                             `}
                             onDelete={handleTestDelete}
                         />

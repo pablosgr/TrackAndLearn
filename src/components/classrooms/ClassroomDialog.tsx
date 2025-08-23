@@ -112,7 +112,7 @@ export default function ClassroomDialog({
                     <DialogDescription className="pt-2">
                         {
                             type === 'create'
-                            ? 'This action will create a new classroom'
+                            ? 'Create a new classroom'
                             : 'Edit classroom information'
                         }
                     </DialogDescription>
