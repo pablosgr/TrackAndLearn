@@ -66,7 +66,7 @@ export default function AppSidebar() {
                             {items.map((item) => {
                                 const isActive = pathname.includes(item.url);
 
-                                if ((item.title === 'Tests' || item.title === 'About') && user.role !== 'teacher') {
+                                if (item.title === 'Tests' && user.role !== 'teacher') {
                                     return null;
                                 }
 
