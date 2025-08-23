@@ -28,10 +28,13 @@ export async function getTestTemplate(templateId: string): Promise<TestTemplateT
     return data[0] as TestTemplateType;
 }
 
-export async function getTestTemplatesByUserId(userId: string): Promise<TestTemplateType[]> {
+export async function getTestTemplatesByUserId(
+    userId: string,
+    range?: number[]
+): Promise<TestTemplateType[]> {
     const supabase = await createClient();
 
-    const { data, error } = await supabase
+    let query = supabase
         .from('test_template')
         .select(`
             *,
@@ -41,6 +44,12 @@ export async function getTestTemplatesByUserId(userId: string): Promise<TestTemp
         `)
         .eq('teacher_id', userId)
         .order('created_at', { ascending: false });
+
+    if (range) {
+        query.range(range[0], range[1]);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
         console.error('Failed to fetch tests', error);
