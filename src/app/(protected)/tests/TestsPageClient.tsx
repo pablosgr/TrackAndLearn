@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@/components/context/userWrapper";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { showToast } from "@/utils/general/showToast";
 import { getTestTemplatesByUserId } from "./actions/get";
 import TemplateCard from "@/components/tests/TemplateCard";
 import TemplateDialog from "@/components/tests/TemplateDialog";
 import GenerateTestDialog from "@/components/tests/GenerateTestDialog";
+import SearchBar from "@/components/general/SearchBar";
 import DateSortSelect from "@/components/general/DateSortSelect";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { TopicType } from "@/types/test/TopicType";
@@ -25,26 +26,42 @@ export default function TestsPageClient({
 }) {
     const {user} = useUser();
     const [templates, setTemplates] = useState<TestTemplateType[]>(testList);
+    const [visibleTemplates, setVisibleTemplates] = useState<TestTemplateType[]>(testList);
     const [range, setRange] = useState<[number, number]>([6, 11]);
     const [sort, setSort] = useState<string>('');
+    const [search, setSearch] = useState<string>('');
     const [isloading, setIsLoading] = useState<boolean>(false);
     const hasTests = templates.length > 0;
 
-    const handleDateSort = (value: string) => {
-        setSort(value);
+    useEffect(() => {
+        applyFilters();
+    }, [templates, search, sort]);
 
-        setTemplates(prev =>
-            [...prev].sort((a, b) => {
+    const applyFilters = () => {
+        let filtered = templates.filter(t =>
+            (
+                t.name.toLowerCase().includes(search.toLowerCase())
+                || t.topic_data.name.toLowerCase().includes(search.toLowerCase())
+            )
+        );
+
+        if (sort) {
+            filtered.sort((a, b) => {
                 const dateA = new Date(a.created_at).getTime();
                 const dateB = new Date(b.created_at).getTime();
+                return sort === "asc" ? dateA - dateB : dateB - dateA;
+            });
+        }
 
-                if (value === "asc") {
-                    return dateA - dateB;
-                } else {
-                    return dateB - dateA;
-                }
-            })
-        );
+        setVisibleTemplates(filtered);
+    };
+
+    const handleSearch = (value: string) => {
+        setSearch(value);
+    }
+
+    const handleDateSort = (value: string) => {
+        setSort(value);
     };
 
     const handleDeleteTemplate = (id: string) => {
@@ -83,7 +100,7 @@ export default function TestsPageClient({
             setRange([range[1] + 1, range[1] + 6]);
             handleDateSort(sort);
         } else {
-            showToast('No tests found', 'error');
+            showToast('No more tests to show', 'error');
         }
 
         setIsLoading(false);
@@ -96,7 +113,13 @@ export default function TestsPageClient({
                 {
                     hasTests &&
                     <div className="flex flex-row gap-5">
-                        <DateSortSelect onSort={handleDateSort}/>
+                        <SearchBar
+                            placeholder="Search by name or topic"
+                            onSearch={handleSearch}
+                        />
+                        <DateSortSelect
+                            onSort={handleDateSort}
+                        />
                         <GenerateTestDialog 
                             adaptationList={adaptationList}
                             topicList={topicList}
@@ -132,7 +155,7 @@ export default function TestsPageClient({
                         </div>
                     : <ul className="flex-1 flex flex-row flex-wrap gap-20 justify-center @3xl:justify-start">
                         {
-                            templates && templates.map((t) => (
+                            templates && visibleTemplates.map((t) => (
                                 <li key={t.id}>
                                     <TemplateCard
                                         key={t.id}
@@ -144,17 +167,23 @@ export default function TestsPageClient({
                                 </li>
                             ))
                         }
+                        {
+                            templates && visibleTemplates.length === 0 &&
+                            <p className="text-xl text-center w-full pt-20">
+                                No tests found..
+                            </p>
+                        }
                     </ul>
                 }
             </section>
             {
-                hasTests && (
+                (hasTests && templates.length >= 6) && (
                     <footer className="w-full mt-auto pt-15 flex flex-row items-center justify-center">
                         <Button
                             onClick={handleFetchTemplates}
                             variant={'outline'}
                             disabled={isloading}
-                            className="w-fit text-[17px] p-6 rounded-2xl flex flex-row gap-4 items-center"
+                            className="w-fit min-w-13 text-[17px] p-6 rounded-2xl flex flex-row gap-4 items-center"
                         >
                             {
                                 isloading
@@ -162,7 +191,9 @@ export default function TestsPageClient({
                                     <LoaderCircle className="animate-spin" />
                                     Loading..
                                     </>
-                                : 'Load more tests'
+                                : <>
+                                    <Ellipsis />
+                                </>
                             }
                         </Button>
                     </footer>

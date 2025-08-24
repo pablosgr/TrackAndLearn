@@ -4,8 +4,10 @@ import { Button } from "../ui/button";
 
 export default function SearchBar(
 {
+    placeholder,
     onSearch,
 }: {
+    placeholder: string,
     onSearch: (value: string) => void
 }
 ) {
@@ -24,7 +26,7 @@ export default function SearchBar(
             </Button>
             <Input
                 type="text"
-                placeholder="Search by name"
+                placeholder={placeholder}
                 onChange={(e) => onSearch(e.target.value)}
                 className="pl-9 shadow-none dark:bg-transparent"
             />
