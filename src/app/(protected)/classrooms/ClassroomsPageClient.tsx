@@ -6,6 +6,7 @@ import { useUser } from "@/components/context/userWrapper";
 import { getClassroomsByRole } from "./actions";
 import { showToast } from "@/utils/general/showToast";
 import { Button } from "@/components/ui/button";
+import DateSortSelect from "@/components/general/DateSortSelect";
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
 import JoinClassroomDialog from "@/components/classrooms/JoinClassroomDialog";
 import ClassroomCard from "@/components/classrooms/ClassroomCard";
@@ -15,8 +16,26 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
     const {user} = useUser();
     const [classrooms, setClassrooms] = useState<ClassroomType[]>(data);
     const [range, setRange] = useState<[number, number]>([6, 11]);
+    const [sort, setSort] = useState<string>('');
     const [isloading, setIsLoading] = useState<boolean>(false);
     const hasClassrooms = classrooms.length > 0;
+
+    const handleDateSort = (value: string) => {
+        setSort(value);
+
+        setClassrooms(prev =>
+            [...prev].sort((a, b) => {
+                const dateA = new Date(a.created_at).getTime();
+                const dateB = new Date(b.created_at).getTime();
+
+                if (value === "asc") {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            })
+        );
+    };
 
     const handleCreateClassroom = (newClassroom: ClassroomType) => {
         setClassrooms(prev => [newClassroom, ...prev]);
@@ -33,6 +52,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
         if (newClassrooms.length > 0) {
             setClassrooms(prev => [...prev, ...newClassrooms]);
             setRange([range[1] + 1, range[1] + 6]);
+            handleDateSort(sort);
         } else {
             showToast('No classrooms found', 'error');
         }
@@ -44,17 +64,20 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
         <>
             <header className="w-full flex flex-row flex-wrap items-center justify-between gap-6 pb-10">
                 <h1 className="text-3xl font-bold">My Classrooms</h1>
-                {
-                    user.role === 'teacher'
-                    ? hasClassrooms && <ClassroomDialog
-                            type="create"
-                            onCreate={handleCreateClassroom}
-                        />
-                    : hasClassrooms && <JoinClassroomDialog 
-                        version="default"
-                            onJoin={handleCreateClassroom}
-                        />
-                }
+                <div className="flex flex-row items-center gap-5">
+                    <DateSortSelect onSort={handleDateSort} />
+                    {
+                        user.role === 'teacher'
+                        ? hasClassrooms && <ClassroomDialog
+                                type="create"
+                                onCreate={handleCreateClassroom}
+                            />
+                        : hasClassrooms && <JoinClassroomDialog 
+                            version="default"
+                                onJoin={handleCreateClassroom}
+                            />
+                    }
+                </div>
             </header>
             <section className={`w-full flex flex-col @container ${!hasClassrooms && 'h-full items-center'}`}>
                 {

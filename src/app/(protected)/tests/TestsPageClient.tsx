@@ -26,10 +26,13 @@ export default function TestsPageClient({
     const {user} = useUser();
     const [templates, setTemplates] = useState<TestTemplateType[]>(testList);
     const [range, setRange] = useState<[number, number]>([6, 11]);
+    const [sort, setSort] = useState<string>('');
     const [isloading, setIsLoading] = useState<boolean>(false);
     const hasTests = templates.length > 0;
 
     const handleDateSort = (value: string) => {
+        setSort(value);
+
         setTemplates(prev =>
             [...prev].sort((a, b) => {
                 const dateA = new Date(a.created_at).getTime();
@@ -78,6 +81,7 @@ export default function TestsPageClient({
         if (newTemplates.length > 0) {
             setTemplates(prev => [...prev, ...newTemplates]);
             setRange([range[1] + 1, range[1] + 6]);
+            handleDateSort(sort);
         } else {
             showToast('No tests found', 'error');
         }
