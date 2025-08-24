@@ -9,6 +9,7 @@ import { getTestTemplatesByUserId } from "./actions/get";
 import TemplateCard from "@/components/tests/TemplateCard";
 import TemplateDialog from "@/components/tests/TemplateDialog";
 import GenerateTestDialog from "@/components/tests/GenerateTestDialog";
+import DateSortSelect from "@/components/general/DateSortSelect";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { TopicType } from "@/types/test/TopicType";
 import { AdaptationType } from "@/types/test/AdaptationType";
@@ -27,6 +28,21 @@ export default function TestsPageClient({
     const [range, setRange] = useState<[number, number]>([6, 11]);
     const [isloading, setIsLoading] = useState<boolean>(false);
     const hasTests = templates.length > 0;
+
+    const handleDateSort = (value: string) => {
+        setTemplates(prev =>
+            [...prev].sort((a, b) => {
+                const dateA = new Date(a.created_at).getTime();
+                const dateB = new Date(b.created_at).getTime();
+
+                if (value === "asc") {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            })
+        );
+    };
 
     const handleDeleteTemplate = (id: string) => {
         setTemplates(templates.filter((t) => t.id !== id));
@@ -76,6 +92,7 @@ export default function TestsPageClient({
                 {
                     hasTests &&
                     <div className="flex flex-row gap-5">
+                        <DateSortSelect onSort={handleDateSort}/>
                         <GenerateTestDialog 
                             adaptationList={adaptationList}
                             topicList={topicList}
