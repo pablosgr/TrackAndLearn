@@ -191,9 +191,7 @@ export default function TestsPageClient({
                                     <LoaderCircle className="animate-spin" />
                                     Loading..
                                     </>
-                                : <>
-                                    <Ellipsis />
-                                </>
+                                : <Ellipsis />
                             }
                         </Button>
                     </footer>
