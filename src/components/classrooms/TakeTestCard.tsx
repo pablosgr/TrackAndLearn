@@ -80,7 +80,7 @@ export default function TakeTestCard({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full h-full">
-                <Card>
+                <Card className="mb-3 sm:mb-0">
                     <CardHeader className="bg-primary gap-2 py-6 text-white dark:text-slate-800">
                         <CardTitle className="text-2xl dark:text-slate-800">{takenTest.name}</CardTitle>
                         <CardDescription className="text-md text-white dark:text-slate-800">{takenTest.level}</CardDescription>
@@ -94,7 +94,7 @@ export default function TakeTestCard({
                             </span>
                         }
                     </CardHeader>
-                    <CardContent className="flex flex-col gap-5">
+                    <CardContent className="flex flex-col gap-5 px-0 sm:px-6">
                         {
                             takenTest.question.map((q) => (
                                 <article key={q.id}>

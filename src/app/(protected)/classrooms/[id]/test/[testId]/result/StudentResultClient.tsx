@@ -22,7 +22,7 @@ export default function StudentResultClient({
                 <CardTitle className="text-2xl">Result for {test.name}</CardTitle>
                 <CardDescription className="text-md text-white dark:text-slate-800">{test.level}</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-3">
+            <CardContent className="flex flex-col gap-3 px-0 sm:px-6">
                 {
                     test.question.map((q) => {
                         const studentResponse = testResult.response.find((r) => r.question_id === q.id);

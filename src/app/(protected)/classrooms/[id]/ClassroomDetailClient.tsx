@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useUser } from "@/components/context/userWrapper";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import ClassroomStudentsCard from "@/components/classrooms/ClassroomStudentsCard";
 import ClassroomAssignmentsCard from "@/components/classrooms/ClassroomAssignmentsCard";
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
@@ -181,17 +182,21 @@ export default function ClassroomDetailClient(
                         </section>
                     }
                     <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full h-full">
-                        <TabsList>
-                            <TabsTrigger value="tests" className="hover:cursor-pointer">
-                                Assignments
-                            </TabsTrigger>
-                            {
-                                user.role === 'teacher' &&
+                        {
+                            user.role === 'teacher' &&
+                            <TabsList>
+                                <TabsTrigger value="tests" className="hover:cursor-pointer">
+                                    Assignments
+                                </TabsTrigger>
                                 <TabsTrigger value="students" className="hover:cursor-pointer">
                                     Students
                                 </TabsTrigger>
-                            }
-                        </TabsList>
+                            </TabsList>
+                        }
+                        {
+                            user.role === 'student' &&
+                            <h2 className="text-xl font-semibold pb-5">Assigned Tests</h2>
+                        }
                         <TabsContent value="tests">
                             <ClassroomAssignmentsCard
                                 assignedTests={assignedTests}

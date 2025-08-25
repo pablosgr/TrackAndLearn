@@ -49,7 +49,7 @@ export default function AssignmentCard({
                 shadow-none hover:shadow-(--shadow-sm) transition-shadow
             `}
         >
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between pt-4 pb-6">
                 <CardTitle>{test.test_template.name}</CardTitle>
                 {
                     user.role === 'teacher' &&
@@ -70,7 +70,9 @@ export default function AssignmentCard({
                             />
                             <Label htmlFor={`${test.id}-result`}>Show results</Label>
                         </div>
-                    :   <span></span>
+                    :   <p className="text-md text-foreground flex h-10 items-end">
+                            Assigned on {new Date(test.assigned_at).toLocaleDateString()}
+                        </p>
                 }
                 {
                     (user.role === 'teacher' || (user.role === 'student' && test.has_result && test.is_result_visible)) && (
@@ -90,7 +92,7 @@ export default function AssignmentCard({
                 }
                 {
                     user.role === 'student' && test.has_result && !test.is_result_visible && (
-                        <Button disabled>Test already done</Button>
+                        <Button disabled>Test completed</Button>
                     )
                 }
             </CardContent>

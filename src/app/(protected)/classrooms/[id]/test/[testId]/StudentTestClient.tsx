@@ -37,9 +37,8 @@ export default function StudentTestClient({
         <>
         {
             !isTestStarted &&
-            
-            <section className="w-160 h-full flex flex-col gap-6 items-center justify-center">
-                <h2 className="text-2xl">Please, read the information below before starting the test!</h2>
+            <section className="sm:w-160 h-full flex flex-col gap-6 items-center justify-center">
+                <h2 className="text-2xl text-center">Please, read the information below before starting the test!</h2>
                 <p className="text-center">
                     {`
                         This test has ${test.time_limit

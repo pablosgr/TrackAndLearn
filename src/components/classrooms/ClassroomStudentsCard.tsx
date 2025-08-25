@@ -21,13 +21,13 @@ export default function ClassroomStudentsCard({
     return (
         <Card
             className={`
-                flex p-6
-                ${!students && 'flex-col gap-2 h-full items-center justify-center'}
+                flex pt-3
+                ${!students && 'min-h-70 flex-col gap-2 items-center justify-center'}
                 shadow-none border-none rounded-none
             `}>
             {
                 !students &&
-                <div className="h-full flex flex-col gap-3 items-center text-gray-400 dark:text-white/60">
+                <div className="flex flex-col gap-3 items-center justify-center text-gray-400 dark:text-white/60">
                     <span className="text-lg">
                         No students enrolled yet..
                     </span>
@@ -42,7 +42,7 @@ export default function ClassroomStudentsCard({
                         {
                             studentList.map((student) => (
                                 <li key={student.id}>
-                                    <StudentCard 
+                                    <StudentCard
                                         student={student}
                                         adaptationList={adaptationList}
                                         classroomId={classroomId}

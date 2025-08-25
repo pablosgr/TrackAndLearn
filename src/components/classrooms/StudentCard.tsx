@@ -64,7 +64,6 @@ export default function StudentCard({
                 <div className="flex flex-row gap-10 items-center self-center">
                     <span>{student.name}</span>
                     <span>{student.username}</span>
-                    <span>{student.email}</span>
                 </div>
                 <div className="flex flex-row gap-3 items-center">
                     <p>Adaptation</p>
