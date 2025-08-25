@@ -1,5 +1,12 @@
 import ClassroomDetailClient from "./ClassroomDetailClient";
-import { getClassroomById, getClassroomStudents, getAssignedTests } from "../actions";
+import { redirect } from "next/navigation";
+import { 
+    getClassroomById,
+    getClassroomStudents,
+    getAssignedTests,
+    verifyClassroomEnrollment,
+    verifyClassroomOwnership
+} from "../actions";
 import { getAdaptations } from "../../tests/actions/get";
 import { getTestTemplatesByUserId } from "../../tests/actions/get";
 import requireUser from "@/utils/auth/requireUser";
@@ -12,6 +19,16 @@ export default async function ClassroomDetail({ params }: { params: { id: string
 
     if (!classroom) {
         notFound();
+    }
+
+    const isEnrolled = await verifyClassroomEnrollment(user?.id, Number(id));
+    if (user?.role === "student" && !isEnrolled) {
+        redirect("/unauthorized");
+    }
+
+    const isOwner = await verifyClassroomOwnership(user?.id, Number(id));
+    if (user?.role === "teacher" && !isOwner) {
+        redirect("/unauthorized");
     }
 
     const students = await getClassroomStudents(id);
