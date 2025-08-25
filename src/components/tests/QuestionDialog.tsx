@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { PencilLine, Plus } from "lucide-react";
+import { PencilLine } from "lucide-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -142,7 +142,7 @@ export default function QuestionDialog({
                 options: values.options,
             }
 
-            await updateQuestionById(defaultQuestion.id, data); //possibly return the updated question
+            await updateQuestionById(defaultQuestion.id, data); //possibly return the updated question?
             const newOptions = await getOptionsByQuestionId(defaultQuestion.id);
             onUpdate(testId, defaultQuestion.id, data, newOptions);
         }

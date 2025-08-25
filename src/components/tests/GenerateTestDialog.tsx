@@ -151,7 +151,7 @@ export default function GenerateTestDialog({
                     <span>Generate with AI</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[500px] max-h-[92%] overflow-scroll scrollbar-invisible">
                 <DialogHeader>
                     <DialogTitle>
                         Generate test with AI

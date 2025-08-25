@@ -144,7 +144,7 @@ export default function TestDetailClient({
 
     return (
         <Card className="w-full h-full">
-            <CardHeader className="bg-(--color-accent) gap-2 py-6">
+            <CardHeader className="bg-(--color-accent) gap-2 pt-6 pb-12">
                 <CardTitle className="text-2xl">{testTemplate.name} | {testTemplate.topic_data.name}</CardTitle>
                 <CardDescription>Created on {new Date(testTemplate.created_at).toLocaleDateString()}</CardDescription>
             </CardHeader>
