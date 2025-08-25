@@ -45,7 +45,7 @@ export default function Dashboard() {
               : 'Your knowledge grows every time you practice — let’s begin!'
             }
           </p>
-          <Link href={'/about'}>
+          <Link href={'/about'} className="w-fit">
             <Button
               variant={'outline'}
               className={`

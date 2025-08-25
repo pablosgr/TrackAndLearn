@@ -15,13 +15,17 @@ export default function ClassroomResultClient({ classroomResults }: { classroomR
     }
 
     const organizedResults = organizeResultsByAdaptation(classroomResults);
+    const standardResults = organizedResults.find(([id]) => id === 0)?.[1] ?? [];
 
     return (
         <div className="flex flex-col gap-17 w-full">
             <section className="w-full flex flex-col gap-10">
                 <h2 className="text-3xl font-bold">Classroom result</h2>
                 <AverageScoreCard classroomResults={classroomResults} />
-                <QuestionsResultsCard classroomResults={organizedResults.find(([id]) => id === 0)?.[1] ?? []} />
+                {
+                    standardResults.length > 0 &&
+                    <QuestionsResultsCard classroomResults={standardResults} />
+                }
                 {
                     organizedResults.map((res, index) => {
                         return res[0] !== 0 &&

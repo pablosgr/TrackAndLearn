@@ -33,7 +33,7 @@ export function useCountdown(
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [startTime, limitMinutes, onExpire]);
+    }, [startTime, limitMinutes]);
 
     return remaining;
 }

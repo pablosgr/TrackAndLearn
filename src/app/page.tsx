@@ -14,7 +14,7 @@ import {
 export default function Login() {
   return (
     <div className="w-full min-h-screen h-full py-10 flex flex-col items-center justify-center gap-10">
-      <Image src={'/logo-s.png'} alt="Track & Learn Logo" width={300} height={400}/>
+      <Image src={'/logo-s.png'} alt="Track & Learn Logo" width={280} height={200}/>
       <Tabs defaultValue="signin" className="w-full flex flex-col items-center justify-center gap-3">
         <TabsList className="bg-transparent shadow-none">
           <TabsTrigger

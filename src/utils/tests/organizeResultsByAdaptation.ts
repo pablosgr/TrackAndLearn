@@ -13,7 +13,10 @@ export function organizeResultsByAdaptation(classroomResults: ClassroomResultTyp
     });
 
     const notAdapted = classroomResults.filter((res) => res.test_data.adaptation_id === null);
-    organizedResults.push([0, notAdapted]);
+    
+    if (notAdapted.length > 0) {
+        organizedResults.push([0, notAdapted]);
+    }
 
     existingAdaptations.forEach((adp) => {
         const adaptedResults = classroomResults.filter((res) => res.test_data.adaptation_id === adp);
