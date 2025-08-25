@@ -9,7 +9,6 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -37,7 +36,7 @@ export default function TemplateCard({
     }
 
     return (
-        <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-lg) transition-shadow">
+        <Card className="w-90 shadow-(--shadow-xs) hover:drop-shadow-lg transition-all">
             <CardHeader className="h-30 flex flex-row justify-between bg-(--color-accent) truncate">
                 <div className="max-w-55 flex flex-col gap-2">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>

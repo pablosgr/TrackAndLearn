@@ -112,24 +112,28 @@ export default function TestsPageClient({
                 <h1 className="text-3xl font-bold">My Tests</h1>
                 {
                     hasTests &&
-                    <div className="flex flex-row gap-5">
-                        <SearchBar
-                            placeholder="Search by name or topic"
-                            onSearch={handleSearch}
-                        />
-                        <DateSortSelect
-                            onSort={handleDateSort}
-                        />
-                        <GenerateTestDialog 
-                            adaptationList={adaptationList}
-                            topicList={topicList}
-                            onGenerate={handleCreateTemplate}
-                        />
-                        <TemplateDialog 
-                            type="create"
-                            topics={topicList}
-                            onCreate={handleCreateTemplate}
-                        />
+                    <div className="w-fit flex flex-row gap-5 flex-wrap md:flex-nowrap">
+                        <div className="min-w-80 flex-1 flex flex-row gap-5 items-center">
+                            <SearchBar
+                                placeholder="Search by name or topic"
+                                onSearch={handleSearch}
+                            />
+                            <DateSortSelect
+                                onSort={handleDateSort}
+                            />
+                        </div>
+                        <div className="flex flex-row gap-5">
+                            <GenerateTestDialog 
+                                adaptationList={adaptationList}
+                                topicList={topicList}
+                                onGenerate={handleCreateTemplate}
+                            />
+                            <TemplateDialog 
+                                type="create"
+                                topics={topicList}
+                                onCreate={handleCreateTemplate}
+                            />
+                        </div>
                     </div>
                 }
             </header>
@@ -153,7 +157,7 @@ export default function TestsPageClient({
                                 />
                             </div>
                         </div>
-                    : <ul className="flex-1 flex flex-row flex-wrap gap-20 justify-center @3xl:justify-start">
+                    : <ul className="flex-1 flex flex-row flex-wrap gap-10 sm:gap-20 justify-center @3xl:justify-start">
                         {
                             templates && visibleTemplates.map((t) => (
                                 <li key={t.id}>

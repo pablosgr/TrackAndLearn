@@ -7,14 +7,13 @@ import { Button } from "../ui/button";
 import CustomAlertDialog from "../CustomAlertDialog";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 
-export default function ClassroomCard({ 
+export default function ClassroomCard({
     classroom,
     onDelete,
 }: { 
@@ -32,7 +31,7 @@ export default function ClassroomCard({
     }
 
     return (
-        <Card className="w-90 shadow-(--shadow-xs) hover:shadow-(--shadow-lg) transition-shadow">
+        <Card className="w-90 shadow-(--shadow-xs) hover:drop-shadow-lg transition-all">
             <CardHeader className="h-30 flex flex-row justify-between bg-(--color-primary) dark:text-slate-800 text-white truncate">
                 <div className="flex flex-col gap-2">
                     <CardTitle className="text-lg truncate">{classroom.name}</CardTitle>

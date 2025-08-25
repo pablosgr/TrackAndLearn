@@ -34,7 +34,7 @@ export default function Dashboard() {
   const {user} = useUser();
 
   return (
-    <div className="w-full h-full flex flex-row p-10 gap-6">
+    <div className="w-full h-full flex flex-row pt-10 sm:p-10 gap-6">
       <section className="flex flex-col xl:flex-row gap-15 xl:gap-25">
         <div className="flex flex-col gap-6 justify-center">
           <h2 className="text-5xl font-bold">Welcome, {user.username}!</h2>
@@ -72,7 +72,7 @@ export default function Dashboard() {
                 <Link href={`${item.url}`} key={index}>
                   <Card
                     className={`
-                      min-w-100 sm:min-w-120 w-full flex-row
+                      min-w-50 sm:min-w-120 w-full flex-row
                       gap-3 p-8 hover:cursor-pointer hover:scale-105
                       hover:shadow-[0px_10px_17px_0_rgba(0,0,0,0.2)]
                       transition-all duration-300 rounded-2xl

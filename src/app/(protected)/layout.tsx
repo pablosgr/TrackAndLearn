@@ -13,7 +13,12 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
             <SidebarProvider defaultOpen={false}>
                 <AppSidebar />
                 <div className="w-full min-h-screen flex flex-col sm:flex-row">
-                    <div className="w-fit h-fit p-2.5 pt-2 sticky top-0 flex flex-col gap-3">
+                    <div
+                        className={`
+                            w-full sm:w-fit h-fit p-2.5 pt-2 sticky top-0
+                            flex flex-row sm:flex-col gap-3 z-10
+                            sm:bg-transparent bg-background
+                        `}>
                         <SidebarTrigger className="hover:bg-secondary dark:hover:bg-accent hover:text-white"/>
                         <ThemeToggle />
                     </div>

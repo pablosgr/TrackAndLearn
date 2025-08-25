@@ -78,24 +78,31 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
         <>
             <header className="w-full flex flex-row flex-wrap items-center justify-between gap-6 pb-10">
                 <h1 className="text-3xl font-bold">My Classrooms</h1>
-                <div className="flex flex-row items-center gap-5">
-                    <SearchBar
-                        placeholder="Search by name"
-                        onSearch={handleSearch}
-                    />
-                    <DateSortSelect onSort={handleDateSort} />
-                    {
-                        user.role === 'teacher'
-                        ? hasClassrooms && <ClassroomDialog
-                                type="create"
-                                onCreate={handleCreateClassroom}
+                {
+                    hasClassrooms &&
+                    <div className="w-fit flex flex-row gap-5 flex-wrap md:flex-nowrap">
+                        <div className="min-w-80 flex-1 flex flex-row gap-5 items-center">
+                            <SearchBar
+                                placeholder="Search by name"
+                                onSearch={handleSearch}
                             />
-                        : hasClassrooms && <JoinClassroomDialog 
-                            version="default"
-                                onJoin={handleCreateClassroom}
-                            />
-                    }
-                </div>
+                            <DateSortSelect onSort={handleDateSort} />
+                        </div>
+                        <div className="flex flex-row gap-5">
+                            {
+                                user.role === 'teacher'
+                                ? <ClassroomDialog
+                                        type="create"
+                                        onCreate={handleCreateClassroom}
+                                    />
+                                : <JoinClassroomDialog 
+                                    version="default"
+                                        onJoin={handleCreateClassroom}
+                                    />
+                            }
+                        </div>
+                    </div>
+                }
             </header>
             <section className={`w-full flex flex-col @container ${!hasClassrooms && 'h-full items-center'}`}>
                 {
@@ -122,7 +129,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
                             }
                         </div>
                         </div>
-                    : <ul className="flex-1 flex flex-row flex-wrap gap-20 justify-center @3xl:justify-start">
+                    : <ul className="flex-1 flex flex-row flex-wrap gap-10 sm:gap-20 justify-center @3xl:justify-start">
                         {
                             classrooms && visibleClassrooms.map((c) => (
                                 <li key={c.id}>
