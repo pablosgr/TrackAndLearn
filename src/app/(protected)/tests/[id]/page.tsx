@@ -3,8 +3,8 @@ import requireUser from "@/utils/auth/requireUser";
 import TestDetailClient from "./TestDetailClient";
 import { notFound, redirect } from "next/navigation";
 
-export default async function TestsDetail({ params }: { params: { id: string } }) {
-    const { id }= params;
+export default async function TestsDetail({ params }: { params: Promise<{ id: string }> }) {
+    const { id }= await params;
     const userData = await requireUser();
     const tests = await getTestsById(id, 'template');
     const testTemplate = await getTestTemplate(id);

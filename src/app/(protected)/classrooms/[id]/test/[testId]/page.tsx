@@ -5,8 +5,8 @@ import StudentTestClient from "./StudentTestClient";
 import { notFound } from "next/navigation";
 import requireUser from "@/utils/auth/requireUser";
 
-export default async function StudentTest({ params }: { params: { id: string, testId: string } }) {
-    const { id, testId } = params;
+export default async function StudentTest({ params }: { params: Promise<{ id: string, testId: string }> }) {
+    const { id, testId } = await params;
     const user = await requireUser();
     const tests = await getTestsById(testId, 'template');
     const adaptationId = await getStudentAdaptationId(id, user.id);

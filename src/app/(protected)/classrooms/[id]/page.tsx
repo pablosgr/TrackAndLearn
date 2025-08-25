@@ -12,8 +12,8 @@ import { getTestTemplatesByUserId } from "../../tests/actions/get";
 import requireUser from "@/utils/auth/requireUser";
 import { notFound } from "next/navigation";
 
-export default async function ClassroomDetail({ params }: { params: { id: string } }) {
-    const { id } = params;
+export default async function ClassroomDetail({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const user = await requireUser();
     const classroom = await getClassroomById(id);
 

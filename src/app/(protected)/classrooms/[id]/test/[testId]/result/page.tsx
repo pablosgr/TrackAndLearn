@@ -6,8 +6,8 @@ import { getStudentAdaptationId } from "@/app/(protected)/classrooms/actions/get
 import { getStudentTestResult, getClassroomTestResults } from "@/app/(protected)/classrooms/actions";
 import { notFound } from "next/navigation";
 
-export default async function StudentResult({ params }: { params: { id: string, testId: string } }) {
-    const { id, testId } = params;
+export default async function StudentResult({ params }: { params: Promise<{ id: string, testId: string }> }) {
+    const { id, testId } = await params;
     const user = await requireUser();
 
     if (user?.role === 'teacher') {
