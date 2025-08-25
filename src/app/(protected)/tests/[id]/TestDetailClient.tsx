@@ -192,7 +192,7 @@ export default function TestDetailClient({
                                     <TabsTrigger
                                         key={test.id}
                                         value={test.id.toString()}
-                                        className="hover:cursor-pointer max-w-30 sm:max-w-40 lg:max-w-60"
+                                        className="hover:cursor-pointer max-w-25 sm:max-w-38 lg:max-w-46"
                                     >
                                         <span className="truncate">{test.name}</span>
                                     </TabsTrigger>

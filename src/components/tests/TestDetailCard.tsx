@@ -4,6 +4,7 @@ import QuestionDetailCard from "./QuestionDetailCard";
 import GenerateVersionDialog from "./GenerateVersionDialog";
 import { useRouter } from "next/navigation";
 import { deleteTestById } from "@/app/(protected)/tests/actions/delete";
+import { Separator } from "../ui/separator";
 import { TestType } from "@/types/test/TestType";
 import { QuestionType } from "@/types/test/QuestionType";
 import { OptionType } from "@/types/test/OptionType";
@@ -58,45 +59,50 @@ export default function TestDetailCard({
     
     return (
         <Card className="shadow-none border-0">
-            <CardHeader className="flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-5">
+            <CardHeader className="px-2 flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-5">
                 <div className="flex flex-col gap-3">
                     <CardTitle className="text-lg truncate">{test.name}</CardTitle>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
-                    {
-                        (!test.adaptation_id && testCount < MAX_TESTS) &&
-                        <GenerateVersionDialog
-                            baseTest={test}
+                <div className="flex flex-row flex-wrap gap-3 items-center">
+                    <div className="flex flex-row gap-3">
+                        {
+                            (!test.adaptation_id && testCount < MAX_TESTS) &&
+                            <GenerateVersionDialog
+                                baseTest={test}
+                                adaptationList={adaptations}
+                                onGenerate={onTestGenerate}
+                            />
+                        }
+                        <ExportTestButton testId={test.id} />
+                    </div>
+                    <div className="flex flex-row gap-3">
+                        {
+                            test.question.length < MAX_QUESTIONS &&
+                            <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
+                        }
+                        <TestDialog 
+                            type="update"
+                            templateName={templateName}
+                            templateId={test.template_id}
+                            test={test}
                             adaptationList={adaptations}
-                            onGenerate={onTestGenerate}
+                            onUpdate={onTestUpdate}
                         />
-                    }
-                    <ExportTestButton testId={test.id} />
-                    {
-                        test.question.length < MAX_QUESTIONS &&
-                        <QuestionDialog type="create" testId={test.id} onCreate={onQuestionCreate} />
-                    }
-                    <TestDialog 
-                        type="update"
-                        templateName={templateName}
-                        templateId={test.template_id}
-                        test={test}
-                        adaptationList={adaptations}
-                        onUpdate={onTestUpdate}
-                    />
-                    {
-                        test.adaptation_id &&
-                        <CustomAlertDialog
-                            description={`
-                                ${ test.adaptation_data?.code } adaptation will be permanently removed. 
-                                This action cannot be undone.
-                            `}
-                            onDelete={handleTestDelete}
-                        />
-                    }
+                        {
+                            test.adaptation_id &&
+                            <CustomAlertDialog
+                                description={`
+                                    ${ test.adaptation_data?.code } adaptation will be permanently removed. 
+                                    This action cannot be undone.
+                                `}
+                                onDelete={handleTestDelete}
+                            />
+                        }
+                    </div>
                 </div>
             </CardHeader>
-            <CardContent className="flex flex-col gap-5">
+            <Separator orientation="horizontal" />
+            <CardContent className="px-2 flex flex-col gap-5">
                 <h2 className="text-lg font-semibold">
                     {
                         test.question.length === 0
