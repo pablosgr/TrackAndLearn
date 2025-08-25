@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Control, FieldValues, Path } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -10,17 +11,17 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
-export default function PasswordInput(
+export default function PasswordInput<TFormValues extends FieldValues>(
 { 
-    form,
+    control,
     type,
     name,
     label,
     placeholder
 }: {
-    form: any,
+    control: Control<TFormValues>,
     type: 'reset' | 'auth',
-    name: string,
+    name: Path<TFormValues>,
     label?: string,
     placeholder: string
 }) {
@@ -28,7 +29,7 @@ export default function PasswordInput(
 
     return (
         <FormField
-            control={form.control}
+            control={control}
             name={name}
             render={({ field }) => (
                 <FormItem>

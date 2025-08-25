@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { ClassroomType } from "@/types/classroom/ClassroomType";
 import { RawSupabaseClassroomType } from "@/types/classroom/RawClassroomType";
 import { RawClassroomType } from "@/types/classroom/RawClassroomType";
-import { RawStudentType, RawDBStudentType } from "@/types/user/RawStudentFile";
+import { RawStudentType } from "@/types/user/RawStudentFile";
 import { StudentType } from "@/types/user/StudentType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import { TestResultType } from "@/types/test/TestResultType";
@@ -18,7 +18,7 @@ export async function getClassroomsByRole(
     const supabase = await createClient();
 
     if (userRole === 'teacher') {
-        let teacherQuery = supabase
+        const teacherQuery = supabase
             .from('classroom')
             .select('*')
             .eq('teacher_id', userId)
@@ -39,7 +39,7 @@ export async function getClassroomsByRole(
     }
 
     if (userRole === 'student') {
-        let studentQuery = supabase
+        const studentQuery = supabase
             .from("student_classroom")
             .select(`
                 classroom(

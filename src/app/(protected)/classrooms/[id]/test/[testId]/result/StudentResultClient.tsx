@@ -2,7 +2,6 @@ import { TestType } from "@/types/test/TestType";
 import { TestResultType } from "@/types/test/TestResultType";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardHeader,

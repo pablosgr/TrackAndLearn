@@ -15,7 +15,6 @@ import TakeQuestionCard from "./TakeQuestionCard";
 import { Button } from "../ui/button";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardHeader,
@@ -27,7 +26,9 @@ const formSchema = z.object({
     answers: z.record(z.string(), z.string()),
 });
 
-export default function TakeTestCard({
+export type TakeTestFormValues = z.infer<typeof formSchema>;
+
+export function TakeTestCard({
     test,
     startTime,
     provisionalResult,

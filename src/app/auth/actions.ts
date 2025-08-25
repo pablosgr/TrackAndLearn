@@ -6,7 +6,7 @@ import { hashPassword } from "@/utils/general/hashPassword";
 export async function sendOTP(email: string) {
     const supabase = await createClient();
 
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
         email: email
     });
 

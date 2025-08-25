@@ -28,7 +28,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
     }, [classrooms, search, sort]);
 
     const applyFilters = () => {
-        let filtered = classrooms.filter(c =>
+        const filtered = classrooms.filter(c =>
             (c.name.toLowerCase().includes(search.toLowerCase()))
         );
 

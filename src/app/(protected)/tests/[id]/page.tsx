@@ -4,10 +4,10 @@ import TestDetailClient from "./TestDetailClient";
 import { notFound, redirect } from "next/navigation";
 
 export default async function TestsDetail({ params }: { params: { id: string } }) {
-    const data = await params;
+    const { id }= params;
     const userData = await requireUser();
-    const tests = await getTestsById(data.id, 'template');
-    const testTemplate = await getTestTemplate(data.id);
+    const tests = await getTestsById(id, 'template');
+    const testTemplate = await getTestTemplate(id);
     const adaptations = await getAdaptations();
 
     if (!testTemplate) {

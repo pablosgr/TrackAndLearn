@@ -7,17 +7,17 @@ import { getStudentTestResult, getClassroomTestResults } from "@/app/(protected)
 import { notFound } from "next/navigation";
 
 export default async function StudentResult({ params }: { params: { id: string, testId: string } }) {
-    const data = await params;
+    const { id, testId } = params;
     const user = await requireUser();
 
     if (user?.role === 'teacher') {
-        const classroomResults = await getClassroomTestResults(data.id, data.testId);
+        const classroomResults = await getClassroomTestResults(id, testId);
         
         return <ClassroomResultClient classroomResults={classroomResults} />
     }
 
-    const tests = await getTestsById(data.testId, 'template');
-    const adaptationId = await getStudentAdaptationId(data.id, user.id);
+    const tests = await getTestsById(testId, 'template');
+    const adaptationId = await getStudentAdaptationId(id, user.id);
     
     const completedTest = tests.find(t => t.adaptation_id === adaptationId) ?? tests[0];
     
@@ -25,7 +25,7 @@ export default async function StudentResult({ params }: { params: { id: string, 
         notFound();
     }
 
-    const testResult = await getStudentTestResult(completedTest.id, data.testId, user?.id, data.id);
+    const testResult = await getStudentTestResult(completedTest.id, testId, user?.id, id);
 
     if (!testResult) {
         notFound();

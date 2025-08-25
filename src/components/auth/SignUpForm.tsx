@@ -55,7 +55,7 @@ export default function SignUpForm() {
     const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
         try {
             await signUp(values);
-        } catch (e: any) {
+        } catch (e: unknown) {
             if (e instanceof Error && e.message !== "NEXT_REDIRECT") {
                 showToast(e.message, 'error');
             }
@@ -118,13 +118,13 @@ export default function SignUpForm() {
                         )}
                     />
                     <PasswordInput
-                        form={form}
+                        control={form.control}
                         type="auth"
                         name="password"
                         placeholder="Password"
                     />
                     <PasswordInput
-                        form={form}
+                        control={form.control}
                         type="auth"
                         name="confirm_password"
                         placeholder="Confirm password"
@@ -144,8 +144,8 @@ export default function SignUpForm() {
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                            <SelectItem value="teacher">I'm a teacher</SelectItem>
-                                            <SelectItem value="student">I'm a student</SelectItem>
+                                            <SelectItem value="teacher">I&apos;m a teacher</SelectItem>
+                                            <SelectItem value="student">I&apos;m a student</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>

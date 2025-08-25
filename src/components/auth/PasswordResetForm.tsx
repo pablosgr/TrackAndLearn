@@ -62,13 +62,13 @@ export default function PasswordResetForm(
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
                     <PasswordInput
-                        form={form}
+                        control={form.control}
                         type="reset"
                         name="password"
                         placeholder="Write your new password"
                     />
                     <PasswordInput
-                        form={form}
+                        control={form.control}
                         type="reset"
                         name="confirm_password"
                         placeholder="Confirm your new password"

@@ -1,4 +1,4 @@
-import { Check, Trash } from "lucide-react";
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { deleteQuestionById } from "@/app/(protected)/tests/actions/delete";
 import QuestionDialog from "./QuestionDialog";
@@ -8,7 +8,6 @@ import { EditQuestionType } from "@/types/test/EditQuestionType";
 import CustomAlertDialog from "../CustomAlertDialog";
 import {
     Card,
-    CardAction,
     CardContent,
     CardHeader,
     CardTitle,

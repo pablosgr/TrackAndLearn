@@ -49,13 +49,11 @@ export default function AssignmentDialog({
     classroomId,
     availableTests,
     onAssign,
-    onUpdate,
 }: {
     type: 'update' | 'create',
     classroomId: number,
     availableTests: TestTemplateType[],
     onAssign?: (newAssignment: AssignedTestType) => void,
-    onUpdate?: (updatedTemplate: TestTemplateType) => void
 }) {
     const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);

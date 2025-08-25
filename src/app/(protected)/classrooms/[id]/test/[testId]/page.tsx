@@ -6,10 +6,10 @@ import { notFound } from "next/navigation";
 import requireUser from "@/utils/auth/requireUser";
 
 export default async function StudentTest({ params }: { params: { id: string, testId: string } }) {
-    const data = await params;
+    const { id, testId } = params;
     const user = await requireUser();
-    const tests = await getTestsById(data.testId, 'template');
-    const adaptationId = await getStudentAdaptationId(data.id, user.id);
+    const tests = await getTestsById(testId, 'template');
+    const adaptationId = await getStudentAdaptationId(id, user.id);
 
     const visibleTest = tests.find(t => t.adaptation_id === adaptationId) ?? tests[0];
 
@@ -17,7 +17,7 @@ export default async function StudentTest({ params }: { params: { id: string, te
         notFound();
     }
 
-    const result = await getResult(user?.id, data.id, visibleTest.id);
+    const result = await getResult(user?.id, id, visibleTest.id);
 
     if (result?.status === 'completed') {
         return (
@@ -30,7 +30,7 @@ export default async function StudentTest({ params }: { params: { id: string, te
     return (
         <StudentTestClient 
             test={visibleTest}
-            classroomId={data.id}
+            classroomId={id}
             result={result}
         />
     )

@@ -128,9 +128,11 @@ export default function QuestionDialog({
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         values.options.forEach((opt, index) => {
-            values.correct_option_index === index
-            ? opt.is_correct = true
-            : opt.is_correct = false;
+            if (values.correct_option_index === index) {
+                opt.is_correct = true;
+            } else {
+                opt.is_correct = false;
+            }
         });
 
         if (type === 'update' && onUpdate) {

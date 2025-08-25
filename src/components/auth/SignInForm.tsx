@@ -37,7 +37,7 @@ export default function SignInForm() {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             await signIn(values);
-        } catch (e: any) {
+        } catch (e: unknown) {
             if (e instanceof Error && e.message !== 'NEXT_REDIRECT') {
                 showToast(e.message, 'error');
             }
@@ -66,7 +66,7 @@ export default function SignInForm() {
                             )}
                         />
                         <PasswordInput
-                            form={form}
+                            control={form.control}
                             type="auth"
                             name="password"
                             placeholder="Password"

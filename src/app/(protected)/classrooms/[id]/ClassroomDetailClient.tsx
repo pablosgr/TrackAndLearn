@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useUser } from "@/components/context/userWrapper";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import ClassroomStudentsCard from "@/components/classrooms/ClassroomStudentsCard";
 import ClassroomAssignmentsCard from "@/components/classrooms/ClassroomAssignmentsCard";
 import ClassroomDialog from "@/components/classrooms/ClassroomDialog";
@@ -16,7 +15,6 @@ import { AdaptationType } from "@/types/test/AdaptationType";
 import { AssignedTestType } from "@/types/test/AssignedTestType";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardHeader,

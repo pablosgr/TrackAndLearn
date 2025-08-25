@@ -4,11 +4,10 @@ import { getTestsById } from "@/app/(protected)/tests/actions/get";
 import { getTopicByTestId } from "@/app/(protected)/classrooms/actions/get";
 import { TestType } from "@/types/test/TestType";
 
-export async function GET(request: Request, { params }: { params: { id: string, topic: string } }) {
-    const data = await params;
-    const testId = data.id;
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
 
-    const testData: TestType[] = await getTestsById([testId], 'test');
+    const testData: TestType[] = await getTestsById([id], 'test');
     const selectedTest: TestType = testData[0];
 
     if (!selectedTest) {
@@ -69,7 +68,7 @@ export async function GET(request: Request, { params }: { params: { id: string, 
 
     return new NextResponse(buffer, {
         headers: {
-            "Content-Disposition": `attachment; filename="track&learn-test${testId}.xlsx"`,
+            "Content-Disposition": `attachment; filename="track&learn-test${id}.xlsx"`,
             "Content-Type":
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         },

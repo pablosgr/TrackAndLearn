@@ -86,21 +86,21 @@ export default function PasswordDialog() {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                         <PasswordInput
-                            form={form}
+                            control={form.control}
                             type="reset"
                             label="Current Password"
                             name="current_password"
                             placeholder="Write your current password"
                         />
                         <PasswordInput
-                            form={form}
+                            control={form.control}
                             type="reset"
                             label="New Password"
                             name="new_password"
                             placeholder="Write your new password"
                         />
                         <PasswordInput
-                            form={form}
+                            control={form.control}
                             type="reset"
                             label="Confirm New Password"
                             name="confirm_password"

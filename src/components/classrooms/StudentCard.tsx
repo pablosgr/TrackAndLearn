@@ -6,11 +6,7 @@ import { StudentType } from "@/types/user/StudentType";
 import { AdaptationType } from "@/types/test/AdaptationType";
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card";
 import {
     Select,

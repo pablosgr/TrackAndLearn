@@ -34,7 +34,7 @@ export async function getTestTemplatesByUserId(
 ): Promise<TestTemplateType[]> {
     const supabase = await createClient();
 
-    let query = supabase
+    const query = supabase
         .from('test_template')
         .select(`
             *,
@@ -65,7 +65,7 @@ export async function getTestsById(
 ): Promise <TestType[]> {
     const supabase = await createClient();
 
-    let query = supabase
+    const query = supabase
         .from("test")
         .select(`
             id,
@@ -91,8 +91,13 @@ export async function getTestsById(
         .order('index_order', { referencedTable: 'question', ascending: true })
         .order('index_order', { referencedTable: 'question.option', ascending: true });
 
-    filterBy === 'template' && query.eq("template_id", ids);
-    (filterBy === 'test' && Array.isArray(ids)) && query.in("id", ids);
+    if (filterBy === 'template') {
+        query.eq("template_id", ids);
+    }
+
+    if (filterBy === 'test' && Array.isArray(ids)) {
+        query.in("id", ids);
+    }
 
     const { data, error } = await query;
 

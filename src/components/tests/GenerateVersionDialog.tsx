@@ -4,7 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useUser } from "../context/userWrapper";
 import { useRouter } from "next/navigation";
 import { fetchLLMTestResponse } from "@/utils/llm/fetchLLMTestResponse";
 import { showToast } from "@/utils/general/showToast";
@@ -55,7 +54,6 @@ export default function GenerateVersionDialog({
     adaptationList: AdaptationType[],
     onGenerate: (newTest: TestType) => void,
 }) {
-    const {user} = useUser();
     const router = useRouter();
     const [open, setOpen] = useState<boolean>(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -73,10 +71,14 @@ export default function GenerateVersionDialog({
         const selectedAdaptation = adaptationList.find((a) => a.id === Number(values.adaptation_id));
         const stringTest = JSON.stringify(baseTest);
 
+        if (!selectedAdaptation) {
+            return;
+        }
+
         const prompt = formatPrompt(
             'version',
             stringTest,
-            selectedAdaptation?.name!
+            selectedAdaptation.name
         );
 
         try {

@@ -2,9 +2,7 @@ import { TestResponseType } from "@/types/test/TestResponseType";
 import { QuestionType } from "@/types/test/QuestionType";
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";

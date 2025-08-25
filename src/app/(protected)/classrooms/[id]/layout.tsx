@@ -6,14 +6,14 @@ import requireUser from "@/utils/auth/requireUser";
 export default async function ClassroomLayout(
 { 
     children,
-    params 
+    params
 }: {
     children: ReactNode,
-    params: { id: string }
+    params: { id: string };
 }) {
-    const data = await params;
     const user = await requireUser();
-    const classroomId = Number(data.id);
+    const { id } = params;
+    const classroomId = Number(id);
     
     const isEnrolled = await verifyClassroomEnrollment(user?.id, classroomId);
     

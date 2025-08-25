@@ -1,10 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
 
+type ContentItem = 
+  | { text: string }
+  | { inlineData: { mimeType: string; data: string } };
+
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: apiKey });
 
 export async function fetchLLMTestResponse(prompt: string, pdf?: string | null): Promise<string | null> {
-    const contents: any[] = [{ text: prompt }];
+    const contents: ContentItem[] = [{ text: prompt }];
 
     if (pdf) {
         contents.push({

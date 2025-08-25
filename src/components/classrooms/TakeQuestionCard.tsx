@@ -1,11 +1,10 @@
 import { QuestionType } from "@/types/test/QuestionType";
-import { Controller } from "react-hook-form";
+import { Controller, Control } from "react-hook-form";
 import { FormMessage, FormItem } from "../ui/form";
+import { TakeTestFormValues } from "./TakeTestCard";
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -15,7 +14,7 @@ export default function TakeQuestionCard({
     control
 } : {
     question: QuestionType,
-    control: any 
+    control: Control<TakeTestFormValues>
 }) {
 
     return (

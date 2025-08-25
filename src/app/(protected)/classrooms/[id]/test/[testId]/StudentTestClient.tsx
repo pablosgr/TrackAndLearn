@@ -6,7 +6,7 @@ import { useUser } from "@/components/context/userWrapper";
 import { createTestResult } from "../../../actions/post";
 import { TestType } from "@/types/test/TestType";
 import { TestResultType } from "@/types/test/TestResultType";
-import TakeTestCard from "@/components/classrooms/TakeTestCard";
+import { TakeTestCard } from "@/components/classrooms/TakeTestCard";
 import { Button } from "@/components/ui/button";
 
 export default function StudentTestClient({ 

@@ -38,7 +38,7 @@ export default function TestsPageClient({
     }, [templates, search, sort]);
 
     const applyFilters = () => {
-        let filtered = templates.filter(t =>
+        const filtered = templates.filter(t =>
             (
                 t.name.toLowerCase().includes(search.toLowerCase())
                 || t.topic_data.name.toLowerCase().includes(search.toLowerCase())

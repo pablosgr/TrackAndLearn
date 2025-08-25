@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TestType } from "@/types/test/TestType";
 import { TestTemplateType } from "@/types/test/TestTemplateType";
 import { QuestionType } from "@/types/test/QuestionType";
@@ -13,7 +13,6 @@ import TestDetailCard from "@/components/tests/TestDetailCard";
 import TestDialog from "@/components/tests/TestDialog";
 import {
     Card,
-    CardAction,
     CardContent,
     CardDescription,
     CardHeader,

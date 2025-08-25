@@ -7,9 +7,9 @@ export function organizeResultsByAdaptation(classroomResults: ClassroomResultTyp
     classroomResults.forEach((res) =>{
         const adaptationId = res.test_data.adaptation_id ?? 0;
 
-        adaptationId
-        ? (!existingAdaptations.includes(adaptationId) && existingAdaptations.push(adaptationId))
-        : ''
+        if (adaptationId && !existingAdaptations.includes(adaptationId)) {
+            existingAdaptations.push(adaptationId);
+        }
     });
 
     const notAdapted = classroomResults.filter((res) => res.test_data.adaptation_id === null);
