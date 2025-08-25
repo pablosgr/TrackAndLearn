@@ -42,5 +42,6 @@ export async function getTopicByTestId(testId: number): Promise<string | null> {
         return null;
     }
 
+    // @ts-expect-error: Supabase returns single objects when using ! in relations
     return data.template_data.topic_data.name as string;
 }

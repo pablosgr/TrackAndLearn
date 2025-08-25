@@ -70,6 +70,7 @@ export async function getClassroomsByRole(
         const classrooms: ClassroomType[] = classroomsFilter.map((c) => (
             {
                 ...c,
+                // @ts-expect-error: Supabase returns single objects when using ! in relations
                 teacher: { name: c.teacher?.name }
             }
         ))
