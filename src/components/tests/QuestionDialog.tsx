@@ -194,7 +194,7 @@ export default function QuestionDialog({
                     }
                 </CardAction>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[490px] max-h-[85%] overflow-scroll scrollbar-invisible">
+            <DialogContent className="max-w-[90%] sm:max-w-[490px] max-h-[85%] overflow-scroll scrollbar-invisible">
                 <DialogHeader>
                     <DialogTitle>
                         {
@@ -281,14 +281,14 @@ export default function QuestionDialog({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel asChild>
-                                        <span>Select the correct option</span>
+                                        <span className="mb-3">Select the correct option</span>
                                     </FormLabel>
                                     <FormControl>
                                         <RadioGroup 
                                             defaultValue={field.value?.toString()}
                                             value={field.value?.toString()}
                                             onValueChange={(val) => field.onChange(parseInt(val))}
-                                            className="flex flex-row items-center gap-6"
+                                            className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
                                         >
                                             {fields.map((f, index) => (
                                                 <div key={f.id} className="flex items-center gap-2">

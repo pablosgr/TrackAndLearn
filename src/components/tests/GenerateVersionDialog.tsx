@@ -152,7 +152,7 @@ export default function GenerateVersionDialog({
                                             value={field.value !== null ? field.value.toString() : 'null'}
                                             onValueChange={(val) => field.onChange(val === 'null' ? null : val)}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger className="w-full truncate">
                                                 <SelectValue placeholder="Select adaptation to generate" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -161,7 +161,7 @@ export default function GenerateVersionDialog({
                                                     {
                                                         adaptationList.map((adpt) => (
                                                             <SelectItem key={adpt.id} value={adpt.id.toString()}>
-                                                                {adpt.code} ({adpt.name})
+                                                                <span className="truncate">{adpt.code} ({adpt.name})</span>
                                                             </SelectItem>
                                                         ))
                                                     }

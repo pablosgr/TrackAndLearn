@@ -66,7 +66,7 @@ export default function StudentResultClient({
                     })
                 }
                 <p className="w-full pl-8 text-2xl py-6 border-t-1 border-gray-300">
-                    Final score: <strong>{testResult.score}</strong>
+                    Final score: <b>{testResult.score}</b> out of 10
                 </p>
             </CardContent>
         </Card>

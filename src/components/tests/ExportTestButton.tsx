@@ -45,7 +45,7 @@ export default function ExportTestButton(
                         />
 
                 </TooltipTrigger>
-                <TooltipContent className='p-3'>
+                <TooltipContent className='p-3 w-45 sm:w-fit'>
                     <p>
                         For more information on Carousel Learning, please check the
                         <Link href={'/about'}><b> About</b></Link> section.

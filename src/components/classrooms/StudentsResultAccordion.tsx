@@ -47,7 +47,7 @@ export default function StudentsResultAccordion({
                                     Score: {item.score}
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="p-5 flex flex-row gap-15">
+                            <AccordionContent className="p-2 pt-5 sm:p-5 flex flex-col lg:flex-row gap-5 lg:gap-15">
                                 <section className="w-fit flex flex-col gap-5">
                                     <div className="flex flex-col gap-3">
                                         <h3 className="font-semibold">Time used</h3>
@@ -66,7 +66,7 @@ export default function StudentsResultAccordion({
                                 </section>
                                 <section className="flex-1 flex flex-col gap-3">
                                     <h3 className="font-semibold">Answers</h3>
-                                    <div className="flex flex-row gap-5">
+                                    <div className="flex flex-col md:flex-row gap-5">
                                         <article className="flex-1">
                                             <StudentsAnswersCard 
                                                 type="correct"

@@ -59,22 +59,20 @@ export default function TestDetailCard({
     
     return (
         <Card className="shadow-none border-0">
-            <CardHeader className="px-2 flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-5">
+            <CardHeader className="px-2 flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-8">
                 <div className="flex flex-col gap-3">
-                    <CardTitle className="text-lg truncate">{test.name}</CardTitle>
+                    <CardTitle className="text-lg break-words">{test.name}</CardTitle>
                 </div>
                 <div className="flex flex-row flex-wrap gap-3 items-center">
-                    <div className="flex flex-row gap-3">
-                        {
-                            (!test.adaptation_id && testCount < MAX_TESTS) &&
-                            <GenerateVersionDialog
-                                baseTest={test}
-                                adaptationList={adaptations}
-                                onGenerate={onTestGenerate}
-                            />
-                        }
-                        <ExportTestButton testId={test.id} />
-                    </div>
+                    {
+                        (!test.adaptation_id && testCount < MAX_TESTS) &&
+                        <GenerateVersionDialog
+                            baseTest={test}
+                            adaptationList={adaptations}
+                            onGenerate={onTestGenerate}
+                        />
+                    }
+                    <ExportTestButton testId={test.id} />
                     <div className="flex flex-row gap-3">
                         {
                             test.question.length < MAX_QUESTIONS &&
