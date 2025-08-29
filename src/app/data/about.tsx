@@ -5,21 +5,27 @@ export const aboutTexts = [
   {
     title: "The idea behind Track & Learn",
     content: (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-10">
         <p>
           <strong>Track & Learn</strong> is a free-to-use web application designed especially for educators. 
           Its mission is to make the process of monitoring student learning <strong>simpler, more 
           accurate, and less time-consuming</strong>. Teachers can create classes, assign tests, 
-          and track performance in an intuitive way, supported by AI tools that assist 
-          with test generation.
+          and track performance in an intuitive way, supported by <strong>AI tools</strong> that assist 
+          with test generation. For any inquiries or feedback, feel free to contact us 
+          at <b>trackandlearn@outlook.es</b>.
         </p>
+        <Link href="https://www.aircury.es/" target="_blank" className="w-fit self-center">
+            <Image
+              src={'/aircury-logo.svg'}
+              alt="Aircury Logo"
+              width={180}
+              height={200}
+            />
+        </Link>
         <p>
-          The project was born from a common classroom reality: many students reach 
-          final evaluations with significant gaps in understanding, while teachers and 
-          families often lack timely signals to anticipate such outcomes. Track & Learn 
-          provides educators with a <strong>practical way</strong> to check student progress 
-          throughout the course, allowing them to adjust, reinforce, or reorganize 
-          their methods when it truly matters.
+          This project has been possible thanks to <strong>Aircury S.L.</strong>&apos;s <i>Summer of Code</i>, a 
+          mentorship initiative designed to help students gain real-world experience by developing meaningful 
+          projects.
         </p>
       </div>
     )
