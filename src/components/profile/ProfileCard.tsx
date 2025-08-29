@@ -22,7 +22,7 @@ export default function ProfileCard() {
     }
 
     return (
-        <Card className="w-full h-full md:w-[80%]">
+        <Card className="w-full h-fit md:w-[80%]">
             <CardContent className="pt-12 px-12 pb-6 flex flex-col xl:flex-row gap-20">
                 <section className="flex flex-col items-center gap-8">
                     <ProfileAvatar name={user.name} size={13} />
