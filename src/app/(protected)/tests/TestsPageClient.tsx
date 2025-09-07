@@ -27,7 +27,7 @@ export default function TestsPageClient({
     const {user} = useUser();
     const [templates, setTemplates] = useState<TestTemplateType[]>(testList);
     const [visibleTemplates, setVisibleTemplates] = useState<TestTemplateType[]>(testList);
-    const [range, setRange] = useState<[number, number]>([6, 11]);
+    const [range, setRange] = useState<[number, number]>([8, 15]);
     const [sort, setSort] = useState<string>('');
     const [search, setSearch] = useState<string>('');
     const [isloading, setIsLoading] = useState<boolean>(false);
@@ -97,7 +97,7 @@ export default function TestsPageClient({
 
         if (newTemplates.length > 0) {
             setTemplates(prev => [...prev, ...newTemplates]);
-            setRange([range[1] + 1, range[1] + 6]);
+            setRange([range[1] + 1, range[1] + 8]);
             handleDateSort(sort);
         } else {
             showToast('No more tests to show', 'error');

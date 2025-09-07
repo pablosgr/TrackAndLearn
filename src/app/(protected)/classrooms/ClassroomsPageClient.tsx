@@ -17,7 +17,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
     const {user} = useUser();
     const [classrooms, setClassrooms] = useState<ClassroomType[]>(data);
     const [visibleClassrooms, setVisibleClassrooms] = useState<ClassroomType[]>(data);
-    const [range, setRange] = useState<[number, number]>([6, 11]);
+    const [range, setRange] = useState<[number, number]>([8, 15]);
     const [sort, setSort] = useState<string>('');
     const [search, setSearch] = useState<string>('');
     const [isloading, setIsLoading] = useState<boolean>(false);
@@ -65,7 +65,7 @@ export default function ClassroomsPageClient({ data }: { data: ClassroomType[] }
 
         if (newClassrooms.length > 0) {
             setClassrooms(prev => [...prev, ...newClassrooms]);
-            setRange([range[1] + 1, range[1] + 6]);
+            setRange([range[1] + 1, range[1] + 8]);
             handleDateSort(sort);
         } else {
             showToast('No more classrooms to show', 'error');

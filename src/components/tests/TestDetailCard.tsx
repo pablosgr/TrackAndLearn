@@ -48,7 +48,7 @@ export default function TestDetailCard({
 }) {
     const router = useRouter();
     const MAX_TESTS = 3;
-    const MAX_QUESTIONS = 15;
+    const MAX_QUESTIONS = 20;
 
     const handleTestDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();

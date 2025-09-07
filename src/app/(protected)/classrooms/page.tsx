@@ -4,7 +4,7 @@ import ClassroomsPageClient from "./ClassroomsPageClient";
 
 export default async function ClassroomsPage() {
     const user = await requireUser();
-    const classrooms = await getClassroomsByRole(user?.id, user?.role, [0, 5]);
+    const classrooms = await getClassroomsByRole(user?.id, user?.role, [0, 7]);
 
     return (
         <ClassroomsPageClient data={classrooms}/>

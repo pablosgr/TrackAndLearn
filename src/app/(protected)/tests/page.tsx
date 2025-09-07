@@ -4,7 +4,7 @@ import TestsPageClient from "./TestsPageClient";
 
 export default async function TestsPage() {
     const user = await requireUser();
-    const tests = await getTestTemplatesByUserId(user?.id, [0, 5]);
+    const tests = await getTestTemplatesByUserId(user?.id, [0, 7]);
     const topics = await getTopics();
     const adaptations = await getAdaptations();
 
