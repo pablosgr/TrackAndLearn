@@ -47,7 +47,7 @@ import {
 
 
 const formSchema = z.object({
-    description: z.string().min(3, { message: 'Description must have between 3 and 500 characters' }).max(250),
+    description: z.string().min(3, { message: 'Description must have between 3 and 1000 characters' }).max(1000),
     level: z.string().min(3, { message: 'Level must have between 3 and 100 characters' }).max(100),
     topic_id: z.string().min(1, { message: 'You must select a topic' }),
     adaptation_id: z.number().nullable(),

@@ -13,7 +13,7 @@ export function formatPrompt(
           ${type === 'version' ? `- Reference test: ${description}` : ''}
           ${level ? `- Educational Level: ${level}` : ''}
           - Adaptation: ${adaptation ? adaptation : 'None'}
-          ${type === 'test' ? '- Between 10 and 15 questions maximum' : ''}
+          ${type === 'test' ? '- 20 questions maximum' : ''}
           ${type === 'version' ? '- Maintain same number of questions as the reference test' : ''}
           - Each question: 2 or 4 options, 1 correct answer
           - Include a realistic time limit (minutes)
